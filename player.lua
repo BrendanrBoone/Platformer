@@ -50,19 +50,29 @@ end
 function Player:loadAssets()
     self.animation = { timer = 0, rate = 0.1 }
 
-    self.animation.run = { total = 6, current = 1, img = {} }
+    self.animation.run = { total = 8, current = 1, img = {} }
     for i = 1, self.animation.run.total do
-        self.animation.run.img[i] = love.graphics.newImage("assets/player/run/" .. i .. ".png")
+        self.animation.run.img[i] = love.graphics.newImage("assets/Franky/run/" .. i .. ".png")
     end
 
-    self.animation.idle = { total = 3, current = 1, img = {} }
+    self.animation.idle = { total = 4, current = 1, img = {} }
     for i = 1, self.animation.idle.total do
-        self.animation.idle.img[i] = love.graphics.newImage("assets/Jiraiya/StandardPose/" .. i .. ".png")
+        self.animation.idle.img[i] = love.graphics.newImage("assets/Franky/idle/" .. i .. ".png")
     end
 
-    self.animation.air = { total = 4, current = 1, img = {} }
-    for i = 1, self.animation.air.total do
-        self.animation.air.img[i] = love.graphics.newImage("assets/player/air/" .. i .. ".png")
+    self.animation.airRising = { total = 2, current = 1, img = {} }
+    for i = 1, self.animation.airRising.total do
+        self.animation.airRising.img[i] = love.graphics.newImage("assets/Franky/airRising/" .. i .. ".png")
+    end
+
+    self.animation.airFalling = { total = 2, current = 1, img = {} }
+    for i = 1, self.animation.airFalling.total do
+        self.animation.airFalling.img[i] = love.graphics.newImage("assets/Franky/airFalling/" .. i .. ".png")
+    end
+
+    self.animation.jump = { total = 2, current = 1, img = {} }
+    for i = 1, self.animation.jump.total do
+        self.animation.jump.img[i] = love.graphics.newImage("assets/Franky/jump/" .. i .. ".png")
     end
 
     self.animation.draw = self.animation.idle.img[1]
@@ -141,7 +151,7 @@ end
 
 function Player:setState()
     if not self.grounded then
-        self.state = "air"
+        self.state = "airRising"
     elseif self.xVel == 0 then
         self.state = "idle"
     else
