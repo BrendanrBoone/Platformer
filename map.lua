@@ -24,6 +24,7 @@ function Map:init()
     self.solidLayer.visible = false
     self.entityLayer.visible = false
     MapWidth = self.groundLayer.width * 16 -- 16 is the tile size
+    MapHeight = self.groundLayer.height * 16
 
     self:spawnEntities()
 end

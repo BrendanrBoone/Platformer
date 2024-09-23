@@ -151,7 +151,11 @@ end
 
 function Player:setState()
     if not self.grounded then
-        self.state = "airRising"
+        if self.yVel < 0 then
+            self.state = "airRising"
+        else
+            self.state = "airFalling"
+        end
     elseif self.xVel == 0 then
         self.state = "idle"
     else

@@ -1,0 +1,12 @@
+{
+    "Lua.diagnostics.globals": [
+        "love",
+        "background",
+        "beginContact",
+        "endContact"
+    ],
+    "Lua.diagnostics.disable": [
+        "undefined-field",
+        "inject-field"
+    ]
+}
