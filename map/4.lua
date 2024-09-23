@@ -9,8 +9,8 @@ return {
   height = 164,
   tilewidth = 16,
   tileheight = 16,
-  nextlayerid = 5,
-  nextobjectid = 20,
+  nextlayerid = 6,
+  nextobjectid = 22,
   properties = {},
   tilesets = {
     {
@@ -251,6 +251,48 @@ return {
           y = 2570,
           width = 30,
           height = 22,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
+    },
+    {
+      type = "objectgroup",
+      draworder = "topdown",
+      id = 5,
+      name = "spawns",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      objects = {
+        {
+          id = 20,
+          name = "Start",
+          type = "start",
+          shape = "point",
+          x = 38.6667,
+          y = 2554.67,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 21,
+          name = "End",
+          type = "end",
+          shape = "point",
+          x = 1892.67,
+          y = 2553.33,
+          width = 0,
+          height = 0,
           rotation = 0,
           visible = true,
           properties = {}

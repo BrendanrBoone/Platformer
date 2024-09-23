@@ -126,19 +126,6 @@ return {
           rotation = 0,
           visible = true,
           properties = {}
-        },
-        {
-          id = 38,
-          name = "",
-          type = "",
-          shape = "point",
-          x = 2055.33,
-          y = 173.333,
-          width = 0,
-          height = 0,
-          rotation = 0,
-          visible = true,
-          properties = {}
         }
       }
     },

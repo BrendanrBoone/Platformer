@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="120" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="150">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="120" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="151">
  <editorsettings>
-  <export target="../../../OnlinePlatformerPracticeLua/map/3.lua" format="lua"/>
+  <export target="../3.lua" format="lua"/>
  </editorsettings>
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="56" columns="14">
   <image source="../../assets/tiles.png" width="224" height="64"/>
@@ -33,6 +33,11 @@
 47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48
 </data>
  </layer>
+ <objectgroup color="#fdfd01" id="7" name="spawns">
+  <object id="150" name="Start" type="start" x="31" y="307">
+   <point/>
+  </object>
+ </objectgroup>
  <objectgroup color="#ee0505" id="4" name="entity">
   <object id="35" name="Coin" type="coin" x="607.909" y="32.0455">
    <ellipse/>

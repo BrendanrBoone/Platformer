@@ -7,10 +7,19 @@ local Coin = require("coin")
 local Player = require("player")
 local Trampoline = require("trampoline")
 
+local oceanHighBackground = love.graphics.newImage("assets/oceanBackground.png")
+local skyBlueBackground = love.graphics.newImage("assets/background.png")
+
 function Map:load()
     self.currentLevel = 1
     self.firstLevel = 1
     self.lastLevel = 4
+    self.backgroundLevels = { -- self.background[i] == background for that level
+        oceanHighBackground,
+        skyBlueBackground,
+        skyBlueBackground,
+        oceanHighBackground
+    }
     World = love.physics.newWorld(0, 2000)
     World:setCallbacks(beginContact, endContact)
 
@@ -32,6 +41,12 @@ function Map:init()
 
     self:findSpawnPoints()
     self:spawnEntities()
+end
+
+--change background according to what level
+function Map:drawBackground()
+    local background = self.backgroundLevels[self.currentLevel]
+    love.graphics.draw(background)
 end
 
 function Map:findSpawnPoints()

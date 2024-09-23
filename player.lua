@@ -6,7 +6,7 @@ function Player:load()
     self.y = 0
     self.startX = self.x
     self.startY = self.y
-    self.width = 20
+    self.width = 30
     self.height = 60
     self.xVel = 0            -- + goes right
     self.yVel = 0            -- + goes down

@@ -13,7 +13,6 @@ local Trampoline = require("trampoline")
 function love.load()
     Enemy.loadAssets()
     Map:load()
-    background = love.graphics.newImage("assets/oceanBackground.png")
     GUI:load()
     Player:load()
 end
@@ -32,7 +31,7 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.draw(background)
+    Map:drawBackground()
     Map.level:draw(-Camera.x, -Camera.y, Camera.scale, Camera.scale) -- the 2s are the scale values
 
     Camera:apply() -- between

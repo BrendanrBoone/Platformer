@@ -40,9 +40,6 @@
   <object id="37" name="End" type="end" x="1894" y="296">
    <point/>
   </object>
-  <object id="38" x="2055.33" y="173.333">
-   <point/>
-  </object>
  </objectgroup>
  <objectgroup color="#f30e25" id="4" name="entity">
   <object id="32" name="Enemy" type="enemy" x="479" y="143">

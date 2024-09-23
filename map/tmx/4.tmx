@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="120" height="164" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="20">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="120" height="164" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="22">
  <editorsettings>
   <export target="../4.lua" format="lua"/>
  </editorsettings>
@@ -176,6 +176,14 @@
  </layer>
  <objectgroup color="#10f200" id="4" name="entity">
   <object id="19" name="Trampoline" type="trampoline" x="992.091" y="2570" width="30" height="22"/>
+ </objectgroup>
+ <objectgroup color="#f9fd08" id="5" name="spawns">
+  <object id="20" name="Start" type="start" x="38.6667" y="2554.67">
+   <point/>
+  </object>
+  <object id="21" name="End" type="end" x="1892.67" y="2553.33">
+   <point/>
+  </object>
  </objectgroup>
  <layer id="2" name="grass" width="120" height="164">
   <data encoding="csv">
