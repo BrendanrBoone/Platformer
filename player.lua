@@ -112,6 +112,10 @@ function Player:resetPosition()
     self.physics.body:setPosition(self.startX, self.startY)
 end
 
+function Player:setPosition(x, y)
+    self.physics.body:setPosition(x, y)
+end
+
 function Player:tintRed()
     self.color.green = 0
     self.color.blue = 0

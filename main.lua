@@ -13,7 +13,7 @@ local Trampoline = require("trampoline")
 function love.load()
     Enemy.loadAssets()
     Map:load()
-    background = love.graphics.newImage("assets/background.png")
+    background = love.graphics.newImage("assets/oceanBackground.png")
     GUI:load()
     Player:load()
 end

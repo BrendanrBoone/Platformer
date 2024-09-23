@@ -9,6 +9,8 @@ local Trampoline = require("trampoline")
 
 function Map:load()
     self.currentLevel = 1
+    self.firstLevel = 1
+    self.lastLevel = 4
     World = love.physics.newWorld(0, 2000)
     World:setCallbacks(beginContact, endContact)
 
@@ -21,20 +23,39 @@ function Map:init()
     self.solidLayer = self.level.layers.solid
     self.groundLayer = self.level.layers.ground
     self.entityLayer = self.level.layers.entity
+    self.spawnsLayer = self.level.layers.spawns
 
     self.solidLayer.visible = false
     self.entityLayer.visible = false
     MapWidth = self.groundLayer.width * 16 -- 16 is the tile size
     MapHeight = self.groundLayer.height * 16
 
+    self:findSpawnPoints()
     self:spawnEntities()
+end
+
+function Map:findSpawnPoints()
+    for _, v in ipairs(self.spawnsLayer.objects) do
+        if v.type == "end" then
+            self.endX, self.endY = v.x, v.y
+        elseif v.type == "start" then
+            self.startX, self.startY = v.x, v.y
+        end
+    end
 end
 
 function Map:next()
     self:clean()
     self.currentLevel = self.currentLevel + 1
     self:init()
-    Player:resetPosition()
+    Player:setPosition(self.startX, self.startY)
+end
+
+function Map:prev()
+    self:clean()
+    self.currentLevel = self.currentLevel - 1
+    self:init()
+    Player:setPosition(self.endX, self.endY)
 end
 
 function Map:clean()
@@ -48,8 +69,10 @@ end
 
 function Map:update(dt)
     -- win condition of a level
-    if Player.x > MapWidth - 16 then
+    if self.currentLevel ~= self.lastLevel and Player.x > MapWidth - 16 then
         self:next()
+    elseif self.currentLevel ~= self.firstLevel and Player.x < 0 + 16 then
+        self:prev()
     end
 end
 
