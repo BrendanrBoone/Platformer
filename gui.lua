@@ -19,6 +19,16 @@ function GUI:load()
     self.hearts.scale = 3
     self.hearts.spacing = self.hearts.width * self.hearts.scale + 30
 
+    self.volume = {}
+    self.volume.img_soundOn = love.graphics.newImage("assets/ui/volumeIcon48x48.png")
+    self.volume.img_soundOff = love.graphics.newImage("assets/ui/volumeIconMute48x48.png")
+    self.volume.img = self.volume.img_soundOn
+    self.volume.width = self.volume.img:getWidth()
+    self.volume.height = self.volume.img:getHeight()
+    self.volume.x = 30
+    self.volume.y = love.graphics.getHeight() - self.volume.height - 20
+    self.volume.scale = 1
+
     self.font = love.graphics.newFont("assets/bit.ttf", 36)
 end
 
@@ -30,6 +40,11 @@ function GUI:draw()
     GUI:displayCoins()
     GUI:displayCoinText()
     GUI:displayHearts()
+    GUI:displayVolume()
+end
+
+function GUI:displayVolume()
+    love.graphics.draw(self.volume.img, self.volume.x, self.volume.y, 0, self.volume.scale, self.volume.scale)
 end
 
 function GUI:displayHearts()

@@ -50,6 +50,10 @@ function love.keypressed(key)
     Player:jump(key)
 end
 
+function love.mousepressed(mx, my, button)
+
+end
+
 function beginContact(a, b, collision)
     if Coin.beginContact(a, b, collision) then return end
     if Spike.beginContact(a, b, collision) then return end
