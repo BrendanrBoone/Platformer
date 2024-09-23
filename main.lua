@@ -19,7 +19,7 @@ end
 
 function love.update(dt)
     World:update(dt)
-    Camera:setPosition(Player.x, 0)
+    Camera:setPosition(Player.x, Player.y)
     Player:update(dt)
     Coin.updateAll()
     GUI:update(dt)
