@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 5,
-  nextobjectid = 8,
+  nextobjectid = 11,
   properties = {},
   tilesets = {
     {
@@ -100,7 +100,21 @@ return {
       parallaxx = 1,
       parallaxy = 1,
       properties = {},
-      objects = {}
+      objects = {
+        {
+          id = 8,
+          name = "Trampoline",
+          type = "trampoline",
+          shape = "rectangle",
+          x = 463.364,
+          y = 313.864,
+          width = 33,
+          height = 22,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
     },
     {
       type = "tilelayer",
@@ -228,6 +242,21 @@ return {
           y = 0,
           width = 7,
           height = 368.076,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["collidable"] = true
+          }
+        },
+        {
+          id = 10,
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = -6.97778,
+          y = -9.1,
+          width = 653.955,
+          height = 9,
           rotation = 0,
           visible = true,
           properties = {

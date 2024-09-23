@@ -52,8 +52,11 @@ function Trampoline.beginContact(a, b, collision)
     for _, instance in ipairs(ActiveTrampolines) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
-                Player:superJump()
-                return true
+                print("player: "..Player.y.." trampoline: "..instance.y.." player+height: "..Player.y + Player.height*0.75/2)
+                if Player.y + Player.height/2*0.75 < instance.y then
+                    Player:superJump()
+                    return true
+                end
             end
         end
     end

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="8">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="11">
  <editorsettings>
   <export target="../1.lua" format="lua"/>
  </editorsettings>
@@ -33,7 +33,9 @@
 47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48
 </data>
  </layer>
- <objectgroup color="#ee0729" id="4" name="entity"/>
+ <objectgroup color="#ee0729" id="4" name="entity">
+  <object id="8" name="Trampoline" type="trampoline" x="463.364" y="313.864" width="33" height="22"/>
+ </objectgroup>
  <layer id="2" name="grass" width="40" height="23">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -83,6 +85,11 @@
    </properties>
   </object>
   <object id="7" x="640" y="0" width="7" height="368.076">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+   </properties>
+  </object>
+  <object id="10" x="-6.97778" y="-9.1" width="653.955" height="9">
    <properties>
     <property name="collidable" type="bool" value="true"/>
    </properties>
