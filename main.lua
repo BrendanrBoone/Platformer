@@ -8,6 +8,7 @@ local Stone = require("stone")
 local Camera = require("camera")
 local Enemy = require("enemy")
 local Map = require("map")
+local Trampoline = require("trampoline")
 
 function love.load()
     Enemy.loadAssets()
@@ -26,6 +27,7 @@ function love.update(dt)
     Spike.updateAll(dt)
     Stone.updateAll(dt)
     Enemy.updateAll(dt)
+    Trampoline.updateAll(dt)
     Map:update(dt)
 end
 
@@ -33,13 +35,14 @@ function love.draw()
     love.graphics.draw(background)
     Map.level:draw(-Camera.x, -Camera.y, Camera.scale, Camera.scale) -- the 2s are the scale values
 
-    Camera:apply()
+    Camera:apply() -- between
+    Trampoline.drawAll()
     Player:draw()
     Coin.drawAll()
     Spike.drawAll()
     Stone.drawAll()
     Enemy.drawAll()
-    Camera:clear()
+    Camera:clear() -- these
 
     GUI:draw()
 end
@@ -51,6 +54,7 @@ end
 function beginContact(a, b, collision)
     if Coin.beginContact(a, b, collision) then return end
     if Spike.beginContact(a, b, collision) then return end
+    if Trampoline.beginContact(a, b, collision) then return end
     Enemy.beginContact(a, b, collision)
     Player:beginContact(a, b, collision)
 end

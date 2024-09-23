@@ -15,6 +15,7 @@ function Player:load()
     self.friction = 3500     -- 200 / 3500 = 0.0571 seconds to stop from maxSpeed
     self.gravity = 1500
     self.jumpAmount = -500
+    self.superJumpAmount = -2500
     self.airJumpAmount = self.jumpAmount * 0.8
     self.totalAirJumps = 1
     self.airJumpsUsed = 0
@@ -205,7 +206,7 @@ end
 function Player:move(dt)
     -- sprint
     if love.keyboard.isDown("lshift") then
-        self:tintBlue()
+        --self:tintBlue()
         self.maxSpeed = 400
     else
         self.maxSpeed = 200
@@ -213,7 +214,6 @@ function Player:move(dt)
 
     -- left and right movement
     if love.keyboard.isDown("d", "right") then
-        -- it was that simple smh
         self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxSpeed)
     elseif love.keyboard.isDown("a", "left") then
         self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
@@ -273,6 +273,10 @@ function Player:jump(key)
             Sounds.playSound(self.sounds.playerJump)
         end
     end
+end
+
+function Player:superJump()
+    self.yVel = self.superJumpAmount
 end
 
 function Player:endContact(a, b, collision)

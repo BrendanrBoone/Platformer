@@ -24,7 +24,7 @@ function Spike.new(x, y)
 end
 
 function Spike.removeAll()
-    for i,v in ipairs(ActiveSpikes) do
+    for _,v in ipairs(ActiveSpikes) do
         v.physics.body:destroy()
     end
 

@@ -5,6 +5,7 @@ local Spike = require("spike")
 local Stone = require("stone")
 local Coin = require("coin")
 local Player = require("player")
+local Trampoline = require("trampoline")
 
 function Map:load()
     self.currentLevel = 1
@@ -42,6 +43,7 @@ function Map:clean()
     Spike.removeAll()
     Stone.removeAll()
     Enemy.removeAll()
+    Trampoline.removeAll()
 end
 
 function Map:update(dt)
@@ -61,6 +63,8 @@ function Map:spawnEntities()
             Stone.new(v.x, v.y)
         elseif v.type == "enemy" then
             Enemy.new(v.x, v.y)
+        elseif v.type == "trampoline" then
+            Trampoline.new(v.x + v.width / 2, v.y + v.height / 2)
         end
     end
 end

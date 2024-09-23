@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="120" height="164" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="10">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="120" height="164" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="20">
  <editorsettings>
-  <export target="../../../OnlinePlatformerPracticeLua/map/5.lua" format="lua"/>
+  <export target="../4.lua" format="lua"/>
  </editorsettings>
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="56" columns="14">
   <image source="../../assets/tiles.png" width="224" height="64"/>
@@ -174,7 +174,9 @@
 47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48,47,48
 </data>
  </layer>
- <objectgroup id="4" name="entity"/>
+ <objectgroup color="#10f200" id="4" name="entity">
+  <object id="19" name="Trampoline" type="trampoline" x="992.091" y="2570" width="30" height="22"/>
+ </objectgroup>
  <layer id="2" name="grass" width="120" height="164">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -356,5 +358,6 @@
   <object id="7" x="736.333" y="2096.81" width="191.333" height="32.3723"/>
   <object id="8" x="-70" y="0" width="70" height="2622"/>
   <object id="9" x="1923" y="0" width="70" height="2622"/>
+  <object id="10" x="-72.7273" y="-84" width="2068" height="84"/>
  </objectgroup>
 </map>
