@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="120" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="151">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="120" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="152">
  <editorsettings>
   <export target="../3.lua" format="lua"/>
  </editorsettings>
@@ -35,6 +35,9 @@
  </layer>
  <objectgroup color="#fdfd01" id="7" name="spawns">
   <object id="150" name="Start" type="start" x="31" y="307">
+   <point/>
+  </object>
+  <object id="151" name="End" type="end" x="1694.5" y="23.5">
    <point/>
   </object>
  </objectgroup>

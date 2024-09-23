@@ -6,6 +6,7 @@ local Stone = require("stone")
 local Coin = require("coin")
 local Player = require("player")
 local Trampoline = require("trampoline")
+local Sounds = require("sounds")
 
 local oceanHighBackground = love.graphics.newImage("assets/oceanBackground.png")
 local skyBlueBackground = love.graphics.newImage("assets/background.png")
@@ -41,12 +42,17 @@ function Map:init()
 
     self:findSpawnPoints()
     self:spawnEntities()
+    self:loadBgm()
 end
 
 --change background according to what level
 function Map:drawBackground()
     local background = self.backgroundLevels[self.currentLevel]
     love.graphics.draw(background)
+end
+
+function Map:loadBgm()
+    Sounds:playMusic(self.currentLevel)
 end
 
 function Map:findSpawnPoints()
@@ -83,7 +89,7 @@ function Map:clean()
 end
 
 function Map:update(dt)
-    -- win condition of a level
+    -- conditions to swap level
     if self.currentLevel ~= self.lastLevel and Player.x > MapWidth - 16 then
         self:next()
     elseif self.currentLevel ~= self.firstLevel and Player.x < 0 + 16 then

@@ -38,7 +38,6 @@ function Player:load()
     self.state = "idle"
 
     self:loadAssets()
-    self:loadSoundAssets()
 
     self.physics = {}
     self.physics.body = love.physics.newBody(World, self.x, self.y, "dynamic")
@@ -81,16 +80,9 @@ function Player:loadAssets()
     self.animation.height = self.animation.draw:getHeight()
 end
 
-function Player:loadSoundAssets()
-    self.sounds = {}
-    self.sounds.playerGetCoin = love.audio.newSource("assets/sfx/player_get_coin.ogg", "static")
-    self.sounds.playerHit = love.audio.newSource("assets/sfx/player_hit.ogg", "static")
-    self.sounds.playerJump = love.audio.newSource("assets/sfx/player_jump.ogg", "static")
-end
-
 function Player:takeDamage(amount)
     self:tintRed()
-    Sounds.playSound(self.sounds.playerHit)
+    Sounds.playSound(Sounds.sfx.playerHit)
     if self.health.current - amount > 0 then
         self.health.current = self.health.current - amount
     else
@@ -132,7 +124,7 @@ function Player:die()
 end
 
 function Player:incrementCoins()
-    self.sounds.playerGetCoin:play()
+    Sounds.playSound(Sounds.sfx.playerGetCoin)
     self.coins = self.coins + 1
 end
 
@@ -269,18 +261,19 @@ function Player:jump(key)
     if (key == "w" or key == "up" or key == "space") then
         if self.grounded or self.graceTime > 0 then
             self.yVel = self.jumpAmount
-            Sounds.playSound(self.sounds.playerJump)
+            Sounds.playSound(Sounds.sfx.playerJump)
         elseif self.airJumpsUsed < self.totalAirJumps then
             self.yVel = self.airJumpAmount
             self.grounded = false
             self.airJumpsUsed = self.airJumpsUsed + 1
-            Sounds.playSound(self.sounds.playerJump)
+            Sounds.playSound(Sounds.sfx.playerJump)
         end
     end
 end
 
 function Player:superJump()
     self.yVel = self.superJumpAmount
+    Sounds.playSound(Sounds.sfx.playerJump)
 end
 
 function Player:endContact(a, b, collision)

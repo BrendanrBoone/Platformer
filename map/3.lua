@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 8,
-  nextobjectid = 151,
+  nextobjectid = 152,
   properties = {},
   tilesets = {
     {
@@ -108,6 +108,19 @@ return {
           shape = "point",
           x = 31,
           y = 307,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 151,
+          name = "End",
+          type = "end",
+          shape = "point",
+          x = 1694.5,
+          y = 23.5,
           width = 0,
           height = 0,
           rotation = 0,

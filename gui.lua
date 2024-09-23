@@ -1,5 +1,6 @@
 local GUI = {}
 local Player = require("player")
+local Sounds = require("sounds")
 
 function GUI:load()
     self.coins = {}
@@ -72,6 +73,14 @@ function GUI:displayCoinText()
     love.graphics.print(" : " .. Player.coins, x + 2, y + 2) -- shadow
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.print(" : " .. Player.coins, x, y)
+end
+
+function GUI:mousepressed(mx, my, button)
+    if button == 1
+    and mx >= self.volume.x and mx < self.volume.x + self.volume.img.width
+    and my >= self.volume.y and my < self.volume.y + self.volume.img.height then
+        self.volume.img = self.volume.img_soundOff
+    end
 end
 
 return GUI
