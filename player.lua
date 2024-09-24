@@ -1,5 +1,6 @@
 local Player = {}
 local Sounds = require("sounds")
+local Explosion = require("explosion")
 
 function Player:load()
     self.x = 100
@@ -79,7 +80,7 @@ function Player:loadAssets()
 
     self.animation.emote = { total = 56, current = 1, img = {} } -- ow at frame 9
     for i = 1, self.animation.emote.total do
-        local current, stillFrame = i, 9 -- loop emote from 9
+        local current, stillFrame = i, 9                         -- loop emote from 9
         if current > stillFrame then
             current = stillFrame
         end
@@ -196,14 +197,15 @@ function Player:setNewFrame()
     local anim = self.animation[self.state] -- not a copy. mirrors animation.[state]
     if anim.current < anim.total then
         anim.current = anim.current + 1
-        self:emoteOwSfx()
     else
-        if self.emoting then
-            self.emoting = false
-        end
         anim.current = 1
     end
     self.animation.draw = anim.img[anim.current]
+    self:animEffects(anim)
+end
+
+function Player:animEffects(animation)
+    self:emoteOwEffects(animation)
 end
 
 function Player:decreaseGraceTime(dt)
@@ -302,9 +304,12 @@ function Player:emote(key)
     end
 end
 
-function Player:emoteOwSfx()
-    if self.emoting and self.animation.emote.current == 10 then
+function Player:emoteOwEffects(anim)
+    if anim.current < anim.total and self.emoting and self.animation.emote.current == 10 then
         Sounds.playSound(Sounds.sfx.playerHit)
+        Explosion.new(self.x, self.y)
+    elseif anim.current == anim.total and self.emoting then
+        self.emoting = false
     end
 end
 
