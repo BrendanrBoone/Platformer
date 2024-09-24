@@ -33,6 +33,7 @@ function Player:load()
     self.graceTime = 0
     self.graceDuration = 0.1 -- time to do a grounded jump after leaving the ground
 
+    self.emoting = false
     self.alive = true
     self.grounded = false
     self.direction = "right"
@@ -74,6 +75,11 @@ function Player:loadAssets()
     self.animation.jump = { total = 2, current = 1, img = {} }
     for i = 1, self.animation.jump.total do
         self.animation.jump.img[i] = love.graphics.newImage("assets/Franky/jump/" .. i .. ".png")
+    end
+
+    self.animation.emote = { total = 16, current = 1, img = {} }
+    for i = 1, self.animation.emote.total do
+        self.animation.emote.img[i] = love.graphics.newImage("assets/Franky/emote/" .. i .. ".png")
     end
 
     self.animation.draw = self.animation.idle.img[1]
@@ -155,7 +161,11 @@ function Player:setState()
             self.state = "airFalling"
         end
     elseif self.xVel == 0 then
-        self.state = "idle"
+        if self.emoting then
+            self.state = "emote"
+        else
+            self.state = "idle"
+        end
     else
         self.state = "run"
     end
@@ -183,6 +193,9 @@ function Player:setNewFrame()
     if anim.current < anim.total then
         anim.current = anim.current + 1
     else
+        if self.emoting then
+            self.emoting = false
+        end
         anim.current = 1
     end
     self.animation.draw = anim.img[anim.current]
@@ -201,21 +214,23 @@ function Player:applyGravity(dt)
 end
 
 function Player:move(dt)
-    -- sprint
-    if love.keyboard.isDown("lshift") then
-        --self:tintBlue()
-        self.maxSpeed = 400
-    else
-        self.maxSpeed = 200
-    end
+    if not self.emoting then
+        -- sprint
+        if love.keyboard.isDown("lshift") then
+            --self:tintBlue()
+            self.maxSpeed = 400
+        else
+            self.maxSpeed = 200
+        end
 
-    -- left and right movement
-    if love.keyboard.isDown("d", "right") then
-        self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxSpeed)
-    elseif love.keyboard.isDown("a", "left") then
-        self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
-    else
-        self:applyFriction(dt)
+        -- left and right movement
+        if love.keyboard.isDown("d", "right") then
+            self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxSpeed)
+        elseif love.keyboard.isDown("a", "left") then
+            self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
+        else
+            self:applyFriction(dt)
+        end
     end
 end
 
@@ -259,16 +274,24 @@ function Player:land(collision)
 end
 
 function Player:jump(key)
-    if (key == "w" or key == "up" or key == "space") then
-        if self.grounded or self.graceTime > 0 then
-            self.yVel = self.jumpAmount
-            Sounds.playSound(Sounds.sfx.playerJump)
-        elseif self.airJumpsUsed < self.totalAirJumps then
-            self.yVel = self.airJumpAmount
-            self.grounded = false
-            self.airJumpsUsed = self.airJumpsUsed + 1
-            Sounds.playSound(Sounds.sfx.playerJump)
+    if not self.emoting then
+        if (key == "w" or key == "up" or key == "space") then
+            if self.grounded or self.graceTime > 0 then
+                self.yVel = self.jumpAmount
+                Sounds.playSound(Sounds.sfx.playerJump)
+            elseif self.airJumpsUsed < self.totalAirJumps then
+                self.yVel = self.airJumpAmount
+                self.grounded = false
+                self.airJumpsUsed = self.airJumpsUsed + 1
+                Sounds.playSound(Sounds.sfx.playerJump)
+            end
         end
+    end
+end
+
+function Player:emote(key)
+    if (key == "e" and self.grounded and self.xVel == 0) then
+        self.emoting = true
     end
 end
 
@@ -286,7 +309,6 @@ function Player:endContact(a, b, collision)
 end
 
 function Player:draw()
-
     local scaleX = 1
     if self.direction == "left" then scaleX = -1 end
     local width = self.animation.width / 2

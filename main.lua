@@ -51,6 +51,7 @@ end
 
 function love.keypressed(key)
     Player:jump(key)
+    Player:emote(key)
 end
 
 function love.mousepressed(mx, my, button)
