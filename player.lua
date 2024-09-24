@@ -4,7 +4,7 @@ local Sounds = require("sounds")
 function Player:load()
     self.x = 100
     self.y = 0
-    self.FrankyOffsetY = 5
+    self.FrankyOffsetY = -5
     self.startX = self.x
     self.startY = self.y
     self.width = 30
@@ -327,7 +327,7 @@ function Player:draw()
     local width = self.animation.width / 2
     local height = self.animation.height / 2
     love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
-    love.graphics.draw(self.animation.draw, self.x, self.y - self.FrankyOffsetY, 0, scaleX, 1, width, height)
+    love.graphics.draw(self.animation.draw, self.x, self.y + self.FrankyOffsetY, 0, scaleX, 1, width, height)
     love.graphics.setColor(1, 1, 1)
 end
 

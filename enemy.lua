@@ -115,7 +115,6 @@ end
 function Enemy.updateAll(dt)
     for i, instance in ipairs(ActiveEnemys) do
         instance:update(dt)
-        --print("Enemy "..i.." State: " .. instance.state .. ", rageCounter: " .. instance.rageCounter)
     end
 end
 
