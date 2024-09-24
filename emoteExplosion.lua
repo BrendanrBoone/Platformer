@@ -1,7 +1,8 @@
-local Player = {}
+local Explosion = {}
 local Sounds = require("sounds")
+local Player = require("player")
 
-function Player:load()
+function Explosion:load()
     self.x = 100
     self.y = 0
     self.FrankyOffsetY = 5
@@ -49,7 +50,7 @@ function Player:load()
     self.physics.body:setGravityScale(0) -- unaffected by world gravity
 end
 
-function Player:loadAssets()
+function Explosion:loadAssets()
     self.animation = { timer = 0, rate = 0.1 }
 
     self.animation.run = { total = 8, current = 1, img = {} }
@@ -77,7 +78,7 @@ function Player:loadAssets()
         self.animation.jump.img[i] = love.graphics.newImage("assets/Franky/jump/" .. i .. ".png")
     end
 
-    self.animation.emote = { total = 56, current = 1, img = {} } -- ow at frame 9
+    self.animation.emote = { total = 16, current = 1, img = {} }
     for i = 1, self.animation.emote.total do
         self.animation.emote.img[i] = love.graphics.newImage("assets/Franky/emote/" .. i .. ".png")
     end
@@ -87,19 +88,19 @@ function Player:loadAssets()
     self.animation.height = self.animation.draw:getHeight()
 end
 
-function Player:takeDamage(amount)
+function Explosion:takeDamage(amount)
     self:tintRed()
-    Sounds.playSound(Sounds.sfx.playerHit)
+    Sounds.playSound(Sounds.sfx.ExplosionHit)
     if self.health.current - amount > 0 then
         self.health.current = self.health.current - amount
     else
         self.health.current = 0
         self:die()
     end
-    print("Player health: " .. self.health.current)
+    print("Explosion health: " .. self.health.current)
 end
 
-function Player:respawn()
+function Explosion:respawn()
     if not self.alive then
         self:resetPosition()
         self.health.current = self.health.max
@@ -107,35 +108,35 @@ function Player:respawn()
     end
 end
 
-function Player:resetPosition()
+function Explosion:resetPosition()
     self.physics.body:setPosition(self.startX, self.startY)
 end
 
-function Player:setPosition(x, y)
+function Explosion:setPosition(x, y)
     self.physics.body:setPosition(x, y)
 end
 
-function Player:tintRed()
+function Explosion:tintRed()
     self.color.green = 0
     self.color.blue = 0
 end
 
-function Player:tintBlue()
+function Explosion:tintBlue()
     self.color.green = 0
     self.color.red = 0
 end
 
-function Player:die()
-    print("Player Died")
+function Explosion:die()
+    print("Explosion Died")
     self.alive = false
 end
 
-function Player:incrementCoins()
-    Sounds.playSound(Sounds.sfx.playerGetCoin)
+function Explosion:incrementCoins()
+    Sounds.playSound(Sounds.sfx.ExplosionGetCoin)
     self.coins = self.coins + 1
 end
 
-function Player:update(dt)
+function Explosion:update(dt)
     self:unTint(dt)
     self:respawn()
     self:setState()
@@ -147,13 +148,13 @@ function Player:update(dt)
     self:applyGravity(dt)
 end
 
-function Player:unTint(dt)
+function Explosion:unTint(dt)
     self.color.red = math.min(self.color.red + self.color.speed * dt, 1)
     self.color.green = math.min(self.color.green + self.color.speed * dt, 1)
     self.color.blue = math.min(self.color.blue + self.color.speed * dt, 1)
 end
 
-function Player:setState()
+function Explosion:setState()
     if not self.grounded then
         if self.yVel < 0 then
             self.state = "airRising"
@@ -171,7 +172,7 @@ function Player:setState()
     end
 end
 
-function Player:setDirection()
+function Explosion:setDirection()
     if self.xVel > 0 then
         self.direction = "right"
     elseif self.xVel < 0 then
@@ -179,7 +180,7 @@ function Player:setDirection()
     end
 end
 
-function Player:animate(dt)
+function Explosion:animate(dt)
     self.animation.timer = self.animation.timer + dt
     if self.animation.timer > self.animation.rate then
         self.animation.timer = 0
@@ -188,7 +189,7 @@ function Player:animate(dt)
 end
 
 -- updates the image
-function Player:setNewFrame()
+function Explosion:setNewFrame()
     local anim = self.animation[self.state] -- not a copy. mirrors animation.[state]
     if anim.current < anim.total then
         anim.current = anim.current + 1
@@ -201,19 +202,19 @@ function Player:setNewFrame()
     self.animation.draw = anim.img[anim.current]
 end
 
-function Player:decreaseGraceTime(dt)
+function Explosion:decreaseGraceTime(dt)
     if not self.grounded then
         self.graceTime = self.graceTime - dt
     end
 end
 
-function Player:applyGravity(dt)
+function Explosion:applyGravity(dt)
     if not self.grounded then
         self.yVel = self.yVel + self.gravity * dt
     end
 end
 
-function Player:move(dt)
+function Explosion:move(dt)
     if not self.emoting then
         -- sprint
         if love.keyboard.isDown("lshift") then
@@ -234,7 +235,7 @@ function Player:move(dt)
     end
 end
 
-function Player:applyFriction(dt)
+function Explosion:applyFriction(dt)
     if self.xVel > 0 then
         self.xVel = math.max(self.xVel - self.friction * dt, 0)
     elseif self.xVel < 0 then
@@ -242,12 +243,12 @@ function Player:applyFriction(dt)
     end
 end
 
-function Player:syncPhysics()
+function Explosion:syncPhysics()
     self.x, self.y = self.physics.body:getPosition()
     self.physics.body:setLinearVelocity(self.xVel, self.yVel)
 end
 
-function Player:beginContact(a, b, collision)
+function Explosion:beginContact(a, b, collision)
     if self.grounded == true then return end
     local __, ny = collision:getNormal()
     if a == self.physics.fixture then
@@ -265,7 +266,7 @@ function Player:beginContact(a, b, collision)
     end
 end
 
-function Player:land(collision)
+function Explosion:land(collision)
     self.currentGroundCollision = collision
     self.yVel = 0
     self.grounded = true
@@ -273,35 +274,34 @@ function Player:land(collision)
     self.graceTime = self.graceDuration
 end
 
-function Player:jump(key)
+function Explosion:jump(key)
     if not self.emoting then
         if (key == "w" or key == "up" or key == "space") then
             if self.grounded or self.graceTime > 0 then
                 self.yVel = self.jumpAmount
-                Sounds.playSound(Sounds.sfx.playerJump)
+                Sounds.playSound(Sounds.sfx.ExplosionJump)
             elseif self.airJumpsUsed < self.totalAirJumps then
                 self.yVel = self.airJumpAmount
                 self.grounded = false
                 self.airJumpsUsed = self.airJumpsUsed + 1
-                Sounds.playSound(Sounds.sfx.playerJump)
+                Sounds.playSound(Sounds.sfx.ExplosionJump)
             end
         end
     end
 end
 
-function Player:emote(key)
-    if (key == "e" and self.grounded and self.xVel == 0 and not self.emoting) then
-        Sounds.playSound(Sounds.sfx.frankyEyeCatchTheme)
+function Explosion:emote(key)
+    if (key == "e" and self.grounded and self.xVel == 0) then
         self.emoting = true
     end
 end
 
-function Player:superJump()
+function Explosion:superJump()
     self.yVel = self.superJumpAmount
-    Sounds.playSound(Sounds.sfx.playerJump)
+    Sounds.playSound(Sounds.sfx.ExplosionJump)
 end
 
-function Player:endContact(a, b, collision)
+function Explosion:endContact(a, b, collision)
     if a == self.physics.fixture or b == self.physics.fixture then
         if self.currentGroundCollision == collision then
             self.grounded = false
@@ -309,7 +309,7 @@ function Player:endContact(a, b, collision)
     end
 end
 
-function Player:draw()
+function Explosion:draw()
     local scaleX = 1
     if self.direction == "left" then scaleX = -1 end
     local width = self.animation.width / 2
@@ -319,4 +319,4 @@ function Player:draw()
     love.graphics.setColor(1, 1, 1)
 end
 
-return Player
+return Explosion

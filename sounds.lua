@@ -12,7 +12,8 @@ function Sounds:load()
     self.sfx = {}
     self.sfx.maxSound = 0.7
     self.sfx.playerGetCoin = love.audio.newSource("assets/sfx/player_get_coin.ogg", "static")
-    self.sfx.playerHit = love.audio.newSource("assets/sfx/player_hit.ogg", "static")
+    self.sfx.playerHit = love.audio.newSource("assets/sfx/frankyOW.mp3", "static")
+    self.sfx.frankyEyeCatchTheme = love.audio.newSource("assets/sfx/frankyEyeCatchTheme.mp3", "static")
     self.sfx.playerJump = love.audio.newSource("assets/sfx/player_jump.ogg", "static")
 
     -- clear profiles necessary => {name, source}
