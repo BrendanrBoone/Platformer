@@ -10,7 +10,7 @@ function Sounds:load()
     self.bgm.NakamaNoShirushi = love.audio.newSource("assets/bgm/One Piece OST - Nakama no Shirushi da! Sign Of Friendship.mp3", "stream")
 
     self.sfx = {}
-    self.sfx.maxSound = 0.7
+    self.sfx.maxSound = 0.3
     self.sfx.playerGetCoin = love.audio.newSource("assets/sfx/player_get_coin.ogg", "static")
     self.sfx.playerHit = love.audio.newSource("assets/sfx/frankyOW.mp3", "static")
     self.sfx.frankyEyeCatchTheme = love.audio.newSource("assets/sfx/frankyEyeCatchTheme.mp3", "static")

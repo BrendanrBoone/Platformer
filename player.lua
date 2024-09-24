@@ -192,6 +192,7 @@ function Player:setNewFrame()
     local anim = self.animation[self.state] -- not a copy. mirrors animation.[state]
     if anim.current < anim.total then
         anim.current = anim.current + 1
+        self:emoteOwSfx()
     else
         if self.emoting then
             self.emoting = false
@@ -291,8 +292,15 @@ end
 
 function Player:emote(key)
     if (key == "e" and self.grounded and self.xVel == 0 and not self.emoting) then
+        Sounds.sfx.frankyEyeCatchTheme:setVolume(Sounds.sfx.maxSound)
         Sounds.playSound(Sounds.sfx.frankyEyeCatchTheme)
         self.emoting = true
+    end
+end
+
+function Player:emoteOwSfx()
+    if self.emoting and self.animation.emote.current == 10 then
+        Sounds.playSound(Sounds.sfx.playerHit)
     end
 end
 
