@@ -2,35 +2,61 @@ local Sounds = {}
 
 function Sounds:load()
 
+    self.soundToggle = true
+
     self.bgm = {}
+    self.bgm.maxSound = 0.3
     self.bgm.OathHeart = love.audio.newSource("assets/bgm/OathOfTheHeart_inazumaElevenOST.mp3", "stream")
     self.bgm.NakamaNoShirushi = love.audio.newSource("assets/bgm/One Piece OST - Nakama no Shirushi da! Sign Of Friendship.mp3", "stream")
 
     self.sfx = {}
+    self.sfx.maxSound = 0.7
     self.sfx.playerGetCoin = love.audio.newSource("assets/sfx/player_get_coin.ogg", "static")
     self.sfx.playerHit = love.audio.newSource("assets/sfx/player_hit.ogg", "static")
     self.sfx.playerJump = love.audio.newSource("assets/sfx/player_jump.ogg", "static")
 
+    -- clear profiles necessary => {name, source}
     self.bgmLevels = {
-        self.bgm.OathHeart,
-        self.bgm.OathHeart,
-        self.bgm.OathHeart,
-        self.bgm.NakamaNoShirushi
+        {"OathHeart", self.bgm.OathHeart},
+        {"OathHeart", self.bgm.OathHeart},
+        {"OathHeart", self.bgm.OathHeart},
+        {"NakamaNoShirushi", self.bgm.NakamaNoShirushi}
     }
     self.currentlyPlayingBgm = self.bgmLevels[1]
-    self.currentlyPlayingBgm:play()
+    self.currentlyPlayingBgm[2]:play()
+    
+    self.currentVolume = self.bgm.maxSound
+    self.currentlyPlayingBgm[2]:setVolume(self.currentVolume)
 end
 
 function Sounds:update(dt)
+    if not self.currentlyPlayingBgm[2]:isPlaying() then
+        self.playSound(self.currentlyPlayingBgm[2])
+    end
+    if self.soundToggle and self.currentVolume == 0 then
+        self:maxSound(self.currentlyPlayingBgm[2])
+    end
+end
 
+function Sounds:muteSound(sound)
+    sound:setVolume(0)
+    self.currentVolume = 0
+end
+
+function Sounds:maxSound(sound)
+    sound:setVolume(self.bgm.maxSound)
+    self.currentVolume = self.bgm.maxSound
 end
 
 function Sounds:playMusic(level)
+    print("level: "..level..tostring(self.currentlyPlayingBgm))
     for i, bgm in ipairs(self.bgmLevels) do
-        if i == level and bgm ~= self.currentlyPlayingBgm then
-            print("play music")
-            self.currentlyPlayingBgm:stop()
-            self.playSound(self.bgmLevels[level])
+        if i == level and bgm[1] ~= self.currentlyPlayingBgm[1] then
+            self.currentlyPlayingBgm[2]:stop()
+            self.playSound(self.bgmLevels[level][2])
+            if self.currentVolume == 0 then
+                self:muteSound(self.bgmLevels[level][2])
+            end
             self.currentlyPlayingBgm = self.bgmLevels[level]
         end
     end

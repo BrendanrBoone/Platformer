@@ -21,6 +21,7 @@ end
 
 function love.update(dt)
     World:update(dt)
+    Sounds:update(dt)
     Camera:setPosition(Player.x, Player.y)
     Player:update(dt)
     Coin.updateAll()
@@ -53,7 +54,7 @@ function love.keypressed(key)
 end
 
 function love.mousepressed(mx, my, button)
-
+    GUI:mousepressed(mx, my, button)
 end
 
 function beginContact(a, b, collision)

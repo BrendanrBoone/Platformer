@@ -4,10 +4,11 @@ local Sounds = require("sounds")
 function Player:load()
     self.x = 100
     self.y = 0
+    self.FrankyOffsetY = 5
     self.startX = self.x
     self.startY = self.y
     self.width = 30
-    self.height = 60
+    self.height = 50
     self.xVel = 0            -- + goes right
     self.yVel = 0            -- + goes down
     self.maxSpeed = 200
@@ -285,12 +286,13 @@ function Player:endContact(a, b, collision)
 end
 
 function Player:draw()
+
     local scaleX = 1
     if self.direction == "left" then scaleX = -1 end
     local width = self.animation.width / 2
     local height = self.animation.height / 2
     love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
-    love.graphics.draw(self.animation.draw, self.x, self.y, 0, scaleX, 1, width, height)
+    love.graphics.draw(self.animation.draw, self.x, self.y - self.FrankyOffsetY, 0, scaleX, 1, width, height)
     love.graphics.setColor(1, 1, 1)
 end
 

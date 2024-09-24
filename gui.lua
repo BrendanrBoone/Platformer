@@ -77,9 +77,17 @@ end
 
 function GUI:mousepressed(mx, my, button)
     if button == 1
-    and mx >= self.volume.x and mx < self.volume.x + self.volume.img.width
-    and my >= self.volume.y and my < self.volume.y + self.volume.img.height then
-        self.volume.img = self.volume.img_soundOff
+    and mx >= self.volume.x and mx < self.volume.x + self.volume.width
+    and my >= self.volume.y and my < self.volume.y + self.volume.height then
+        if Sounds.soundToggle then
+            self.volume.img = self.volume.img_soundOff
+            Sounds:muteSound(Sounds.currentlyPlayingBgm[2])
+            Sounds.soundToggle = false
+        else
+            self.volume.img = self.volume.img_soundOn
+            Sounds:maxSound(Sounds.currentlyPlayingBgm[2])
+            Sounds.soundToggle = true
+        end
     end
 end
 
