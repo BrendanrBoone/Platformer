@@ -10,6 +10,7 @@ local Enemy = require("enemy")
 local Map = require("map")
 local Trampoline = require("trampoline")
 local Sounds = require("sounds")
+local Explosion = require("explosion")
 
 function love.load()
     Sounds:load()
@@ -17,6 +18,7 @@ function love.load()
     Map:load()
     GUI:load()
     Player:load()
+    Explosion.loadAssets()
 end
 
 function love.update(dt)
@@ -30,6 +32,7 @@ function love.update(dt)
     Stone.updateAll(dt)
     Enemy.updateAll(dt)
     Trampoline.updateAll(dt)
+    Explosion.updateAll(dt)
     Map:update(dt)
 end
 
@@ -38,6 +41,7 @@ function love.draw()
     Map.level:draw(-Camera.x, -Camera.y, Camera.scale, Camera.scale) -- the 2s are the scale values
 
     Camera:apply() -- between
+    Explosion.drawAll()
     Trampoline.drawAll()
     Player:draw()
     Coin.drawAll()

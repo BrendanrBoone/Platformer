@@ -17,14 +17,6 @@ function Explosion.new(x, y)
     table.insert(ActiveExplosions, instance)
 end
 
-function Explosion.removeAll()
-    for _,v in ipairs(ActiveExplosions) do
-        v.physics.body:destroy()
-    end
-
-    ActiveExplosions = {}
-end
-
 function Explosion.loadAssets()
     Explosion.explodAnim = {}
     for i=1, 17 do
@@ -49,11 +41,24 @@ end
 
 function Explosion:setNewFrame()
     local anim = self.animation.explod
-    if anim.current == anim.total then return end
+    if anim.current == anim.total then
+        self:removeActive()
+        return
+    end
     if anim.current < anim.total then
         anim.current = anim.current + 1
     end
     self.animation.draw = anim.img[anim.current]
+end
+
+-- removes self instance from ActiveExplosions
+function Explosion:removeActive()
+    for i, instance in ipairs(ActiveExplosions) do
+        if instance == self then
+            table.remove(ActiveExplosions, i)
+            break
+        end
+    end
 end
 
 function Explosion:draw()
