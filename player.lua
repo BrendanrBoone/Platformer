@@ -79,7 +79,11 @@ function Player:loadAssets()
 
     self.animation.emote = { total = 56, current = 1, img = {} } -- ow at frame 9
     for i = 1, self.animation.emote.total do
-        self.animation.emote.img[i] = love.graphics.newImage("assets/Franky/emote/" .. i .. ".png")
+        local current, stillFrame = i, 9 -- loop emote from 9
+        if current > stillFrame then
+            current = stillFrame
+        end
+        self.animation.emote.img[i] = love.graphics.newImage("assets/Franky/emote/" .. current .. ".png")
     end
 
     self.animation.draw = self.animation.idle.img[1]

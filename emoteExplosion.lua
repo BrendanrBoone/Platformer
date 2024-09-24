@@ -2,6 +2,8 @@ local Explosion = {}
 local Sounds = require("sounds")
 local Player = require("player")
 
+-- idea Everyone dies with an explosion
+
 function Explosion:load()
     self.x = 100
     self.y = 0
