@@ -22,7 +22,7 @@ function Player:load()
     self.totalAirJumps = 1
     self.airJumpsUsed = 0
     self.coins = 0
-    self.health = { current = 3, max = 3 }
+    self.health = { current = 15, max = 15 }
 
     self.color = {
         red = 1,

@@ -18,24 +18,24 @@ function Sounds:load()
 
     -- clear profiles necessary => {name, source}
     self.bgmLevels = {
-        {"OathHeart", self.bgm.OathHeart},
-        {"OathHeart", self.bgm.OathHeart},
-        {"OathHeart", self.bgm.OathHeart},
-        {"NakamaNoShirushi", self.bgm.NakamaNoShirushi}
+        {name = "OathHeart", source = self.bgm.OathHeart},
+        {name = "OathHeart", source = self.bgm.OathHeart},
+        {name = "OathHeart", source = self.bgm.OathHeart},
+        {name = "NakamaNoShirushi", source = self.bgm.NakamaNoShirushi}
     }
     self.currentlyPlayingBgm = self.bgmLevels[1]
-    self.currentlyPlayingBgm[2]:play()
+    self.currentlyPlayingBgm.source:play()
     
     self.currentVolume = self.bgm.maxSound
-    self.currentlyPlayingBgm[2]:setVolume(self.currentVolume)
+    self.currentlyPlayingBgm.source:setVolume(self.currentVolume)
 end
 
 function Sounds:update(dt)
-    if not self.currentlyPlayingBgm[2]:isPlaying() then
-        self.playSound(self.currentlyPlayingBgm[2])
+    if not self.currentlyPlayingBgm.source:isPlaying() then
+        self.playSound(self.currentlyPlayingBgm.source)
     end
     if self.soundToggle and self.currentVolume == 0 then
-        self:maxSound(self.currentlyPlayingBgm[2])
+        self:maxSound(self.currentlyPlayingBgm.source)
     end
 end
 
@@ -50,13 +50,12 @@ function Sounds:maxSound(sound)
 end
 
 function Sounds:playMusic(level)
-    print("level: "..level..tostring(self.currentlyPlayingBgm))
     for i, bgm in ipairs(self.bgmLevels) do
-        if i == level and bgm[1] ~= self.currentlyPlayingBgm[1] then
-            self.currentlyPlayingBgm[2]:stop()
-            self.playSound(self.bgmLevels[level][2])
+        if i == level and bgm.name ~= self.currentlyPlayingBgm.name then
+            self.currentlyPlayingBgm.source:stop()
+            self.playSound(self.bgmLevels[level].source)
             if self.currentVolume == 0 then
-                self:muteSound(self.bgmLevels[level][2])
+                self:muteSound(self.bgmLevels[level].source)
             end
             self.currentlyPlayingBgm = self.bgmLevels[level]
         end

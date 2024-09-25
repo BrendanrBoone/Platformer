@@ -12,13 +12,9 @@ function GUI:load()
     self.coins.y = 50
 
     self.hearts = {}
-    self.hearts.img = love.graphics.newImage("assets/heart.png")
-    self.hearts.width = self.hearts.img:getWidth()
-    self.hearts.height = self.hearts.img:getHeight()
     self.hearts.x = 0
     self.hearts.y = 30
     self.hearts.scale = 3
-    self.hearts.spacing = self.hearts.width * self.hearts.scale + 30
 
     self.volume = {}
     self.volume.img_soundOn = love.graphics.newImage("assets/ui/volumeIcon48x48.png")
@@ -31,6 +27,18 @@ function GUI:load()
     self.volume.scale = 1
 
     self.font = love.graphics.newFont("assets/bit.ttf", 36)
+
+    self:loadAssets()
+end
+
+function GUI:loadAssets()
+    self.hearts.img = {}
+    for i = 1, 4 do
+        self.hearts.img[i] = love.graphics.newImage("assets/Heart/heart/" .. i .. ".png")
+    end
+    self.hearts.width = self.hearts.img[1]:getWidth()
+    self.hearts.height = self.hearts.img[1]:getHeight()
+    self.hearts.spacing = self.hearts.width * self.hearts.scale + 30
 end
 
 function GUI:update(dt)
@@ -49,12 +57,24 @@ function GUI:displayVolume()
 end
 
 function GUI:displayHearts()
-    for i = 1, Player.health.current do
-        local x = self.hearts.x + self.hearts.spacing * i
-        love.graphics.setColor(0, 0, 0, 0.5)
-        love.graphics.draw(self.hearts.img, x + 2, self.hearts.y + 2, 0, self.hearts.scale, self.hearts.scale)
-        love.graphics.setColor(1, 1, 1, 1)
-        love.graphics.draw(self.hearts.img, x, self.hearts.y, 0, self.hearts.scale, self.hearts.scale)
+    local fullHearts = math.floor(Player.health.current / 4)
+    local partialHearts = Player.health.current % 4
+    for i = 1, fullHearts + 1 do
+        if i == fullHearts + 1 then
+            if partialHearts == 0 then break end
+            local x = self.hearts.x + self.hearts.spacing * i
+            love.graphics.setColor(0, 0, 0, 0.5)
+            love.graphics.draw(self.hearts.img[partialHearts], x + 2, self.hearts.y + 2, 0, self.hearts.scale,
+                self.hearts.scale)
+            love.graphics.setColor(1, 1, 1, 1)
+            love.graphics.draw(self.hearts.img[partialHearts], x, self.hearts.y, 0, self.hearts.scale, self.hearts.scale)
+        else
+            local x = self.hearts.x + self.hearts.spacing * i
+            love.graphics.setColor(0, 0, 0, 0.5)
+            love.graphics.draw(self.hearts.img[4], x + 2, self.hearts.y + 2, 0, self.hearts.scale, self.hearts.scale)
+            love.graphics.setColor(1, 1, 1, 1)
+            love.graphics.draw(self.hearts.img[4], x, self.hearts.y, 0, self.hearts.scale, self.hearts.scale)
+        end
     end
 end
 
@@ -77,15 +97,15 @@ end
 
 function GUI:mousepressed(mx, my, button)
     if button == 1
-    and mx >= self.volume.x and mx < self.volume.x + self.volume.width
-    and my >= self.volume.y and my < self.volume.y + self.volume.height then
+        and mx >= self.volume.x and mx < self.volume.x + self.volume.width
+        and my >= self.volume.y and my < self.volume.y + self.volume.height then
         if Sounds.soundToggle then
             self.volume.img = self.volume.img_soundOff
-            Sounds:muteSound(Sounds.currentlyPlayingBgm[2])
+            Sounds:muteSound(Sounds.currentlyPlayingBgm.source)
             Sounds.soundToggle = false
         else
             self.volume.img = self.volume.img_soundOn
-            Sounds:maxSound(Sounds.currentlyPlayingBgm[2])
+            Sounds:maxSound(Sounds.currentlyPlayingBgm.source)
             Sounds.soundToggle = true
         end
     end
