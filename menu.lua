@@ -1,5 +1,7 @@
 local Menu = {}
 
+-- Complete after finishing hitboxes
+
 function Menu.load()
     
 end
