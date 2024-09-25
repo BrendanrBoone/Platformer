@@ -11,6 +11,7 @@ local Map = require("map")
 local Trampoline = require("trampoline")
 local Sounds = require("sounds")
 local Explosion = require("explosion")
+local Menu = require("menu")
 
 function love.load()
     Sounds:load()
@@ -19,8 +20,10 @@ function love.load()
     GUI:load()
     Player:load()
     Explosion.loadAssets()
+    Menu.load()
 end
 
+-- menu screen toggle update to pause game
 function love.update(dt)
     World:update(dt)
     Sounds:update(dt)
@@ -34,11 +37,12 @@ function love.update(dt)
     Trampoline.updateAll(dt)
     Explosion.updateAll(dt)
     Map:update(dt)
+    Menu:update(dt)
 end
 
 function love.draw()
     Map:drawBackground()
-    Map.level:draw(-Camera.x, -Camera.y, Camera.scale, Camera.scale) -- the 2s are the scale values
+    Map.level:draw(-Camera.x, -Camera.y, Camera.scale, Camera.scale)
 
     Camera:apply() -- between
     Explosion.drawAll()
@@ -51,11 +55,13 @@ function love.draw()
     Camera:clear() -- these
 
     GUI:draw()
+    Menu:draw()
 end
 
 function love.keypressed(key)
     Player:jump(key)
     Player:emote(key)
+    print(key)
 end
 
 function love.mousepressed(mx, my, button)
