@@ -61,7 +61,7 @@ end
 function love.keypressed(key)
     Player:jump(key)
     Player:emote(key)
-    print(key)
+    Menu.Escape(key)
 end
 
 function love.mousepressed(mx, my, button)

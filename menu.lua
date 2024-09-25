@@ -12,8 +12,10 @@ function Menu:draw()
 
 end
 
-function Menu:Escape(key)
-
+function Menu.Escape(key)
+    if key == "escape" then
+        love.event.quit()
+    end
 end
 
 return Menu
