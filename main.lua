@@ -1,4 +1,4 @@
-
+-- NOTES from laptop: make a exit feature in game
 love.graphics.setDefaultFilter("nearest", "nearest") -- only needs to be done because pixel art
 local Player = require("player")
 local Coin = require("coin")
