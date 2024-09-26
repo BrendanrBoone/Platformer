@@ -87,6 +87,11 @@ function Player:loadAssets()
         self.animation.emote.img[i] = love.graphics.newImage("assets/Franky/emote/" .. current .. ".png")
     end
 
+    self.animation.forwardAir = { total = 4, current = 1, img = {} }
+    for i = 1, self.animation.forwardAir.total do
+        self.animation.forwardAir.img[i] = love.graphics.newImage("assets/Franky/forwardAir/"..i..".png")
+    end
+
     self.animation.draw = self.animation.idle.img[1]
     self.animation.width = self.animation.draw:getWidth()
     self.animation.height = self.animation.draw:getHeight()
@@ -123,11 +128,6 @@ end
 function Player:tintRed()
     self.color.green = 0
     self.color.blue = 0
-end
-
-function Player:tintBlue()
-    self.color.green = 0
-    self.color.red = 0
 end
 
 function Player:die()

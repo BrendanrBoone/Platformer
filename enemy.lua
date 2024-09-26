@@ -10,22 +10,25 @@ function Enemy.new(x, y)
     instance.x = x
     instance.y = y
     instance.offsetY = -8 -- model is inside the ground a bit
-    instance.r = 0 -- rotation
+    instance.r = 0        -- rotation
 
     instance.speed = 100
     instance.speedMod = 1
     instance.xVel = instance.speed
+    instance.yVel = 100
+    instance.gravity = 1500
 
     instance.rageCounter = 1
     instance.rageTrigger = 3
 
     instance.damage = 1
+    instance.health = { current = 20, max = 20 }
 
     instance.state = "walk"
 
-    instance.animation = {timer = 0, rate = 0.1}
-    instance.animation.run = {total = 4, current = 1, img = Enemy.runAnim}
-    instance.animation.walk = {total = 4, current = 1, img = Enemy.walkAnim}
+    instance.animation = { timer = 0, rate = 0.1 }
+    instance.animation.run = { total = 4, current = 1, img = Enemy.runAnim }
+    instance.animation.walk = { total = 4, current = 1, img = Enemy.walkAnim }
     instance.animation.draw = instance.animation.walk.img[1]
 
     instance.physics = {}
@@ -39,22 +42,31 @@ function Enemy.new(x, y)
 end
 
 function Enemy.removeAll()
-    for i,v in ipairs(ActiveEnemys) do
+    for i, v in ipairs(ActiveEnemys) do
         v.physics.body:destroy()
     end
 
     ActiveEnemys = {}
 end
 
+function Enemy:remove()
+    for i, instance in ipairs(ActiveEnemys) do
+        if instance == self then
+            self.physics.body:destroy()
+            table.remove(ActiveEnemys, i)
+        end
+    end
+end
+
 function Enemy.loadAssets()
     Enemy.runAnim = {}
-    for i=1, 4 do
-        Enemy.runAnim[i] = love.graphics.newImage("assets/enemy/run/"..i..".png")
+    for i = 1, 4 do
+        Enemy.runAnim[i] = love.graphics.newImage("assets/enemy/run/" .. i .. ".png")
     end
 
     Enemy.walkAnim = {}
-    for i=1, 4 do
-        Enemy.walkAnim[i] = love.graphics.newImage("assets/enemy/walk/"..i..".png")
+    for i = 1, 4 do
+        Enemy.walkAnim[i] = love.graphics.newImage("assets/enemy/walk/" .. i .. ".png")
     end
 
     Enemy.width = Enemy.runAnim[1]:getWidth()
@@ -64,6 +76,31 @@ end
 function Enemy:update(dt)
     self:syncPhysics()
     self:animate(dt)
+    self:applyGravity(dt)
+end
+
+function Enemy:applyGravity(dt)
+    if not self.grounded then
+        self.yVel = self.yVel + self.gravity * dt
+    end
+end
+
+function Enemy:takeKnockback(xVel, yVel)
+
+end
+
+function Enemy:takeDamage(amount)
+    if self.health.current - amount > 0 then
+        self.health.current = self.health.current - amount
+    else
+        self.health.current = 0
+        self:die()
+    end
+    print("Enemy health: " .. self.health.current)
+end
+
+function Enemy:die()
+    self:remove()
 end
 
 function Enemy:incrementRage()
@@ -103,13 +140,14 @@ end
 
 function Enemy:syncPhysics()
     self.x, self.y = self.physics.body:getPosition()
-    self.physics.body:setLinearVelocity(self.xVel * self.speedMod, 100)
+    self.physics.body:setLinearVelocity(self.xVel * self.speedMod, self.yVel)
 end
 
 function Enemy:draw()
     local scaleX = 1
     if self.xVel < 0 then scaleX = -1 end
-    love.graphics.draw(self.animation.draw, self.x, self.y + self.offsetY, self.r, scaleX, 1, self.width / 2, self.height / 2)
+    love.graphics.draw(self.animation.draw, self.x, self.y + self.offsetY, self.r, scaleX, 1, self.width / 2,
+        self.height / 2)
 end
 
 function Enemy.updateAll(dt)
