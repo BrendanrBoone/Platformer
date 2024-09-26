@@ -15,7 +15,7 @@ function Enemy.new(x, y)
     instance.speed = 100
     instance.speedMod = 1
     instance.xVel = instance.speed
-    instance.yVel = 100
+    instance.yVel = 0
     instance.gravity = 1500
 
     instance.rageCounter = 1
@@ -24,6 +24,7 @@ function Enemy.new(x, y)
     instance.damage = 1
     instance.health = { current = 20, max = 20 }
 
+    instance.grounded = false
     instance.state = "walk"
 
     instance.animation = { timer = 0, rate = 0.1 }
@@ -36,13 +37,13 @@ function Enemy.new(x, y)
     instance.physics.body:setFixedRotation(true)
     instance.physics.shape = love.physics.newRectangleShape(instance.width * 0.4, instance.height * 0.75)
     instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
-    instance.physics.body:setMass(25)
+    instance.physics.body:setGravityScale(0)
 
     table.insert(ActiveEnemys, instance)
 end
 
 function Enemy.removeAll()
-    for i, v in ipairs(ActiveEnemys) do
+    for _, v in ipairs(ActiveEnemys) do
         v.physics.body:destroy()
     end
 
@@ -77,6 +78,13 @@ function Enemy:update(dt)
     self:syncPhysics()
     self:animate(dt)
     self:applyGravity(dt)
+    self:normalStateCheck()
+end
+
+function Enemy:normalStateCheck()
+    if self.xVel == 0 and self.yVel == 0 then
+        self.xVel = self.speed
+    end
 end
 
 function Enemy:applyGravity(dt)
@@ -86,7 +94,8 @@ function Enemy:applyGravity(dt)
 end
 
 function Enemy:takeKnockback(xVel, yVel)
-
+    self.xVel = xVel
+    self.yVel = yVel
 end
 
 function Enemy:takeDamage(amount)
@@ -105,7 +114,7 @@ end
 
 function Enemy:incrementRage()
     self.rageCounter = self.rageCounter + 1
-    if self.rageCounter > self.rageTrigger then
+    if self.grounded and self.rageCounter > self.rageTrigger then
         self.state = "run"
         self.speedMod = 3
         self.rageCounter = 1
@@ -113,10 +122,15 @@ function Enemy:incrementRage()
         self.state = "walk"
         self.speedMod = 1
     end
+    print("xvel: "..self.xVel.." yvel: "..self.yVel)
 end
 
 function Enemy:flipDirection()
-    self.xVel = -self.xVel
+    if self.xVel > 0 then
+        self.xVel = -self.speed * self.speedMod
+    else
+        self.xVel = self.speed * self.speedMod
+    end
 end
 
 function Enemy:animate(dt)
@@ -140,7 +154,7 @@ end
 
 function Enemy:syncPhysics()
     self.x, self.y = self.physics.body:getPosition()
-    self.physics.body:setLinearVelocity(self.xVel * self.speedMod, self.yVel)
+    self.physics.body:setLinearVelocity(self.xVel, self.yVel)
 end
 
 function Enemy:draw()
@@ -162,8 +176,32 @@ function Enemy.drawAll()
     end
 end
 
+function Enemy:checkGrounded(a, b, collision)
+    if self.grounded == true then return end
+    local __, ny = collision:getNormal()
+    if a == self.physics.fixture then
+        if ny > 0 then
+            self:land(collision)
+        elseif ny < 0 then
+            self.yVel = 0
+        end
+    elseif b == self.physics.fixture then
+        if ny < 0 then
+            self:land(collision)
+        elseif ny > 0 then
+            self.yVel = 0
+        end
+    end
+end
+
+function Enemy:land(collision)
+    self.currentGroundCollision = collision
+    self.yVel = 0
+    self.grounded = true
+end
+
 function Enemy.beginContact(a, b, collision)
-    for i, instance in ipairs(ActiveEnemys) do
+    for _, instance in ipairs(ActiveEnemys) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
                 Player:takeDamage(instance.damage)
@@ -171,6 +209,17 @@ function Enemy.beginContact(a, b, collision)
 
             instance:incrementRage()
             instance:flipDirection()
+            instance:checkGrounded(a, b, collision)
+        end
+    end
+end
+
+function Enemy.endContact(a, b, collision)
+    for _, instance in ipairs(ActiveEnemys) do
+        if a == instance.physics.fixture or b == instance.physics.fixture then
+            if instance.currentGroundCollision == collision then
+                instance.grounded = false
+            end
         end
     end
 end
