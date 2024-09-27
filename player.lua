@@ -252,6 +252,7 @@ end
 
 function Player:animEffects(animation)
     self:emoteOwEffects(animation)
+    self:forwardAirEffects(animation)
 end
 
 function Player:decreaseGraceTime(dt)
@@ -346,7 +347,6 @@ function Player:jump(key)
 end
 
 function Player:forwardAir(key)
-    print(key)
     if not self.grounded and not self.attacking and key == "p" then
         self.attacking = true
         self.activeForwardAir = true
