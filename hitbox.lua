@@ -32,6 +32,7 @@ function Hitbox.new(srcFixture, targets, xOff, yOff, width, height, damage, xVel
     instance.physics.shape = love.physics.newCircleShape(instance.height/2)
     instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
     instance.physics.fixture:setSensor(true)
+    instance.physics.fixture:setUserData(instance)
 
     instance:syncAssociate()
 

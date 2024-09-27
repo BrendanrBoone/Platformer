@@ -125,8 +125,8 @@ function Player:loadForwardAirHitbox()
             Hitbox.new(
                 self.physics.fixture,
                 self.hitbox.forwardAir.targets,
-                v.x - self.width / 2,
-                v.y - self.height / 2,
+                v.x - self.width,
+                v.y - self.height,
                 v.width,
                 v.height,
                 self.hitbox.forwardAir.damage,
@@ -210,7 +210,6 @@ function Player:setState()
                 self.state = "airFalling"
             end
         end
-        
     elseif self.xVel == 0 then
         if self.emoting then
             self.state = "emote"
@@ -303,6 +302,10 @@ end
 
 function Player:beginContact(a, b, collision)
     if self.grounded == true then return end
+    if (a:getUserData() and a:getUserData().__index == Hitbox)
+    or (b:getUserData() and b:getUserData().__index == Hitbox) then
+        return
+    end
     local __, ny = collision:getNormal()
     if a == self.physics.fixture then
         if ny > 0 then
@@ -359,7 +362,7 @@ end
 ]]
 function Player:forwardAirEffects(anim)
     if self.activeForwardAir and self.attacking and anim.current < anim.total then
-        
+
     elseif self.attacking and self.activeForwardAir and anim.current == anim.total then
         self.attacking = false
         self.activeForwardAir = false
