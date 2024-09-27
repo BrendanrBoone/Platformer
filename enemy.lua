@@ -1,6 +1,7 @@
 local Enemy = {}
 Enemy.__index = Enemy
 local Player = require("player")
+local Hitbox = require("hitbox")
 
 ActiveEnemys = {}
 
@@ -200,6 +201,10 @@ function Enemy:land(collision)
 end
 
 function Enemy.beginContact(a, b, collision)
+    if (a:getUserData() and a:getUserData().__index == Hitbox)
+    or (b:getUserData() and b:getUserData().__index == Hitbox) then
+        return
+    end
     for _, instance in ipairs(ActiveEnemys) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then

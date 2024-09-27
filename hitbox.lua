@@ -76,13 +76,14 @@ end
 function Hitbox.beginContact(a, b, collision)
     for _, instance in ipairs(ActiveHitboxes) do
         if instance.active and (a == instance.physics.fixture or b == instance.physics.fixture) then
-            --[[if (a ~= Player.physics.fixture or b ~= Player.physics.fixture) then
-                for _, target in ipairs(instance.targets) do
+            if (a ~= instance.src.fixture or b ~= instance.src.fixture) then
+                for i, target in ipairs(instance.targets) do
+                    print('target '..i)
                     if a == target.physics.fixture or b == target.physics.fixture then
                         print("collision: "..collision)
                     end
                 end
-            end]]
+            end
         end
     end
 end

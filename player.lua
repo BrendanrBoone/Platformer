@@ -119,10 +119,11 @@ function Player:loadForwardAirHitbox()
     self.hitbox.forwardAir.yVel = 10 -- may change later
 
     self.hitbox.forwardAir.targets = ActiveEnemys
+    self.hitbox.forwardAir.hitboxes = {}
 
     for _, v in ipairs(self.hitbox.forwardAir.hitboxesLayer.objects) do
         if v.type == "hitbox3" then
-            Hitbox.new(
+            local hitbox = Hitbox.new(
                 self.physics.fixture,
                 self.hitbox.forwardAir.targets,
                 v.x - self.width,
@@ -132,6 +133,7 @@ function Player:loadForwardAirHitbox()
                 self.hitbox.forwardAir.damage,
                 self.hitbox.forwardAir.xVel,
                 self.hitbox.forwardAir.yVel)
+            table.insert(self.hitbox.forwardAir.hitboxes, hitbox)
         end
     end
 end
@@ -331,6 +333,8 @@ function Player:land(collision)
 
     self.attacking = false
     self.activeForwardAir = false
+
+    self:resetAnimations()
 end
 
 function Player:jump(key)
@@ -349,6 +353,12 @@ function Player:jump(key)
     end
 end
 
+-- reset cancellable animations
+function Player:resetAnimations()
+    self.animation.forwardAir.current = 1
+    self.animation.emote.current = 1
+end
+
 function Player:forwardAir(key)
     if not self.grounded and not self.attacking and key == "p" then
         self.attacking = true
@@ -358,11 +368,18 @@ end
 
 --[[
     the only untuitive thing i don't like is that
-    the animations and coherency to know if an action is finished are in their animEffects function
+    the animations and coherency to know if an action is finished are in their animEffects function.
+    at least readability wise. functionally it makes sense to me. i can determine actions according
+    to what frame.
 ]]
+
 function Player:forwardAirEffects(anim)
     if self.activeForwardAir and self.attacking and anim.current < anim.total then
-
+        if anim.current == 3 then
+            for _, hitbox in ipairs(self.hitbox.forwardAir.hitboxes) do
+                hitbox.active = true
+            end
+        end
     elseif self.attacking and self.activeForwardAir and anim.current == anim.total then
         self.attacking = false
         self.activeForwardAir = false
