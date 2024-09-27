@@ -324,6 +324,9 @@ function Player:land(collision)
     self.grounded = true
     self.airJumpsUsed = 0
     self.graceTime = self.graceDuration
+
+    self.attacking = false
+    self.activeForwardAir = false
 end
 
 function Player:jump(key)
