@@ -3,11 +3,13 @@ Hitbox.__index = Hitbox
 
 ActiveHitboxes = {}
 
-function Hitbox.new(srcFixture, targets, xOff, yOff, width, height, damage, xVel, yVel)
+function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage, xVel, yVel)
     local instance = setmetatable({}, Hitbox)
 
     instance.src = {}
     instance.src.fixture = srcFixture
+
+    instance.type = type
 
     -- table consisting of types objects that the hitbox can interact with. Needs to consist of fixtures
     instance.targets = targets
@@ -58,6 +60,11 @@ function Hitbox:hit(target)
 end
 
 function Hitbox:draw()
+    if self.active then
+        love.graphics.setColor(1,0,0)
+    else
+        love.graphics.setColor(1,1,1)
+    end
     love.graphics.circle("fill", self.x, self.y, self.height/2)
 end
 
@@ -76,7 +83,9 @@ end
 function Hitbox.beginContact(a, b, collision)
     for _, instance in ipairs(ActiveHitboxes) do
         if instance.active and (a == instance.physics.fixture or b == instance.physics.fixture) then
+            print("here")
             if (a ~= instance.src.fixture or b ~= instance.src.fixture) then
+                print("HERE")
                 for i, target in ipairs(instance.targets) do
                     print('target '..i)
                     if a == target.physics.fixture or b == target.physics.fixture then

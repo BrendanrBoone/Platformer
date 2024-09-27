@@ -119,12 +119,13 @@ function Player:loadForwardAirHitbox()
     self.hitbox.forwardAir.yVel = 10 -- may change later
 
     self.hitbox.forwardAir.targets = ActiveEnemys
-    self.hitbox.forwardAir.hitboxes = {}
 
+    local hitboxType = "hitbox3"
     for _, v in ipairs(self.hitbox.forwardAir.hitboxesLayer.objects) do
-        if v.type == "hitbox3" then
-            local hitbox = Hitbox.new(
+        if v.type == hitboxType then
+            Hitbox.new(
                 self.physics.fixture,
+                hitboxType,
                 self.hitbox.forwardAir.targets,
                 v.x - self.width,
                 v.y - self.height,
@@ -133,7 +134,6 @@ function Player:loadForwardAirHitbox()
                 self.hitbox.forwardAir.damage,
                 self.hitbox.forwardAir.xVel,
                 self.hitbox.forwardAir.yVel)
-            table.insert(self.hitbox.forwardAir.hitboxes, hitbox)
         end
     end
 end
@@ -242,13 +242,13 @@ end
 -- updates the image
 function Player:setNewFrame()
     local anim = self.animation[self.state] -- not a copy. mirrors animation.[state]
+    self:animEffects(anim)
     if anim.current < anim.total then
         anim.current = anim.current + 1
     else
         anim.current = 1
     end
     self.animation.draw = anim.img[anim.current]
-    self:animEffects(anim)
 end
 
 function Player:animEffects(animation)
@@ -305,7 +305,7 @@ end
 function Player:beginContact(a, b, collision)
     if self.grounded == true then return end
     if (a:getUserData() and a:getUserData().__index == Hitbox)
-    or (b:getUserData() and b:getUserData().__index == Hitbox) then
+        or (b:getUserData() and b:getUserData().__index == Hitbox) then
         return
     end
     local __, ny = collision:getNormal()
@@ -335,6 +335,7 @@ function Player:land(collision)
     self.activeForwardAir = false
 
     self:resetAnimations()
+    self:resetHitboxes()
 end
 
 function Player:jump(key)
@@ -359,6 +360,15 @@ function Player:resetAnimations()
     self.animation.emote.current = 1
 end
 
+function Player:resetHitboxes()
+    print("reset hitboxes")
+    for _, hitbox in ipairs(ActiveHitboxes) do
+        if hitbox == "hitbox3" then
+            hitbox.active = false
+        end
+    end
+end
+
 function Player:forwardAir(key)
     if not self.grounded and not self.attacking and key == "p" then
         self.attacking = true
@@ -374,16 +384,28 @@ end
 ]]
 
 function Player:forwardAirEffects(anim)
-    if self.activeForwardAir and self.attacking and anim.current < anim.total then
-        if anim.current == 3 then
-            for _, hitbox in ipairs(self.hitbox.forwardAir.hitboxes) do
-                hitbox.active = true
+    if self.activeForwardAir then
+        for i, hitbox in ipairs(ActiveHitboxes) do
+            if hitbox.type == "hitbox3" then
+                if anim.current == 3 then
+                    hitbox.active = true
+                    print("frame "..anim.current.." hitbox "..i.." active")
+                else
+                    hitbox.active = false
+                    print("frame "..anim.current.." hitbox "..i.." inactive")
+                end
             end
         end
-    elseif self.attacking and self.activeForwardAir and anim.current == anim.total then
-        self.attacking = false
-        self.activeForwardAir = false
     end
+    if anim.current == anim.total then
+        self:cancelActiveActions()
+    end
+end
+
+function Player:cancelActiveActions()
+    self.attacking = false
+    self.activeForwardAir = false
+    self.emoting = false
 end
 
 function Player:emote(key)
