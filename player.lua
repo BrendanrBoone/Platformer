@@ -117,9 +117,7 @@ function Player:loadForwardAirHitbox()
     self.hitbox.forwardAir.targets = ActiveEnemys
 
     for _, v in ipairs(self.hitbox.forwardAir.hitboxesLayer.objects) do
-        print("this")
         if v.type == "hitbox3" then
-            print("hitbox3 found")
             Hitbox.new(
                 self.physics.fixture,
                 self.hitbox.forwardAir.targets,
