@@ -42,15 +42,15 @@ function Player:load()
     self.direction = "right"
     self.state = "idle"
 
-    self:loadAssets()
-    self:loadHitboxes()
-
     self.physics = {}
     self.physics.body = love.physics.newBody(World, self.x, self.y, "dynamic")
     self.physics.body:setFixedRotation(true) -- doesn't rotate
     self.physics.shape = love.physics.newRectangleShape(self.width, self.height)
     self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape)
     self.physics.body:setGravityScale(0) -- unaffected by world gravity
+
+    self:loadAssets()
+    self:loadHitboxes()
 end
 
 function Player:loadAssets()
@@ -92,7 +92,7 @@ function Player:loadAssets()
 
     self.animation.forwardAir = { total = 4, current = 1, img = {} }
     for i = 1, self.animation.forwardAir.total do
-        self.animation.forwardAir.img[i] = love.graphics.newImage("assets/Franky/forwardAir/"..i..".png")
+        self.animation.forwardAir.img[i] = love.graphics.newImage("assets/Franky/forwardAir/" .. i .. ".png")
     end
 
     self.animation.draw = self.animation.idle.img[1]
@@ -107,26 +107,29 @@ end
 
 function Player:loadForwardAirHitbox()
     self.hitbox.forwardAir = {}
-    self.hitbox.forwardAir.map = STI("hitboxes/forwardAir.lua", {"box2d"})
-    self.hitbox.forwardAir.map:box2d_init(World)
-    self.hitbox.forwardAir.hitboxesLayer = self.hitbox.forwardAir.map.layers.hitboxes -- currently returns nil
+    self.hitbox.forwardAir.map = STI("hitboxMap/forwardAir.lua", { "box2d" })
+    self.hitbox.forwardAir.hitboxesLayer = self.hitbox.forwardAir.map.layers.hitboxes
 
     self.hitbox.forwardAir.damage = 5
     self.hitbox.forwardAir.xVel = 10
     self.hitbox.forwardAir.yVel = 10 -- may change later
 
     self.hitbox.forwardAir.targets = ActiveEnemys
-    for _, v in ipairs(self.hitbox.forwardAir.hitboxesLayer) do
-        if v.type == "frame3" then
-            Hitbox.new(self.physics,
-            self.hitbox.forwardAir.targets,
-            v.x,
-            v.y,
-            v.width,
-            v.height,
-            self.hitbox.forwardAir.damage,
-            self.hitbox.forwardAir.xVel,
-            self.hitbox.forwardAir.yVel)
+
+    for _, v in ipairs(self.hitbox.forwardAir.hitboxesLayer.objects) do
+        print("this")
+        if v.type == "hitbox3" then
+            print("hitbox3 found")
+            Hitbox.new(
+                self.physics.fixture,
+                self.hitbox.forwardAir.targets,
+                v.x,
+                v.y,
+                v.width,
+                v.height,
+                self.hitbox.forwardAir.damage,
+                self.hitbox.forwardAir.xVel,
+                self.hitbox.forwardAir.yVel)
         end
     end
 end

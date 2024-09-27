@@ -3,13 +3,13 @@ Hitbox.__index = Hitbox
 
 ActiveHitboxes = {}
 
-function Hitbox.new(srcBody, targets, xOff, yOff, width, height, damage, xVel, yVel)
+function Hitbox.new(srcFixture, targets, xOff, yOff, width, height, damage, xVel, yVel)
     local instance = setmetatable({}, Hitbox)
 
-    instance.srcBody = {} -- associated body hitbox is attached to
-    instance.srcBody.body = srcBody
-    instance.srcBody.x = srcBody:getX()
-    instance.srcBody.y = srcBody:getY()
+    instance.srcFixture = {}
+    instance.srcFixture.body = srcFixture:getBody()
+    instance.srcFixture.x = instance.srcFixture.body:getX()
+    instance.srcFixture.y = instance.srcFixture.body:getY()
 
     -- table consisting of types objects that the hitbox can interact with. Needs to consist of fixtures
     instance.targets = targets
@@ -28,7 +28,7 @@ function Hitbox.new(srcBody, targets, xOff, yOff, width, height, damage, xVel, y
 
     instance.physics = {}
     instance.physics.body = love.physics.newBody(World, instance.xPos, instance.yPos, "kinematic")
-    instance.physics.shape = love.physics.newRectangleShape(instance.width, instance.height)
+    instance.physics.shape = love.physics.newCircleShape(instance.height/2)
     instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
     instance.physics.fixture:setSensor(true)
 
@@ -41,8 +41,8 @@ end
 
 -- attaches hitbox to associated body
 function Hitbox:syncAssociate()
-    self.x = self.srcBody.x + self.xOff
-    self.y = self.srcBody.y + self.yOff
+    self.x = self.srcFixture.x + self.xOff
+    self.y = self.srcFixture.y + self.yOff
 end
 
 -- applies damage and knockback
@@ -71,7 +71,7 @@ end
 function Hitbox.beginContact(a, b, collision)
     for _, instance in ipairs(ActiveHitboxes) do
         if instance.active and (a == instance.physics.fixture or b == instance.physics.fixture) then
-            if (a ~= instance.srcBody or b ~= instance.srcBody) then
+            if (a ~= Player.physics.fixture or b ~= Player.physics.fixture) then
                 for _, target in ipairs(instance.targets) do
                     if a == target.physics.fixture or b == target.physics.fixture then
                         print("collision: "..collision)
