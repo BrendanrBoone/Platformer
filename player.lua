@@ -36,7 +36,11 @@ function Player:load()
     self.graceTime = 0
     self.graceDuration = 0.1 -- time to do a grounded jump after leaving the ground
 
+    -- boolean check if action are active
+    self.activeForwardAir = false
+
     self.emoting = false
+    self.attacking = false
     self.alive = true
     self.grounded = false
     self.direction = "right"
@@ -121,8 +125,8 @@ function Player:loadForwardAirHitbox()
             Hitbox.new(
                 self.physics.fixture,
                 self.hitbox.forwardAir.targets,
-                v.x,
-                v.y,
+                v.x - self.width / 2,
+                v.y - self.height / 2,
                 v.width,
                 v.height,
                 self.hitbox.forwardAir.damage,
@@ -195,11 +199,18 @@ end
 
 function Player:setState()
     if not self.grounded then
-        if self.yVel < 0 then
-            self.state = "airRising"
+        if self.attacking then
+            if self.activeForwardAir then
+                self.state = "forwardAir"
+            end
         else
-            self.state = "airFalling"
+            if self.yVel < 0 then
+                self.state = "airRising"
+            else
+                self.state = "airFalling"
+            end
         end
+        
     elseif self.xVel == 0 then
         if self.emoting then
             self.state = "emote"
@@ -328,6 +339,27 @@ function Player:jump(key)
                 Sounds.playSound(Sounds.sfx.playerJump)
             end
         end
+    end
+end
+
+function Player:forwardAir(key)
+    print(key)
+    if not self.grounded and not self.attacking and key == "p" then
+        self.attacking = true
+        self.activeForwardAir = true
+    end
+end
+
+--[[
+    the only untuitive thing i don't like is that
+    the animations and coherency to know if an action is finished are in their animEffects function
+]]
+function Player:forwardAirEffects(anim)
+    if self.activeForwardAir and self.attacking and anim.current < anim.total then
+        
+    elseif self.attacking and self.activeForwardAir and anim.current == anim.total then
+        self.attacking = false
+        self.activeForwardAir = false
     end
 end
 
