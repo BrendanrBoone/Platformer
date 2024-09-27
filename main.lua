@@ -12,6 +12,7 @@ local Trampoline = require("trampoline")
 local Sounds = require("sounds")
 local Explosion = require("explosion")
 local Menu = require("menu")
+local Hitbox = require("hitbox")
 
 function love.load()
     Sounds:load()
@@ -38,6 +39,7 @@ function love.update(dt)
     Explosion.updateAll(dt)
     Map:update(dt)
     Menu:update(dt)
+    Hitbox.updateAll(dt)
 end
 
 function love.draw()
@@ -52,6 +54,7 @@ function love.draw()
     Spike.drawAll()
     Stone.drawAll()
     Enemy.drawAll()
+    Hitbox.drawAll()
     Camera:clear() -- these
 
     GUI:draw()

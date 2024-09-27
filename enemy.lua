@@ -122,7 +122,6 @@ function Enemy:incrementRage()
         self.state = "walk"
         self.speedMod = 1
     end
-    print("xvel: "..self.xVel.." yvel: "..self.yVel)
 end
 
 function Enemy:flipDirection()

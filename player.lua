@@ -1,6 +1,8 @@
 local Player = {}
 local Sounds = require("sounds")
 local Explosion = require("explosion")
+local STI = require("sti")
+local Hitbox = require("hitbox")
 
 function Player:load()
     self.x = 100
@@ -41,6 +43,7 @@ function Player:load()
     self.state = "idle"
 
     self:loadAssets()
+    self:loadHitboxes()
 
     self.physics = {}
     self.physics.body = love.physics.newBody(World, self.x, self.y, "dynamic")
@@ -95,6 +98,37 @@ function Player:loadAssets()
     self.animation.draw = self.animation.idle.img[1]
     self.animation.width = self.animation.draw:getWidth()
     self.animation.height = self.animation.draw:getHeight()
+end
+
+function Player:loadHitboxes()
+    self.hitbox = {}
+    self:loadForwardAirHitbox()
+end
+
+function Player:loadForwardAirHitbox()
+    self.hitbox.forwardAir = {}
+    self.hitbox.forwardAir.map = STI("hitboxes/forwardAir.lua", {"box2d"})
+    self.hitbox.forwardAir.map:box2d_init(World)
+    self.hitbox.forwardAir.hitboxesLayer = self.hitbox.forwardAir.map.layers.hitboxes -- currently returns nil
+
+    self.hitbox.forwardAir.damage = 5
+    self.hitbox.forwardAir.xVel = 10
+    self.hitbox.forwardAir.yVel = 10 -- may change later
+
+    self.hitbox.forwardAir.targets = ActiveEnemys
+    for _, v in ipairs(self.hitbox.forwardAir.hitboxesLayer) do
+        if v.type == "frame3" then
+            Hitbox.new(self.physics,
+            self.hitbox.forwardAir.targets,
+            v.x,
+            v.y,
+            v.width,
+            v.height,
+            self.hitbox.forwardAir.damage,
+            self.hitbox.forwardAir.xVel,
+            self.hitbox.forwardAir.yVel)
+        end
+    end
 end
 
 function Player:takeDamage(amount)

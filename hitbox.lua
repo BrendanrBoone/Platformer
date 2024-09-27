@@ -2,15 +2,17 @@ local Hitbox = {}
 Hitbox.__index = Hitbox
 
 ActiveHitboxes = {}
-local Enemy = require("enemy")
 
-function Hitbox.new(srcBody, xOff, yOff, width, height, damage, knockbackX, knockbackY)
+function Hitbox.new(srcBody, targets, xOff, yOff, width, height, damage, xVel, yVel)
     local instance = setmetatable({}, Hitbox)
 
     instance.srcBody = {} -- associated body hitbox is attached to
     instance.srcBody.body = srcBody
     instance.srcBody.x = srcBody:getX()
     instance.srcBody.y = srcBody:getY()
+
+    -- table consisting of types objects that the hitbox can interact with. Needs to consist of fixtures
+    instance.targets = targets
 
     instance.xOff = xOff -- offset from associated body
     instance.yOff = yOff
@@ -19,8 +21,8 @@ function Hitbox.new(srcBody, xOff, yOff, width, height, damage, knockbackX, knoc
 
     instance:syncAssociate()
 
-    instance.knockbackX = knockbackX
-    instance.knockbackY = knockbackY
+    instance.xVel = xVel
+    instance.yVel = yVel
     instance.damage = damage
     instance.active = false
 
@@ -44,12 +46,14 @@ function Hitbox:syncAssociate()
 end
 
 -- applies damage and knockback
-function Hitbox:hit()
-
+function Hitbox:hit(enemy)
+    enemy:takeDamage(self.damage)
+    enemy:takeKnockback(self.xVel, self.yVel)
 end
 
 function Hitbox:draw()
-
+    print("x: "..self.x.." y: "..self.y)
+    love.graphics.circle("fill", self.x, self.y, self.height/2)
 end
 
 function Hitbox.updateAll(dt)
@@ -58,11 +62,24 @@ function Hitbox.updateAll(dt)
     end
 end
 
+function Hitbox.drawAll()
+    for _, instance in ipairs(ActiveHitboxes) do
+        instance:draw()
+    end
+end
+
 function Hitbox.beginContact(a, b, collision)
     for _, instance in ipairs(ActiveHitboxes) do
         if instance.active and (a == instance.physics.fixture or b == instance.physics.fixture) then
-            
+            if (a ~= instance.srcBody or b ~= instance.srcBody) then
+                for _, target in ipairs(instance.targets) do
+                    if a == target.physics.fixture or b == target.physics.fixture then
+                        print("collision: "..collision)
+                    end
+                end
+            end
         end
     end
+end
 
 return Hitbox
