@@ -243,12 +243,12 @@ end
 function Player:setNewFrame()
     local anim = self.animation[self.state] -- not a copy. mirrors animation.[state]
     self:animEffects(anim)
+    self.animation.draw = anim.img[anim.current]
     if anim.current < anim.total then
         anim.current = anim.current + 1
     else
         anim.current = 1
     end
-    self.animation.draw = anim.img[anim.current]
 end
 
 function Player:animEffects(animation)
@@ -272,7 +272,6 @@ function Player:move(dt)
     if not self.emoting then
         -- sprint
         if love.keyboard.isDown("lshift") then
-            --self:tintBlue()
             self.maxSpeed = 400
         else
             self.maxSpeed = 200
@@ -331,8 +330,7 @@ function Player:land(collision)
     self.airJumpsUsed = 0
     self.graceTime = self.graceDuration
 
-    self.attacking = false
-    self.activeForwardAir = false
+    self:cancelActiveActions()
 
     self:resetAnimations()
     self:resetHitboxes()

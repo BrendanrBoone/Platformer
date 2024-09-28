@@ -5,6 +5,11 @@ local Hitbox = require("hitbox")
 
 ActiveEnemys = {}
 
+--[[
+    known bugs:
+    Excessive collision with stones confuse grounded state and floats in the air.
+]]
+
 function Enemy.new(x, y)
     local instance = setmetatable({}, Enemy)
 
