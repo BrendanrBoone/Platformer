@@ -388,10 +388,8 @@ function Player:forwardAirEffects(anim)
             if hitbox.type == "hitbox3" then
                 if anim.current == 3 then
                     hitbox.active = true
-                    print("frame "..anim.current.." hitbox "..i.." active")
                 else
                     hitbox.active = false
-                    print("frame "..anim.current.." hitbox "..i.." inactive")
                 end
             end
         end

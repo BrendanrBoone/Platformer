@@ -19,7 +19,7 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
     instance.width = width
     instance.height = height
 
-    
+
     local body = instance.src.fixture:getBody()
     instance.x = body:getX() + instance.xOff
     instance.y = body:getY() + instance.yOff
@@ -31,7 +31,7 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
 
     instance.physics = {}
     instance.physics.body = love.physics.newBody(World, instance.x, instance.y, "kinematic")
-    instance.physics.shape = love.physics.newCircleShape(instance.height/2)
+    instance.physics.shape = love.physics.newCircleShape(instance.height / 2)
     instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
     instance.physics.fixture:setSensor(true)
     instance.physics.fixture:setUserData(instance)
@@ -61,11 +61,11 @@ end
 
 function Hitbox:draw()
     if self.active then
-        love.graphics.setColor(1,0,0)
+        love.graphics.setColor(1, 0, 0)
     else
-        love.graphics.setColor(1,1,1)
+        love.graphics.setColor(1, 1, 1)
     end
-    love.graphics.circle("fill", self.x, self.y, self.height/2)
+    love.graphics.circle("fill", self.x, self.y, self.height / 2)
 end
 
 function Hitbox.updateAll(dt)
@@ -82,9 +82,18 @@ end
 
 function Hitbox.beginContact(a, b, collision)
     for _, instance in ipairs(ActiveHitboxes) do
-        if instance.active and (a == instance.physics.fixture or b == instance.physics.fixture) then
-            print("here")
-            if (a ~= instance.src.fixture or b ~= instance.src.fixture) then
+        if instance.active then
+            for i, target in ipairs(instance.targets) do
+                print("target "..i)
+                if a == target.physics.fixture or b == target.physics.fixture then
+                    print("collision "..collision)
+                end
+            end
+        end
+    end
+end
+
+--[[if (a ~= instance.src.fixture or b ~= instance.src.fixture) then
                 print("HERE")
                 for i, target in ipairs(instance.targets) do
                     print('target '..i)
@@ -92,9 +101,6 @@ function Hitbox.beginContact(a, b, collision)
                         print("collision: "..collision)
                     end
                 end
-            end
-        end
-    end
-end
+            end]]
 
 return Hitbox
