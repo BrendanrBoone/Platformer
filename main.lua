@@ -60,6 +60,7 @@ end
 
 function love.keypressed(key)
     Player:jump(key)
+    Player:fastFall(key)
     Player:emote(key)
     Menu.Escape(key)
 end

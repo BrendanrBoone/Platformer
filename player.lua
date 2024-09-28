@@ -296,6 +296,14 @@ function Player:jump(key)
     end
 end
 
+function Player:fastFall(key)
+    if not self.grounded then
+        if (key == "s") then
+            self.yVel = -self.jumpAmount
+        end
+    end
+end
+
 function Player:emote(key)
     if (key == "e" and self.grounded and self.xVel == 0 and not self.emoting) then
         Sounds.sfx.frankyEyeCatchTheme:setVolume(Sounds.sfx.maxSound)
