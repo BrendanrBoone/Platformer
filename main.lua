@@ -77,12 +77,13 @@ function beginContact(a, b, collision)
     if Coin.beginContact(a, b, collision) then return end
     if Spike.beginContact(a, b, collision) then return end
     if Trampoline.beginContact(a, b, collision) then return end
-    if Hitbox.beginContact(a, b, collision) then return end
+    Hitbox.beginContact(a, b, collision)
     Enemy.beginContact(a, b, collision)
     Player:beginContact(a, b, collision)
 end
 
 function endContact(a, b, collision)
     Player:endContact(a, b, collision)
+    Hitbox.endContact(a, b, collision)
 end
 

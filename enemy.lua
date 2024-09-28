@@ -18,7 +18,7 @@ function Enemy.new(x, y)
     instance.offsetY = -8 -- model is inside the ground a bit
     instance.r = 0        -- rotation
 
-    instance.speed = 100
+    instance.speed = 0 -- normally 100
     instance.speedMod = 1
     instance.xVel = instance.speed
     instance.yVel = 0
@@ -167,6 +167,7 @@ function Enemy:draw()
     if self.xVel < 0 then scaleX = -1 end
     love.graphics.draw(self.animation.draw, self.x, self.y + self.offsetY, self.r, scaleX, 1, self.width / 2,
         self.height / 2)
+    love.graphics.rectangle("fill", self.x - (self.width * 0.4)/2, self.y - (self.height * 0.75)/2, self.width * 0.4, self.height * 0.75)
 end
 
 function Enemy.updateAll(dt)

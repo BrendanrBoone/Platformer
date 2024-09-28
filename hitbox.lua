@@ -19,15 +19,13 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
     instance.width = width
     instance.height = height
 
-
-    local body = instance.src.fixture:getBody()
-    instance.x = body:getX() + instance.xOff
-    instance.y = body:getY() + instance.yOff
+    instance:syncCoordinate()
 
     instance.xVel = xVel
     instance.yVel = yVel
     instance.damage = damage
     instance.active = false
+    instance.hit = false
 
     instance.physics = {}
     instance.physics.body = love.physics.newBody(World, instance.x, instance.y, "kinematic")
@@ -45,11 +43,15 @@ function Hitbox:update(dt)
     self:syncAssociate()
 end
 
--- attaches hitbox to associated body
-function Hitbox:syncAssociate()
+function Hitbox:syncCoordinate()
     local body = self.src.fixture:getBody()
     self.x = body:getX() + self.xOff
     self.y = body:getY() + self.yOff
+end
+
+-- attaches hitbox to associated body
+function Hitbox:syncAssociate()
+    self:syncCoordinate()
     self.physics.body:setPosition(self.x, self.y)
 end
 
@@ -59,11 +61,19 @@ function Hitbox:hit(target)
     target:takeKnockback(self.xVel, self.yVel)
 end
 
+function Hitbox:collisionFilter(target)
+    print("hit")
+end
+
 function Hitbox:draw()
     if self.active then
         love.graphics.setColor(1, 0, 0)
-        love.graphics.circle("fill", self.x, self.y, self.height / 2)
+    elseif self.hit then
+        love.graphics.setColor(1, 1, 0)
+    else
+        love.graphics.setColor(1, 1, 1)
     end
+    love.graphics.circle("fill", self.x, self.y, self.height / 2)
 end
 
 function Hitbox.updateAll(dt)
@@ -78,27 +88,55 @@ function Hitbox.drawAll()
     end
 end
 
+-- push to hit target queue. filter out multiple hitboxes that hit the same object. hit when active is true
 function Hitbox.beginContact(a, b, collision)
     for _, instance in ipairs(ActiveHitboxes) do
-        if instance.active then
-            for i, target in ipairs(instance.targets) do
-                print("target "..i)
-                if a == target.physics.fixture or b == target.physics.fixture then
-                    print("collision "..collision)
-                end
-            end
+        if a == instance.physics.fixture or b == instance.physics.fixture then
+            print("hit")
+            instance.hit = true
         end
     end
 end
 
---[[if (a ~= instance.src.fixture or b ~= instance.src.fixture) then
-                print("HERE")
-                for i, target in ipairs(instance.targets) do
-                    print('target '..i)
-                    if a == target.physics.fixture or b == target.physics.fixture then
-                        print("collision: "..collision)
-                    end
+function Hitbox.endContact(a, b, collision)
+    for _, instance in ipairs(ActiveHitboxes) do
+        if a == instance.physics.fixture or b == instance.physics.fixture then
+            print("left hit")
+            instance.hit = false
+        end
+    end
+end
+
+--[[local hitbox, enemy
+    if a:getUserData() and a:getUserData().__index == Hitbox then
+        hitbox = a:getUserData()
+        enemy = b:getUserData()
+    elseif b:getUserData() and b:getUserData().__index == Hitbox then
+        hitbox = b:getUserData()
+        enemy = a:getUserData()
+    else
+        return
+    end
+
+    -- Check if the enemy is in the hitbox's target list
+    for _, target in ipairs(hitbox.targets) do
+        if target == enemy then
+            -- Check if the hitbox is active
+            if true then
+                -- Check if the hitbox circle overlaps with the enemy rectangle
+                local hitboxX, hitboxY = hitbox.physics.body:getPosition()
+                local enemyX, enemyY = enemy.physics.body:getPosition()
+                local enemyWidth, enemyHeight = enemy.physics.shape:getDimensions()
+                local hitboxRadius = hitbox.physics.shape:getRadius()
+
+                if math.abs(hitboxX - enemyX) < (enemyWidth / 2 + hitboxRadius) and
+                   math.abs(hitboxY - enemyY) < (enemyHeight / 2 + hitboxRadius) then
+                    -- The hitbox circle overlaps with the enemy rectangle, so apply damage and knockback
+                    hitbox:collisionFilter(enemy)
+                    return true
                 end
-            end]]
+            end
+        end
+    end]]
 
 return Hitbox
