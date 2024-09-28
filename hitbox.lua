@@ -28,7 +28,7 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
     instance.hit = false
 
     instance.physics = {}
-    instance.physics.body = love.physics.newBody(World, instance.x, instance.y, "kinematic")
+    instance.physics.body = love.physics.newBody(World, instance.x, instance.y, "dynamic")
     instance.physics.shape = love.physics.newCircleShape(instance.height / 2)
     instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
     instance.physics.fixture:setSensor(true)
@@ -63,6 +63,7 @@ end
 
 function Hitbox:collisionFilter(target)
     print("hit")
+    self.hit = true
 end
 
 function Hitbox:draw()
@@ -92,8 +93,11 @@ end
 function Hitbox.beginContact(a, b, collision)
     for _, instance in ipairs(ActiveHitboxes) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
-            print("hit")
-            instance.hit = true
+            for _, target in ipairs(instance.targets) do
+                if a == target.physics.fixture or b == target.physics.fixture then
+                    instance:collisionFilter(target)
+                end
+            end
         end
     end
 end
@@ -101,8 +105,10 @@ end
 function Hitbox.endContact(a, b, collision)
     for _, instance in ipairs(ActiveHitboxes) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
-            print("left hit")
-            instance.hit = false
+            if a ~= instance.src.fixture and b ~= instance.src.fixture then
+                print("left hit")
+                instance.hit = false
+            end
         end
     end
 end
