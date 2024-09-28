@@ -354,6 +354,14 @@ function Player:jump(key)
     end
 end
 
+function Player:fastFall(key)
+    if not self.grounded then
+        if (key == "s") then
+            self.yVel = -self.jumpAmount
+        end
+    end
+end
+
 -- reset cancellable animations
 function Player:resetAnimations()
     self.animation.forwardAir.current = 1
