@@ -7,6 +7,7 @@ local Coin = require("coin")
 local Player = require("player")
 local Trampoline = require("trampoline")
 local Sounds = require("sounds")
+local Hitbox = require("hitbox")
 
 local oceanHighBackground = love.graphics.newImage("assets/oceanBackground.png")
 local skyBlueBackground = love.graphics.newImage("assets/background.png")
@@ -69,14 +70,19 @@ function Map:next()
     self:clean()
     self.currentLevel = self.currentLevel + 1
     self:init()
-    Player:setPosition(self.startX, self.startY)
+    Map.loadPlayer(self.startX, self.startY)
 end
 
 function Map:prev()
     self:clean()
     self.currentLevel = self.currentLevel - 1
     self:init()
-    Player:setPosition(self.endX, self.endY)
+    Map.loadPlayer(self.endX, self.endY)
+end
+
+function Map.loadPlayer(x, y)
+    Player:setPosition(x, y)
+    Hitbox.loadAllTargets(ActiveEnemys)
 end
 
 function Map:clean()

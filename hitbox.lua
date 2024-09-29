@@ -1,4 +1,4 @@
--- bug when moving between levels
+-- bug when moving between levels, If I were to do this again. I'd make a wholeHitbox object with hitboxes in it
 local Hitbox = {}
 Hitbox.__index = Hitbox
 
@@ -44,15 +44,15 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
     table.insert(LiveHitboxes, instance)
 end
 
+function Hitbox.loadAllTargets(targets)
+    for _, hitbox in ipairs(LiveHitboxes) do
+        hitbox.targets = targets
+    end
+end
+
 function Hitbox:update(dt)
     self:syncAssociate()
     self:syncHit()
-end
-
-function Hitbox:syncCoordinate()
-    local body = self.src.fixture:getBody()
-    self.x = body:getX() + self.xOff
-    self.y = body:getY() + self.yOff
 end
 
 -- attaches hitbox to associated body
@@ -61,10 +61,10 @@ function Hitbox:syncAssociate()
     self.physics.body:setPosition(self.x, self.y)
 end
 
--- applies damage and knockback
-function Hitbox:hitTarget(target)
-    target:takeDamage(self.damage)
-    target:takeKnockback(self.xVel, self.yVel)
+function Hitbox:syncCoordinate()
+    local body = self.src.fixture:getBody()
+    self.x = body:getX() + self.xOff
+    self.y = body:getY() + self.yOff
 end
 
 function Hitbox:syncHit()
@@ -85,6 +85,12 @@ function Hitbox:syncHit()
             end
         end
     end
+end
+
+-- applies damage and knockback
+function Hitbox:hitTarget(target)
+    target:takeDamage(self.damage)
+    target:takeKnockback(self.xVel, self.yVel)
 end
 
 -- helper function
@@ -145,7 +151,6 @@ function Hitbox.drawAll()
     end
 end
 
--- push to hit target queue. filter out multiple hitboxes that hit the same object. hit when active is true
 function Hitbox.beginContact(a, b, collision)
     for _, instance in ipairs(LiveHitboxes) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
