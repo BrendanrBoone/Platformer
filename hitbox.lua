@@ -89,11 +89,22 @@ function Hitbox:withinRange(target)
     end
 end
 
+-- check if every hitbox with same type is in range: self.hit
 function Hitbox:outsideRange(target)
-    for i, t in ipairs(TargetsInRange[self.type]) do
-        if t == target then
-            table.remove(TargetsInRange[self.type], i)
-            print("target out of range")
+    local allOutofRange = true
+    for _, instance in ipairs(ActiveHitboxes) do
+        if instance.type == self.type and instance.hit then
+            allOutofRange = false
+            break
+        end
+    end
+
+    if allOutofRange then
+        for i, t in ipairs(TargetsInRange[self.type]) do
+            if t == target then
+                table.remove(TargetsInRange[self.type], i)
+                print("target out of range")
+            end
         end
     end
 end
