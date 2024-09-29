@@ -1,4 +1,4 @@
--- bug when moving between levels, If I were to do this again. I'd make a wholeHitbox object with hitboxes in it
+--If I were to do this again. I'd make a wholeHitbox object with hitboxes in it. instead of three global tables
 local Hitbox = {}
 Hitbox.__index = Hitbox
 
