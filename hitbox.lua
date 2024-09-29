@@ -1,9 +1,10 @@
 local Hitbox = {}
 Hitbox.__index = Hitbox
 
-ActiveHitboxes = {}
+LiveHitboxes = {}
 
 TargetsInRange = {} -- ex: {{'hitbox3': target1, target2, target3}, {'hitbox4': target1, target2, target3}}
+HitboxTypeHit = {}
 
 function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage, xVel, yVel)
     local instance = setmetatable({}, Hitbox)
@@ -39,7 +40,7 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
 
     instance:syncAssociate()
 
-    table.insert(ActiveHitboxes, instance)
+    table.insert(LiveHitboxes, instance)
 end
 
 function Hitbox:update(dt)
@@ -67,9 +68,20 @@ end
 
 function Hitbox:syncHit()
     if self.active then
-        for i, target in ipairs(TargetsInRange[self.type]) do
-            print("target takes damage")
-            -- hit
+        if not self.isInTable(HitboxTypeHit, self.type) then
+            table.insert(HitboxTypeHit, self.type)
+            for i, target in ipairs(TargetsInRange[self.type]) do
+                print("target was hit")
+                -- hit
+            end
+        end
+    else
+        if self.isInTable(HitboxTypeHit, self.type) then
+            for i, t in ipairs(HitboxTypeHit) do
+                if t == self.type then
+                    table.remove(HitboxTypeHit, i)
+                end
+            end
         end
     end
 end
@@ -92,7 +104,7 @@ end
 -- check if every hitbox with same type is in range: self.hit
 function Hitbox:outsideRange(target)
     local allOutofRange = true
-    for _, instance in ipairs(ActiveHitboxes) do
+    for _, instance in ipairs(LiveHitboxes) do
         if instance.type == self.type and instance.hit then
             allOutofRange = false
             break
@@ -121,20 +133,20 @@ function Hitbox:draw()
 end
 
 function Hitbox.updateAll(dt)
-    for _, instance in ipairs(ActiveHitboxes) do
+    for _, instance in ipairs(LiveHitboxes) do
         instance:update(dt)
     end
 end
 
 function Hitbox.drawAll()
-    for _, instance in ipairs(ActiveHitboxes) do
+    for _, instance in ipairs(LiveHitboxes) do
         instance:draw()
     end
 end
 
 -- push to hit target queue. filter out multiple hitboxes that hit the same object. hit when active is true
 function Hitbox.beginContact(a, b, collision)
-    for _, instance in ipairs(ActiveHitboxes) do
+    for _, instance in ipairs(LiveHitboxes) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             for _, target in ipairs(instance.targets) do
                 if a == target.physics.fixture or b == target.physics.fixture then
@@ -147,7 +159,7 @@ function Hitbox.beginContact(a, b, collision)
 end
 
 function Hitbox.endContact(a, b, collision)
-    for _, instance in ipairs(ActiveHitboxes) do
+    for _, instance in ipairs(LiveHitboxes) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             for _, target in ipairs(instance.targets) do
                 if a == target.physics.fixture or b == target.physics.fixture then

@@ -367,7 +367,7 @@ function Player:resetAnimations()
 end
 
 function Player:resetHitboxes()
-    for _, hitbox in ipairs(ActiveHitboxes) do
+    for _, hitbox in ipairs(LiveHitboxes) do
         if hitbox.type == "hitbox3" then
             hitbox.active = false
         end
@@ -390,7 +390,7 @@ end
 
 function Player:forwardAirEffects(anim)
     if self.activeForwardAir then
-        for i, hitbox in ipairs(ActiveHitboxes) do
+        for i, hitbox in ipairs(LiveHitboxes) do
             if hitbox.type == "hitbox3" then
                 if anim.current == 3 then
                     hitbox.active = true
