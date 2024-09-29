@@ -1,3 +1,4 @@
+-- bug when moving between levels
 local Hitbox = {}
 Hitbox.__index = Hitbox
 
@@ -72,7 +73,7 @@ function Hitbox:syncHit()
             table.insert(HitboxTypeHit, self.type)
             for i, target in ipairs(TargetsInRange[self.type]) do
                 print("target was hit")
-                -- hit
+                self:hitTarget(target)
             end
         end
     else

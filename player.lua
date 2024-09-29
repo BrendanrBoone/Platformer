@@ -381,13 +381,6 @@ function Player:forwardAir(key)
     end
 end
 
---[[
-    the only untuitive thing i don't like is that
-    the animations and coherency to know if an action is finished are in their animEffects function.
-    at least readability wise. functionally it makes sense to me. i can determine actions according
-    to what frame.
-]]
-
 function Player:forwardAirEffects(anim)
     if self.activeForwardAir then
         for i, hitbox in ipairs(LiveHitboxes) do
