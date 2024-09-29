@@ -3,6 +3,8 @@ Hitbox.__index = Hitbox
 
 ActiveHitboxes = {}
 
+TargetsInRange = {} -- ex: {{'hitbox3': target1, target2, target3}, {'hitbox4': target1, target2, target3}}
+
 function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage, xVel, yVel)
     local instance = setmetatable({}, Hitbox)
 
@@ -10,6 +12,7 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
     instance.src.fixture = srcFixture
 
     instance.type = type
+    TargetsInRange[instance.type] = {}
 
     -- table consisting of types objects that the hitbox can interact with. Needs to consist of fixtures
     instance.targets = targets
@@ -41,6 +44,7 @@ end
 
 function Hitbox:update(dt)
     self:syncAssociate()
+    self:syncHit()
 end
 
 function Hitbox:syncCoordinate()
@@ -56,14 +60,42 @@ function Hitbox:syncAssociate()
 end
 
 -- applies damage and knockback
-function Hitbox:hit(target)
+function Hitbox:hitTarget(target)
     target:takeDamage(self.damage)
     target:takeKnockback(self.xVel, self.yVel)
 end
 
-function Hitbox:collisionFilter(target)
-    print("hit")
-    self.hit = true
+function Hitbox:syncHit()
+    if self.active then
+        for i, target in ipairs(TargetsInRange[self.type]) do
+            print("target takes damage")
+            -- hit
+        end
+    end
+end
+
+-- helper function
+function Hitbox.isInTable(tbl, val)
+    for _, v in ipairs(tbl) do
+        if v == val then return true end
+    end
+    return false
+end
+
+function Hitbox:withinRange(target)
+    if not self.isInTable(TargetsInRange[self.type], target) then
+        table.insert(TargetsInRange[self.type], target)
+        print("target in range")
+    end
+end
+
+function Hitbox:outsideRange(target)
+    for i, t in ipairs(TargetsInRange[self.type]) do
+        if t == target then
+            table.remove(TargetsInRange[self.type], i)
+            print("target out of range")
+        end
+    end
 end
 
 function Hitbox:draw()
@@ -95,7 +127,8 @@ function Hitbox.beginContact(a, b, collision)
         if a == instance.physics.fixture or b == instance.physics.fixture then
             for _, target in ipairs(instance.targets) do
                 if a == target.physics.fixture or b == target.physics.fixture then
-                    instance:collisionFilter(target)
+                    instance.hit = true
+                    instance:withinRange(target)
                 end
             end
         end
@@ -105,44 +138,14 @@ end
 function Hitbox.endContact(a, b, collision)
     for _, instance in ipairs(ActiveHitboxes) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
-            if a ~= instance.src.fixture and b ~= instance.src.fixture then
-                print("left hit")
-                instance.hit = false
+            for _, target in ipairs(instance.targets) do
+                if a == target.physics.fixture or b == target.physics.fixture then
+                    instance.hit = false
+                    instance:outsideRange(target)
+                end
             end
         end
     end
 end
-
---[[local hitbox, enemy
-    if a:getUserData() and a:getUserData().__index == Hitbox then
-        hitbox = a:getUserData()
-        enemy = b:getUserData()
-    elseif b:getUserData() and b:getUserData().__index == Hitbox then
-        hitbox = b:getUserData()
-        enemy = a:getUserData()
-    else
-        return
-    end
-
-    -- Check if the enemy is in the hitbox's target list
-    for _, target in ipairs(hitbox.targets) do
-        if target == enemy then
-            -- Check if the hitbox is active
-            if true then
-                -- Check if the hitbox circle overlaps with the enemy rectangle
-                local hitboxX, hitboxY = hitbox.physics.body:getPosition()
-                local enemyX, enemyY = enemy.physics.body:getPosition()
-                local enemyWidth, enemyHeight = enemy.physics.shape:getDimensions()
-                local hitboxRadius = hitbox.physics.shape:getRadius()
-
-                if math.abs(hitboxX - enemyX) < (enemyWidth / 2 + hitboxRadius) and
-                   math.abs(hitboxY - enemyY) < (enemyHeight / 2 + hitboxRadius) then
-                    -- The hitbox circle overlaps with the enemy rectangle, so apply damage and knockback
-                    hitbox:collisionFilter(enemy)
-                    return true
-                end
-            end
-        end
-    end]]
 
 return Hitbox
