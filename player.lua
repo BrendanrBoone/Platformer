@@ -224,10 +224,12 @@ function Player:setState()
 end
 
 function Player:setDirection()
-    if self.xVel > 0 then
-        self.direction = "right"
-    elseif self.xVel < 0 then
-        self.direction = "left"
+    if not self.attacking then
+        if self.xVel > 0 then
+            self.direction = "right"
+        elseif self.xVel < 0 then
+            self.direction = "left"
+        end
     end
 end
 
