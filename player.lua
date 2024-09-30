@@ -351,8 +351,16 @@ function Player:applyGravity(dt)
     end
 end
 
+function Player:doingAction()
+    if self.emoting
+    or self.attacking then
+        return true
+    end
+    return false
+end
+
 function Player:move(dt)
-    if not self.emoting then
+    if not self:doingAction() then
         -- sprint
         if love.keyboard.isDown("lshift") then
             self.maxSpeed = 400
@@ -420,7 +428,7 @@ function Player:land(collision)
 end
 
 function Player:jump(key)
-    if not self.emoting then
+    if not self:doingAction() then
         if (key == "w" or key == "up" or key == "space") then
             if self.grounded or self.graceTime > 0 then
                 self.yVel = self.jumpAmount
@@ -446,14 +454,18 @@ end
 -- reset cancellable animations
 function Player:resetAnimations()
     self.animation.forwardAir.current = 1
+    self.animation.forwardAttack.current = 1
     self.animation.emote.current = 1
 end
 
 function Player:resetHitboxes()
     for _, hitbox in ipairs(LiveHitboxes) do
-        if hitbox.type == "hitbox3" then
-            hitbox.active = false
+        for _, v in ipairs(self.hitbox) do
+            if hitbox.type:find(v.type) then
+                hitbox.active = false
+            end
         end
+        
     end
 end
 
