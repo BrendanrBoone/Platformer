@@ -13,4 +13,4 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * ```p``` = attack
 * ```escape``` = exit game
 ### Log
-* Currently only implemented neutral aerial
+* Currently only implemented neutral aerial and neutral grounded attack for attacks
