@@ -116,7 +116,7 @@ function Player:loadForwardAirHitbox()
 
     self.hitbox.forwardAir.damage = 5
     self.hitbox.forwardAir.xVel = 500
-    self.hitbox.forwardAir.yVel = -500 -- may change later
+    self.hitbox.forwardAir.yVel = -100 -- may change later
 
     self.hitbox.forwardAir.targets = ActiveEnemys
 

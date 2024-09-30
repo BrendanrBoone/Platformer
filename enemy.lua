@@ -32,6 +32,13 @@ function Enemy.new(x, y)
     instance.damage = 1
     instance.health = { current = 20, max = 20 }
 
+    instance.color = {
+        red = 1,
+        green = 1,
+        blue = 1,
+        speed = 3 -- speed to untint
+    }
+
     instance.moving = false
     instance.grounded = false
     instance.state = "walk"
@@ -84,6 +91,7 @@ function Enemy.loadAssets()
 end
 
 function Enemy:update(dt)
+    self:unTint(dt)
     self:syncPhysics()
     self:animate(dt)
     self:applyGravity(dt)
@@ -91,10 +99,13 @@ function Enemy:update(dt)
     self:normalStateCheck()
 end
 
+function Enemy:unTint(dt)
+    self.color.red = math.min(self.color.red + self.color.speed * dt, 1)
+    self.color.green = math.min(self.color.green + self.color.speed * dt, 1)
+    self.color.blue = math.min(self.color.blue + self.color.speed * dt, 1)
+end
+
 function Enemy:normalStateCheck()
-    if self.grounded then
-        print("grounded " .. self.animation.walk.current)
-    end
     if self.xVel == 0 and self.yVel == 0 then
         self.moving = true
     end
@@ -134,6 +145,7 @@ function Enemy:takeKnockback(xVel, yVel)
 end
 
 function Enemy:takeDamage(amount)
+    self:tintRed()
     if self.health.current - amount > 0 then
         self.health.current = self.health.current - amount
     else
@@ -145,6 +157,11 @@ end
 
 function Enemy:die()
     self:remove()
+end
+
+function Enemy:tintRed()
+    self.color.green = 0
+    self.color.blue = 0
 end
 
 function Enemy:incrementRage()
@@ -194,10 +211,11 @@ end
 function Enemy:draw()
     local scaleX = 1
     if self.xVel < 0 then scaleX = -1 end
+    love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
     love.graphics.draw(self.animation.draw, self.x, self.y + self.offsetY, self.r, scaleX, 1, self.width / 2,
         self.height / 2)
-    love.graphics.rectangle("fill", self.x - (self.width * 0.4) / 2, self.y - (self.height * 0.75) / 2, self.width * 0.4,
-        self.height * 0.75)
+    --[[love.graphics.rectangle("fill", self.x - (self.width * 0.4) / 2, self.y - (self.height * 0.75) / 2, self.width * 0.4,
+        self.height * 0.75)]]
 end
 
 function Enemy.updateAll(dt)
