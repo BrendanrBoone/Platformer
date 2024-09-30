@@ -137,9 +137,9 @@ function Player:loadForwardAttackHitbox()
                 -- Right Hitbox
                 Hitbox.new(
                     self.physics.fixture,
-                    hitboxType .. "Right",
+                    hitboxType ..i.. "Right",
                     self.hitbox.forwardAttack.targets,
-                    v.x - self.width * 2,
+                    v.x - self.width - v.width + v.width / 2,
                     v.y - self.height - self.FrankyOffsetY,
                     v.width,
                     v.height,
@@ -150,9 +150,9 @@ function Player:loadForwardAttackHitbox()
                 -- Left hitbox
                 Hitbox.new(
                     self.physics.fixture,
-                    hitboxType .. "Left",
+                    hitboxType ..i.. "Left",
                     self.hitbox.forwardAttack.targets,
-                    self.hitbox.forwardAttack.mapWidth / 2 - v.x - self.width,
+                    self.hitbox.forwardAttack.mapWidth / 2 - v.x - self.width - v.width - v.width / 2,
                     v.y - self.height - self.FrankyOffsetY,
                     v.width,
                     v.height,
@@ -467,25 +467,19 @@ end
 -- this determines what frames are active
 function Player:forwardAttackEffects(anim)
     if self.activeForwardAttack then
-        for i = 5, 9 do
-            for _, hitbox in ipairs(LiveHitboxes) do
-                if self.direction == "right" and hitbox.type == self.hitbox.forwardAttack.type .. i .. "Right" then
-                    if anim.current == i then
-                        hitbox.active = true
-                    else
-                        hitbox.active = false
-                    end
-                elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAttack.type .. i .. "Left" then
-                    if anim.current == i then
-                        hitbox.active = true
-                    else
-                        hitbox.active = false
-                    end
+        for _, hitbox in ipairs(LiveHitboxes) do
+            if hitbox.type:find(self.hitbox.forwardAttack.type) then
+                if self.direction == "right" and hitbox.type == self.hitbox.forwardAttack.type..anim.current.."Right" then
+                    hitbox.active = true
+                elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAttack.type..anim.current.."Left" then
+                    hitbox.active = true
+                else
+                    hitbox.active = false
                 end
             end
-            if anim.current == anim.total then
-                self:cancelActiveActions()
-            end
+        end
+        if anim.current == anim.total then
+            self:cancelActiveActions()
         end
     end
 end
