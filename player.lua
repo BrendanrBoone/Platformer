@@ -85,7 +85,7 @@ function Player:loadAssets()
         self.animation.jump.img[i] = love.graphics.newImage("assets/Franky/jump/" .. i .. ".png")
     end
 
-    self.animation.emote = { total = 56, current = 1, img = {} } -- ow at frame 9
+    self.animation.emote = { total = 56, current = 1, img = {} }
     for i = 1, self.animation.emote.total do
         local current, stillFrame = i, 9                         -- loop emote from 9
         if current > stillFrame then
@@ -113,21 +113,38 @@ function Player:loadForwardAirHitbox()
     self.hitbox.forwardAir = {}
     self.hitbox.forwardAir.map = STI("hitboxMap/forwardAir.lua", { "box2d" })
     self.hitbox.forwardAir.hitboxesLayer = self.hitbox.forwardAir.map.layers.hitboxes
+    HitboxMapWidth = self.hitbox.forwardAir.map.layers.ground.width * 16
 
     self.hitbox.forwardAir.damage = 5
+
     self.hitbox.forwardAir.xVel = 500
-    self.hitbox.forwardAir.yVel = -100 -- may change later
+    self.hitbox.forwardAir.yVel = -100
 
     self.hitbox.forwardAir.targets = ActiveEnemys
 
-    local hitboxType = "hitbox3"
+    self.hitbox.forwardAir.type = "hitbox3"
+    local hitboxType = self.hitbox.forwardAir.type
     for _, v in ipairs(self.hitbox.forwardAir.hitboxesLayer.objects) do
         if v.type == hitboxType then
+            -- Right Hitbox
             Hitbox.new(
                 self.physics.fixture,
-                hitboxType,
+                hitboxType .. "Right",
                 self.hitbox.forwardAir.targets,
                 v.x - self.width,
+                v.y - self.height,
+                v.width,
+                v.height,
+                self.hitbox.forwardAir.damage,
+                self.hitbox.forwardAir.xVel,
+                self.hitbox.forwardAir.yVel)
+
+            -- Left hitbox
+            Hitbox.new(
+                self.physics.fixture,
+                hitboxType .. "Left",
+                self.hitbox.forwardAir.targets,
+                HitboxMapWidth/2 - v.x - self.width / 2,
                 v.y - self.height,
                 v.width,
                 v.height,
@@ -386,7 +403,13 @@ end
 function Player:forwardAirEffects(anim)
     if self.activeForwardAir then
         for i, hitbox in ipairs(LiveHitboxes) do
-            if hitbox.type == "hitbox3" then
+            if self.direction == "right" and hitbox.type == self.hitbox.forwardAir.type.."Right" then
+                if anim.current == 3 then
+                    hitbox.active = true
+                else
+                    hitbox.active = false
+                end
+            elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAir.type.."Left" then
                 if anim.current == 3 then
                     hitbox.active = true
                 else

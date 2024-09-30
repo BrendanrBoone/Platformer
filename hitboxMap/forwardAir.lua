@@ -9,7 +9,7 @@ return {
   height = 6,
   tilewidth = 16,
   tileheight = 16,
-  nextlayerid = 6,
+  nextlayerid = 7,
   nextobjectid = 25,
   properties = {},
   tilesets = {
@@ -128,9 +128,64 @@ return {
       wangsets = {},
       tilecount = 36,
       tiles = {}
+    },
+    {
+      name = "tiles",
+      firstgid = 145,
+      class = "",
+      tilewidth = 16,
+      tileheight = 16,
+      spacing = 0,
+      margin = 0,
+      columns = 14,
+      image = "../assets/tiles.png",
+      imagewidth = 224,
+      imageheight = 64,
+      objectalignment = "unspecified",
+      tilerendersize = "tile",
+      fillmode = "stretch",
+      tileoffset = {
+        x = 0,
+        y = 0
+      },
+      grid = {
+        orientation = "orthogonal",
+        width = 16,
+        height = 16
+      },
+      properties = {},
+      wangsets = {},
+      tilecount = 56,
+      tiles = {}
     }
   },
   layers = {
+    {
+      type = "tilelayer",
+      x = 0,
+      y = 0,
+      width = 6,
+      height = 6,
+      id = 6,
+      name = "ground",
+      class = "",
+      visible = true,
+      opacity = 1,
+      offsetx = 0,
+      offsety = 0,
+      parallaxx = 1,
+      parallaxy = 1,
+      properties = {},
+      encoding = "lua",
+      data = {
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        191, 191, 191, 191, 191, 191
+      }
+    },
     {
       type = "tilelayer",
       x = 0,
