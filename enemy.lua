@@ -128,6 +128,7 @@ end
 
 function Enemy:takeKnockback(xVel, yVel)
     self.moving = false
+    self.grounded = false
     self.xVel = xVel
     self.yVel = yVel
 end
@@ -159,7 +160,6 @@ function Enemy:incrementRage()
 end
 
 function Enemy:flipDirection()
-    print("flip")
     if self.xVel > 0 then
         self.xVel = -self.speed * self.speedMod
     else
@@ -234,6 +234,7 @@ function Enemy:land(collision)
     self.currentGroundCollision = collision
     self.yVel = 0
     self.grounded = true
+    print("landed")
 end
 
 function Enemy.beginContact(a, b, collision)
