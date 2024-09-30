@@ -14,3 +14,8 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * ```escape``` = exit game
 ### Log
 * Currently only implemented neutral aerial and neutral grounded attack for attacks
+### Next to do:
+* World Pause, for hit stun and pausing such
+* LightHouse level
+* Menu
+* Camera Shake feature

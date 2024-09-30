@@ -470,7 +470,7 @@ function Player:resetHitboxes()
 end
 
 function Player:forwardAttack(key)
-    if self.grounded and not self.attacking and key == "p" then
+    if not self.attacking and self.grounded and self.xVel == 0 and key == "p" then
         self.attacking = true
         self.activeForwardAttack = true
     end

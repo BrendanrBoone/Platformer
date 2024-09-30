@@ -14,6 +14,8 @@ local Explosion = require("explosion")
 local Menu = require("menu")
 local Hitbox = require("hitbox")
 
+WorldPause = false
+
 function love.load()
     Sounds:load()
     Enemy.loadAssets()
@@ -26,20 +28,22 @@ end
 
 -- menu screen toggle update to pause game
 function love.update(dt)
-    World:update(dt)
-    Sounds:update(dt)
-    Camera:setPosition(Player.x, Player.y)
-    Player:update(dt)
-    Coin.updateAll()
-    GUI:update(dt)
-    Spike.updateAll(dt)
-    Stone.updateAll(dt)
-    Enemy.updateAll(dt)
-    Trampoline.updateAll(dt)
-    Explosion.updateAll(dt)
-    Map:update(dt)
-    Menu:update(dt)
-    Hitbox.updateAll(dt)
+    if not WorldPause then
+        World:update(dt)
+        Sounds:update(dt)
+        Camera:setPosition(Player.x, Player.y)
+        Player:update(dt)
+        Coin.updateAll()
+        GUI:update(dt)
+        Spike.updateAll(dt)
+        Stone.updateAll(dt)
+        Enemy.updateAll(dt)
+        Trampoline.updateAll(dt)
+        Explosion.updateAll(dt)
+        Map:update(dt)
+        Menu:update(dt)
+        Hitbox.updateAll(dt)
+    end
 end
 
 function love.draw()
@@ -87,4 +91,3 @@ function endContact(a, b, collision)
     if Hitbox.endContact(a, b, collision) then return end
     Player:endContact(a, b, collision)
 end
-
