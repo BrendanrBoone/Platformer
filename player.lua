@@ -113,51 +113,51 @@ end
 function Player:loadHitboxes()
     self.hitbox = {}
     self:loadForwardAirHitbox()
-    --self:loadForwardAttackHitbox()
+    self:loadForwardAttackHitbox()
 end
 
 function Player:loadForwardAttackHitbox()
-    self.hitbox.forwardAir = {}
-    self.hitbox.forwardAir.map = STI("hitboxMap/forwardAttack.lua", { "box2d" })
-    self.hitbox.forwardAir.hitboxesLayer = self.hitbox.forwardAir.map.layers.hitboxes
-    HitboxMapWidth = self.hitbox.forwardAir.map.layers.ground.width * 16
+    self.hitbox.forwardAttack = {}
+    self.hitbox.forwardAttack.map = STI("hitboxMap/forwardAttack.lua", { "box2d" })
+    self.hitbox.forwardAttack.hitboxesLayer = self.hitbox.forwardAttack.map.layers.hitboxes
+    HitboxMapWidth = self.hitbox.forwardAttack.map.layers.ground.width * 16
 
-    self.hitbox.forwardAir.damage = 10
+    self.hitbox.forwardAttack.damage = 10
 
-    self.hitbox.forwardAir.xVel = 500
-    self.hitbox.forwardAir.yVel = -100
+    self.hitbox.forwardAttack.xVel = 500
+    self.hitbox.forwardAttack.yVel = -100
 
-    self.hitbox.forwardAir.targets = ActiveEnemys
+    self.hitbox.forwardAttack.targets = ActiveEnemys
 
-    self.hitbox.forwardAir.type = "hitbox3"
-    local hitboxType = self.hitbox.forwardAir.type
-    for _, v in ipairs(self.hitbox.forwardAir.hitboxesLayer.objects) do
+    self.hitbox.forwardAttack.type = "hitbox3"
+    local hitboxType = self.hitbox.forwardAttack.type
+    for _, v in ipairs(self.hitbox.forwardAttack.hitboxesLayer.objects) do
         if v.type == hitboxType then
             -- Right Hitbox
             Hitbox.new(
                 self.physics.fixture,
                 hitboxType .. "Right",
-                self.hitbox.forwardAir.targets,
+                self.hitbox.forwardAttack.targets,
                 v.x - self.width,
                 v.y - self.height,
                 v.width,
                 v.height,
-                self.hitbox.forwardAir.damage,
-                self.hitbox.forwardAir.xVel,
-                self.hitbox.forwardAir.yVel)
+                self.hitbox.forwardAttack.damage,
+                self.hitbox.forwardAttack.xVel,
+                self.hitbox.forwardAttack.yVel)
 
             -- Left hitbox
             Hitbox.new(
                 self.physics.fixture,
                 hitboxType .. "Left",
-                self.hitbox.forwardAir.targets,
+                self.hitbox.forwardAttack.targets,
                 HitboxMapWidth / 2 - v.x - self.width / 2,
                 v.y - self.height,
                 v.width,
                 v.height,
-                self.hitbox.forwardAir.damage,
-                -self.hitbox.forwardAir.xVel,
-                self.hitbox.forwardAir.yVel)
+                self.hitbox.forwardAttack.damage,
+                -self.hitbox.forwardAttack.xVel,
+                self.hitbox.forwardAttack.yVel)
         end
     end
 end
@@ -334,6 +334,7 @@ end
 function Player:animEffects(animation)
     self:emoteOwEffects(animation)
     self:forwardAirEffects(animation)
+    self:forwardAttackEffects(animation)
 end
 
 function Player:decreaseGraceTime(dt)
