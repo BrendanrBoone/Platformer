@@ -10,4 +10,7 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * ```d``` or ```right``` = move right
 * ```w``` or ```up``` or ```space``` = jump
 * ```e``` = emote
+* ```p``` = attack
 * ```escape``` = exit game
+### Log
+* Currently only implemented neutral aerial
