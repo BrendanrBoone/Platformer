@@ -23,7 +23,7 @@ function love.load()
     GUI:load()
     Player:load()
     Explosion.loadAssets()
-    Menu.load()
+    Menu:load()
 end
 
 -- menu screen toggle update to pause game
@@ -66,11 +66,14 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    Player:jump(key)
-    Player:fastFall(key)
-    Player:emote(key)
-    Player:forwardAir(key)
-    Player:forwardAttack(key)
+    if not WorldPause then
+        Player:jump(key)
+        Player:fastFall(key)
+        Player:emote(key)
+        Player:forwardAir(key)
+        Player:forwardAttack(key)
+    end
+
     Menu.Escape(key)
 end
 
