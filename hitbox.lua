@@ -158,6 +158,7 @@ function Hitbox.beginContact(a, b, collision)
                 if a == target.physics.fixture or b == target.physics.fixture then
                     instance.hit = true
                     instance:withinRange(target)
+                    return true
                 end
             end
         end
@@ -171,6 +172,7 @@ function Hitbox.endContact(a, b, collision)
                 if a == target.physics.fixture or b == target.physics.fixture then
                     instance.hit = false
                     instance:outsideRange(target)
+                    return true
                 end
             end
         end

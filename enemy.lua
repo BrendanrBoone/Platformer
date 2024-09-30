@@ -18,10 +18,12 @@ function Enemy.new(x, y)
     instance.offsetY = -8 -- model is inside the ground a bit
     instance.r = 0        -- rotation
 
-    instance.speed = 0 -- normally 100
+    instance.speed = 100
     instance.speedMod = 1
-    instance.xVel = instance.speed
+    instance.xVel = 0
     instance.yVel = 0
+    instance.acceleration = 4000
+    instance.friction = 3500
     instance.gravity = 1500
 
     instance.rageCounter = 1
@@ -30,6 +32,7 @@ function Enemy.new(x, y)
     instance.damage = 1
     instance.health = { current = 20, max = 20 }
 
+    instance.moving = false
     instance.grounded = false
     instance.state = "walk"
 
@@ -84,12 +87,36 @@ function Enemy:update(dt)
     self:syncPhysics()
     self:animate(dt)
     self:applyGravity(dt)
+    self:move(dt)
     self:normalStateCheck()
 end
 
 function Enemy:normalStateCheck()
+    if self.grounded then
+        print("grounded " .. self.animation.walk.current)
+    end
     if self.xVel == 0 and self.yVel == 0 then
-        self.xVel = self.speed
+        self.moving = true
+    end
+end
+
+function Enemy:move(dt)
+    if self.moving then
+        if self.xVel >= 0 then
+            self.xVel = math.min(self.xVel + self.acceleration * dt, self.speed)
+        elseif self.xVel < 0 then
+            self.xVel = math.max(self.xVel - self.acceleration * dt, -self.speed)
+        end
+    else
+        self:applyFriction(dt)
+    end
+end
+
+function Enemy:applyFriction(dt)
+    if self.xVel > 0 then
+        self.xVel = math.max(self.xVel - self.friction * dt, 0)
+    elseif self.xVel < 0 then
+        self.xVel = math.min(self.xVel + self.friction * dt, 0)
     end
 end
 
@@ -100,6 +127,7 @@ function Enemy:applyGravity(dt)
 end
 
 function Enemy:takeKnockback(xVel, yVel)
+    self.moving = false
     self.xVel = xVel
     self.yVel = yVel
 end
@@ -131,6 +159,7 @@ function Enemy:incrementRage()
 end
 
 function Enemy:flipDirection()
+    print("flip")
     if self.xVel > 0 then
         self.xVel = -self.speed * self.speedMod
     else
@@ -167,7 +196,8 @@ function Enemy:draw()
     if self.xVel < 0 then scaleX = -1 end
     love.graphics.draw(self.animation.draw, self.x, self.y + self.offsetY, self.r, scaleX, 1, self.width / 2,
         self.height / 2)
-    love.graphics.rectangle("fill", self.x - (self.width * 0.4)/2, self.y - (self.height * 0.75)/2, self.width * 0.4, self.height * 0.75)
+    love.graphics.rectangle("fill", self.x - (self.width * 0.4) / 2, self.y - (self.height * 0.75) / 2, self.width * 0.4,
+        self.height * 0.75)
 end
 
 function Enemy.updateAll(dt)
@@ -208,7 +238,7 @@ end
 
 function Enemy.beginContact(a, b, collision)
     if (a:getUserData() and a:getUserData().__index == Hitbox)
-    or (b:getUserData() and b:getUserData().__index == Hitbox) then
+        or (b:getUserData() and b:getUserData().__index == Hitbox) then
         return
     end
     for _, instance in ipairs(ActiveEnemys) do
