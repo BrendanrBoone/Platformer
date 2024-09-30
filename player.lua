@@ -149,7 +149,7 @@ function Player:loadForwardAirHitbox()
                 v.width,
                 v.height,
                 self.hitbox.forwardAir.damage,
-                self.hitbox.forwardAir.xVel,
+                -self.hitbox.forwardAir.xVel,
                 self.hitbox.forwardAir.yVel)
         end
     end
