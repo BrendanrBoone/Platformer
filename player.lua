@@ -38,6 +38,7 @@ function Player:load()
 
     -- boolean check if action are active
     self.activeForwardAir = false
+    self.activeForwardAttack = false
 
     self.emoting = false
     self.attacking = false
@@ -87,7 +88,7 @@ function Player:loadAssets()
 
     self.animation.emote = { total = 56, current = 1, img = {} }
     for i = 1, self.animation.emote.total do
-        local current, stillFrame = i, 9                         -- loop emote from 9
+        local current, stillFrame = i, 9 -- loop emote from 9
         if current > stillFrame then
             current = stillFrame
         end
@@ -99,6 +100,11 @@ function Player:loadAssets()
         self.animation.forwardAir.img[i] = love.graphics.newImage("assets/Franky/forwardAir/" .. i .. ".png")
     end
 
+    self.animation.forwardAttack = { total = 13, current = 1, img = {} }
+    for i = 1, self.animation.forwardAttack.total do
+        self.animation.forwardAttack.img[i] = love.graphics.newImage("assets/Franky/forwardAttack/" .. i .. ".png")
+    end
+
     self.animation.draw = self.animation.idle.img[1]
     self.animation.width = self.animation.draw:getWidth()
     self.animation.height = self.animation.draw:getHeight()
@@ -107,6 +113,53 @@ end
 function Player:loadHitboxes()
     self.hitbox = {}
     self:loadForwardAirHitbox()
+    --self:loadForwardAttackHitbox()
+end
+
+function Player:loadForwardAttackHitbox()
+    self.hitbox.forwardAir = {}
+    self.hitbox.forwardAir.map = STI("hitboxMap/forwardAttack.lua", { "box2d" })
+    self.hitbox.forwardAir.hitboxesLayer = self.hitbox.forwardAir.map.layers.hitboxes
+    HitboxMapWidth = self.hitbox.forwardAir.map.layers.ground.width * 16
+
+    self.hitbox.forwardAir.damage = 10
+
+    self.hitbox.forwardAir.xVel = 500
+    self.hitbox.forwardAir.yVel = -100
+
+    self.hitbox.forwardAir.targets = ActiveEnemys
+
+    self.hitbox.forwardAir.type = "hitbox3"
+    local hitboxType = self.hitbox.forwardAir.type
+    for _, v in ipairs(self.hitbox.forwardAir.hitboxesLayer.objects) do
+        if v.type == hitboxType then
+            -- Right Hitbox
+            Hitbox.new(
+                self.physics.fixture,
+                hitboxType .. "Right",
+                self.hitbox.forwardAir.targets,
+                v.x - self.width,
+                v.y - self.height,
+                v.width,
+                v.height,
+                self.hitbox.forwardAir.damage,
+                self.hitbox.forwardAir.xVel,
+                self.hitbox.forwardAir.yVel)
+
+            -- Left hitbox
+            Hitbox.new(
+                self.physics.fixture,
+                hitboxType .. "Left",
+                self.hitbox.forwardAir.targets,
+                HitboxMapWidth / 2 - v.x - self.width / 2,
+                v.y - self.height,
+                v.width,
+                v.height,
+                self.hitbox.forwardAir.damage,
+                -self.hitbox.forwardAir.xVel,
+                self.hitbox.forwardAir.yVel)
+        end
+    end
 end
 
 function Player:loadForwardAirHitbox()
@@ -144,7 +197,7 @@ function Player:loadForwardAirHitbox()
                 self.physics.fixture,
                 hitboxType .. "Left",
                 self.hitbox.forwardAir.targets,
-                HitboxMapWidth/2 - v.x - self.width / 2,
+                HitboxMapWidth / 2 - v.x - self.width / 2,
                 v.y - self.height,
                 v.width,
                 v.height,
@@ -229,14 +282,22 @@ function Player:setState()
                 self.state = "airFalling"
             end
         end
-    elseif self.xVel == 0 then
-        if self.emoting then
-            self.state = "emote"
-        else
-            self.state = "idle"
-        end
     else
-        self.state = "run"
+        if self.attacking then
+            if self.activeForwardAttack then
+                self.state = "forwardAttack"
+            end
+        else
+            if self.xVel == 0 then
+                if self.emoting then
+                    self.state = "emote"
+                else
+                    self.state = "idle"
+                end
+            else
+                self.state = "run"
+            end
+        end
     end
 end
 
@@ -393,6 +454,37 @@ function Player:resetHitboxes()
     end
 end
 
+function Player:forwardAttack(key)
+    if self.grounded and not self.attacking and key == "p" then
+        self.attacking = true
+        self.activeForwardAttack = true
+    end
+end
+
+-- this determines what frames are active
+function Player:forwardAttackEffects(anim)
+    if self.activeForwardAttack then
+        for i, hitbox in ipairs(LiveHitboxes) do
+            if self.direction == "right" and hitbox.type == self.hitbox.forwardAttack.type .. "Right" then
+                if anim.current == 3 then
+                    hitbox.active = true
+                else
+                    hitbox.active = false
+                end
+            elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAttack.type .. "Left" then
+                if anim.current == 3 then
+                    hitbox.active = true
+                else
+                    hitbox.active = false
+                end
+            end
+        end
+        if anim.current == anim.total then
+            self:cancelActiveActions()
+        end
+    end
+end
+
 function Player:forwardAir(key)
     if not self.grounded and not self.attacking and key == "p" then
         self.attacking = true
@@ -403,13 +495,13 @@ end
 function Player:forwardAirEffects(anim)
     if self.activeForwardAir then
         for i, hitbox in ipairs(LiveHitboxes) do
-            if self.direction == "right" and hitbox.type == self.hitbox.forwardAir.type.."Right" then
+            if self.direction == "right" and hitbox.type == self.hitbox.forwardAir.type .. "Right" then
                 if anim.current == 3 then
                     hitbox.active = true
                 else
                     hitbox.active = false
                 end
-            elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAir.type.."Left" then
+            elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAir.type .. "Left" then
                 if anim.current == 3 then
                     hitbox.active = true
                 else
@@ -426,6 +518,7 @@ end
 function Player:cancelActiveActions()
     self.attacking = false
     self.activeForwardAir = false
+    self.activeForwardAttack = false
     self.emoting = false
 end
 

@@ -2,6 +2,7 @@ local Enemy = {}
 Enemy.__index = Enemy
 local Player = require("player")
 local Hitbox = require("hitbox")
+local Explosion = require("explosion")
 
 ActiveEnemys = {}
 
@@ -157,6 +158,7 @@ end
 
 function Enemy:die()
     self:remove()
+    Explosion.new(self.x, self.y)
 end
 
 function Enemy:tintRed()
