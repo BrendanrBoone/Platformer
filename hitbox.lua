@@ -129,14 +129,14 @@ function Hitbox:outsideRange(target)
 end
 
 function Hitbox:draw()
-    --[[if self.active then
+    if self.active then
         love.graphics.setColor(1, 0, 0)
     elseif self.hit then
         love.graphics.setColor(1, 1, 0)
     else
         love.graphics.setColor(1, 1, 1)
     end
-    love.graphics.circle("fill", self.x, self.y, self.height / 2)]]
+    love.graphics.circle("fill", self.x, self.y, self.height / 2)
 end
 
 function Hitbox.updateAll(dt)

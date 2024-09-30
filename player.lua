@@ -120,7 +120,7 @@ function Player:loadForwardAttackHitbox()
     self.hitbox.forwardAttack = {}
     self.hitbox.forwardAttack.map = STI("hitboxMap/forwardAttack.lua", { "box2d" })
     self.hitbox.forwardAttack.hitboxesLayer = self.hitbox.forwardAttack.map.layers.hitboxes
-    HitboxMapWidth = self.hitbox.forwardAttack.map.layers.ground.width * 16
+    self.hitbox.forwardAttack.mapWidth = self.hitbox.forwardAttack.map.layers.ground.width * 16
 
     self.hitbox.forwardAttack.damage = 10
 
@@ -129,35 +129,37 @@ function Player:loadForwardAttackHitbox()
 
     self.hitbox.forwardAttack.targets = ActiveEnemys
 
-    self.hitbox.forwardAttack.type = "hitbox3"
+    self.hitbox.forwardAttack.type = "forwardAttack"
     local hitboxType = self.hitbox.forwardAttack.type
-    for _, v in ipairs(self.hitbox.forwardAttack.hitboxesLayer.objects) do
-        if v.type == hitboxType then
-            -- Right Hitbox
-            Hitbox.new(
-                self.physics.fixture,
-                hitboxType .. "Right",
-                self.hitbox.forwardAttack.targets,
-                v.x - self.width,
-                v.y - self.height,
-                v.width,
-                v.height,
-                self.hitbox.forwardAttack.damage,
-                self.hitbox.forwardAttack.xVel,
-                self.hitbox.forwardAttack.yVel)
+    for i = 5, 9 do
+        for _, v in ipairs(self.hitbox.forwardAttack.hitboxesLayer.objects) do
+            if v.type == hitboxType .. i then
+                -- Right Hitbox
+                Hitbox.new(
+                    self.physics.fixture,
+                    hitboxType .. "Right",
+                    self.hitbox.forwardAttack.targets,
+                    v.x - self.width * 2,
+                    v.y - self.height - self.FrankyOffsetY,
+                    v.width,
+                    v.height,
+                    self.hitbox.forwardAttack.damage,
+                    self.hitbox.forwardAttack.xVel,
+                    self.hitbox.forwardAttack.yVel)
 
-            -- Left hitbox
-            Hitbox.new(
-                self.physics.fixture,
-                hitboxType .. "Left",
-                self.hitbox.forwardAttack.targets,
-                HitboxMapWidth / 2 - v.x - self.width / 2,
-                v.y - self.height,
-                v.width,
-                v.height,
-                self.hitbox.forwardAttack.damage,
-                -self.hitbox.forwardAttack.xVel,
-                self.hitbox.forwardAttack.yVel)
+                -- Left hitbox
+                Hitbox.new(
+                    self.physics.fixture,
+                    hitboxType .. "Left",
+                    self.hitbox.forwardAttack.targets,
+                    self.hitbox.forwardAttack.mapWidth / 2 - v.x - self.width,
+                    v.y - self.height - self.FrankyOffsetY,
+                    v.width,
+                    v.height,
+                    self.hitbox.forwardAttack.damage,
+                    -self.hitbox.forwardAttack.xVel,
+                    self.hitbox.forwardAttack.yVel)
+            end
         end
     end
 end
@@ -166,7 +168,7 @@ function Player:loadForwardAirHitbox()
     self.hitbox.forwardAir = {}
     self.hitbox.forwardAir.map = STI("hitboxMap/forwardAir.lua", { "box2d" })
     self.hitbox.forwardAir.hitboxesLayer = self.hitbox.forwardAir.map.layers.hitboxes
-    HitboxMapWidth = self.hitbox.forwardAir.map.layers.ground.width * 16
+    self.hitbox.forwardAir.mapWidth = self.hitbox.forwardAir.map.layers.ground.width * 16
 
     self.hitbox.forwardAir.damage = 5
 
@@ -185,7 +187,7 @@ function Player:loadForwardAirHitbox()
                 hitboxType .. "Right",
                 self.hitbox.forwardAir.targets,
                 v.x - self.width,
-                v.y - self.height,
+                v.y - self.height - self.FrankyOffsetY,
                 v.width,
                 v.height,
                 self.hitbox.forwardAir.damage,
@@ -197,8 +199,8 @@ function Player:loadForwardAirHitbox()
                 self.physics.fixture,
                 hitboxType .. "Left",
                 self.hitbox.forwardAir.targets,
-                HitboxMapWidth / 2 - v.x - self.width / 2,
-                v.y - self.height,
+                self.hitbox.forwardAir.mapWidth / 2 - v.x - self.width / 2,
+                v.y - self.height - self.FrankyOffsetY,
                 v.width,
                 v.height,
                 self.hitbox.forwardAir.damage,
@@ -465,23 +467,25 @@ end
 -- this determines what frames are active
 function Player:forwardAttackEffects(anim)
     if self.activeForwardAttack then
-        for i, hitbox in ipairs(LiveHitboxes) do
-            if self.direction == "right" and hitbox.type == self.hitbox.forwardAttack.type .. "Right" then
-                if anim.current == 3 then
-                    hitbox.active = true
-                else
-                    hitbox.active = false
-                end
-            elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAttack.type .. "Left" then
-                if anim.current == 3 then
-                    hitbox.active = true
-                else
-                    hitbox.active = false
+        for i = 5, 9 do
+            for _, hitbox in ipairs(LiveHitboxes) do
+                if self.direction == "right" and hitbox.type == self.hitbox.forwardAttack.type .. i .. "Right" then
+                    if anim.current == i then
+                        hitbox.active = true
+                    else
+                        hitbox.active = false
+                    end
+                elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAttack.type .. i .. "Left" then
+                    if anim.current == i then
+                        hitbox.active = true
+                    else
+                        hitbox.active = false
+                    end
                 end
             end
-        end
-        if anim.current == anim.total then
-            self:cancelActiveActions()
+            if anim.current == anim.total then
+                self:cancelActiveActions()
+            end
         end
     end
 end
