@@ -16,6 +16,5 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * Currently only implemented neutral aerial and neutral grounded attack for attacks
 ### Next to do:
 * LightHouse level
-* Menu
 * Camera Shake feature
 * Optimize Attack module

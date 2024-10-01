@@ -74,11 +74,12 @@ function love.keypressed(key)
         Player:forwardAttack(key)
     end
 
-    Menu.Escape(key)
+    Menu:Escape(key)
 end
 
 function love.mousepressed(mx, my, button)
     GUI:mousepressed(mx, my, button)
+    Menu:mousepressed(mx, my, button)
 end
 
 function beginContact(a, b, collision)
