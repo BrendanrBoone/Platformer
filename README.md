@@ -18,3 +18,5 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * LightHouse level
 * Camera Shake feature
 * Optimize Attack module
+* Nico Robin tutorial npc
+* Jiraiya Naruto World npc
