@@ -8,6 +8,7 @@ function Player:load()
     self.x = 100
     self.y = 0
     self.FrankyOffsetY = -5
+    self.FrankyOffsetX = 3
     self.startX = self.x
     self.startY = self.y
     self.width = 30
@@ -139,7 +140,7 @@ function Player:loadForwardAttackHitbox()
                     self.physics.fixture,
                     hitboxType ..i.. "Right",
                     self.hitbox.forwardAttack.targets,
-                    v.x - self.width - v.width + v.width / 2,
+                    v.x - self.width - v.width / 2 + self.FrankyOffsetX,
                     v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
                     v.width,
                     v.height,
@@ -152,7 +153,7 @@ function Player:loadForwardAttackHitbox()
                     self.physics.fixture,
                     hitboxType ..i.. "Left",
                     self.hitbox.forwardAttack.targets,
-                    self.hitbox.forwardAttack.mapWidth / 2 - v.x - self.width - v.width + v.width / 2,
+                    self.hitbox.forwardAir.mapWidth / 2 - v.x - v.width / 2,
                     v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
                     v.width,
                     v.height,
@@ -186,7 +187,7 @@ function Player:loadForwardAirHitbox()
                 self.physics.fixture,
                 hitboxType .. "Right",
                 self.hitbox.forwardAir.targets,
-                v.x - self.width,
+                v.x - self.width - v.width / 2 + self.FrankyOffsetX,
                 v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
                 v.width,
                 v.height,
@@ -199,7 +200,7 @@ function Player:loadForwardAirHitbox()
                 self.physics.fixture,
                 hitboxType .. "Left",
                 self.hitbox.forwardAir.targets,
-                self.hitbox.forwardAir.mapWidth / 2 - v.x - self.width / 2,
+                self.hitbox.forwardAir.mapWidth / 2 - v.x - v.width / 2,
                 v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
                 v.width,
                 v.height,
