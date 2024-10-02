@@ -131,38 +131,24 @@ function Player:loadForwardAttackHitbox()
     self.hitbox.forwardAttack.targets = ActiveEnemys
 
     self.hitbox.forwardAttack.type = "forwardAttack"
-    local hitboxType = self.hitbox.forwardAttack.type
-    for i = 1, self.animation.forwardAttack.total do
-        for _, v in ipairs(self.hitbox.forwardAttack.hitboxesLayer.objects) do
-            if v.type == hitboxType .. i then
-                -- Right Hitbox
-                Hitbox.new(
-                    self.physics.fixture,
-                    hitboxType .. i .. "Right",
-                    self.hitbox.forwardAttack.targets,
-                    v.x - self.width - v.width / 2 + self.FrankyOffsetX,
-                    v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
-                    v.width,
-                    v.height,
-                    self.hitbox.forwardAttack.damage,
-                    self.hitbox.forwardAttack.xVel,
-                    self.hitbox.forwardAttack.yVel)
+    local args = {
+        animTotal = self.animation.forwardAttack.total,
+        hitboxType = self.hitbox.forwardAttack.type,
+        layerObjects = self.hitbox.forwardAttack.hitboxesLayer.objects,
+        hitboxMapWidth = self.hitbox.forwardAir.mapWidth,
 
-                -- Left hitbox
-                Hitbox.new(
-                    self.physics.fixture,
-                    hitboxType .. i .. "Left",
-                    self.hitbox.forwardAttack.targets,
-                    self.hitbox.forwardAir.mapWidth / 2 - v.x - v.width / 2,
-                    v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
-                    v.width,
-                    v.height,
-                    self.hitbox.forwardAttack.damage,
-                    -self.hitbox.forwardAttack.xVel,
-                    self.hitbox.forwardAttack.yVel)
-            end
-        end
-    end
+        srcFixture = self.physics.fixture,
+        targets = self.hitbox.forwardAttack.targets,
+        width = self.width,
+        xOff = self.FrankyOffsetX,
+        height = self.height,
+        yOff = self.FrankyOffsetY,
+
+        damage = self.hitbox.forwardAttack.damage,
+        xVel = self.hitbox.forwardAttack.xVel,
+        yVel = self.hitbox.forwardAttack.yVel
+    }
+    self:generateHitboxes(args)
 end
 
 function Player:loadForwardAirHitbox()
@@ -348,7 +334,7 @@ end
 
 -- updates the image
 function Player:setNewFrame()
-    local anim = self.animation[self.state] -- not a copy. mirrors animation.[state]
+    local anim = self.animation[self.state]
     self:animEffects(anim)
     self.animation.draw = anim.img[anim.current]
     if anim.current < anim.total then
