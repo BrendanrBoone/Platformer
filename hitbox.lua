@@ -46,6 +46,42 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
     table.insert(LiveHitboxes, instance)
 end
 
+function Hitbox.generateHitboxes(args)
+    for i = 1, args.animTotal do
+        for _, v in ipairs(args.layerObjects) do
+            if v.type == args.hitboxType .. i then
+                -- Right Hitbox
+                Hitbox.new(
+                    args.srcFixture,
+                    args.hitboxType .. i .. "Right",
+                    args.targets,
+                    v.x - args.width - v.width / 2 + args.xOff,
+                    v.y - args.height + v.height / 2 + args.yOff / 2,
+                    v.width,
+                    v.height,
+                    args.damage,
+                    args.xVel,
+                    args.yVel
+                )
+
+                -- Left Hitbox
+                Hitbox.new(
+                    args.srcFixture,
+                    args.hitboxType .. i .. "Left",
+                    args.targets,
+                    args.hitboxMapWidth / 2 - v.x - v.width / 2,
+                    v.y - args.height + v.height / 2 + args.yOff / 2,
+                    v.width,
+                    v.height,
+                    args.damage,
+                    -args.xVel,
+                    args.yVel
+                )
+            end
+        end
+    end
+end
+
 function Hitbox.loadAllTargets(targets)
     for _, hitbox in ipairs(LiveHitboxes) do
         hitbox.targets = targets

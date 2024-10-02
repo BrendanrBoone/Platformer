@@ -148,7 +148,7 @@ function Player:loadForwardAttackHitbox()
         xVel = self.hitbox.forwardAttack.xVel,
         yVel = self.hitbox.forwardAttack.yVel
     }
-    self:generateHitboxes(args)
+    Hitbox.generateHitboxes(args)
 end
 
 function Player:loadForwardAirHitbox()
@@ -182,43 +182,7 @@ function Player:loadForwardAirHitbox()
         xVel = self.hitbox.forwardAir.xVel,
         yVel = self.hitbox.forwardAir.yVel
     }
-    self:generateHitboxes(args)
-end
-
-function Player:generateHitboxes(args)
-    for i = 1, args.animTotal do
-        for _, v in ipairs(args.layerObjects) do
-            if v.type == args.hitboxType .. i then
-                -- Right Hitbox
-                Hitbox.new(
-                    args.srcFixture,
-                    args.hitboxType .. i .. "Right",
-                    args.targets,
-                    v.x - args.width - v.width / 2 + args.xOff,
-                    v.y - args.height + v.height / 2 + args.yOff / 2,
-                    v.width,
-                    v.height,
-                    args.damage,
-                    args.xVel,
-                    args.yVel
-                )
-
-                -- Left Hitbox
-                Hitbox.new(
-                    args.srcFixture,
-                    args.hitboxType .. i .. "Left",
-                    args.targets,
-                    args.hitboxMapWidth / 2 - v.x - v.width / 2,
-                    v.y - args.height + v.height / 2 + args.yOff / 2,
-                    v.width,
-                    v.height,
-                    args.damage,
-                    -args.xVel,
-                    args.yVel
-                )
-            end
-        end
-    end
+    Hitbox.generateHitboxes(args)
 end
 
 function Player:takeDamage(amount)
