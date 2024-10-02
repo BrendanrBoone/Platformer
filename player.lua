@@ -140,7 +140,7 @@ function Player:loadForwardAttackHitbox()
                     hitboxType ..i.. "Right",
                     self.hitbox.forwardAttack.targets,
                     v.x - self.width - v.width + v.width / 2,
-                    v.y - self.height - self.FrankyOffsetY,
+                    v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
                     v.width,
                     v.height,
                     self.hitbox.forwardAttack.damage,
@@ -152,8 +152,8 @@ function Player:loadForwardAttackHitbox()
                     self.physics.fixture,
                     hitboxType ..i.. "Left",
                     self.hitbox.forwardAttack.targets,
-                    self.hitbox.forwardAttack.mapWidth / 2 - v.x - self.width - v.width - v.width / 2,
-                    v.y - self.height - self.FrankyOffsetY,
+                    self.hitbox.forwardAttack.mapWidth / 2 - v.x - self.width - v.width + v.width / 2,
+                    v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
                     v.width,
                     v.height,
                     self.hitbox.forwardAttack.damage,
@@ -187,7 +187,7 @@ function Player:loadForwardAirHitbox()
                 hitboxType .. "Right",
                 self.hitbox.forwardAir.targets,
                 v.x - self.width,
-                v.y - self.height - self.FrankyOffsetY,
+                v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
                 v.width,
                 v.height,
                 self.hitbox.forwardAir.damage,
@@ -200,12 +200,57 @@ function Player:loadForwardAirHitbox()
                 hitboxType .. "Left",
                 self.hitbox.forwardAir.targets,
                 self.hitbox.forwardAir.mapWidth / 2 - v.x - self.width / 2,
-                v.y - self.height - self.FrankyOffsetY,
+                v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
                 v.width,
                 v.height,
                 self.hitbox.forwardAir.damage,
                 -self.hitbox.forwardAir.xVel,
                 self.hitbox.forwardAir.yVel)
+        end
+    end
+end
+
+function Player.generateHitboxes(
+    hitboxLayer,
+    mapWidth,
+    hitboxType,
+    srcFixture,
+    targets,
+    xOffRight,
+    xOffLeft,
+    yOff,
+    width,
+    height,
+    damage,
+    xVel,
+    yVel)
+    for _, v in ipairs(hitboxLayer) do
+        if v.type == hitboxType then
+            -- Right Hitbox
+            Hitbox.new(
+                srcFixture,
+                hitboxType .. "Right",
+                targets,
+                xOffRight,
+                yOff,
+                v.width,
+                v.height,
+                damage,
+                xVel,
+                yVel)
+
+            -- Left hitbox
+            Hitbox.new(
+                srcFixture,
+                hitboxType .. "Left",
+                targets,
+                xOffLeft,
+                yOff,
+                v.width,
+                v.height,
+                damage,
+                -xVel,
+                yVel)
         end
     end
 end

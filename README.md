@@ -16,7 +16,9 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * Currently only implemented neutral aerial and neutral grounded attack for attacks
 ### Next to do:
 * LightHouse level
-* Camera Shake feature
 * Optimize Attack module
 * Nico Robin tutorial npc
 * Jiraiya Naruto World npc
+* Define camera shake level when loading hitboxes
+* Add invulnerability frames to franky during forward air or making forward air bigger
+* fix hitbox offsets

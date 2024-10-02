@@ -42,59 +42,41 @@ function Camera:setPosition(x, y)
         if self.shakingTimer % 2 ~= 0 then
             scale = -1
         end
-        self.y = self.y + self.maxY * scale
-        self.x = self.x + self.maxX * scale
+        self.y = self.y + self.yVel * scale
+        self.x = self.x + self.xVel * scale
         self.shakingTimer = self.shakingTimer - 1
         if self.shakingTimer <= 0 then
             self.shaking = false
         end
         print("shook xvel:" .. self.xVel .. " yvel:" .. self.yVel .. " timer:" .. self.shakingTimer)
+        
     end
 end
-
---[[local shakeDirection = 1
-        if self.shakingTimer % 2 == 0 then
-            self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxX)
-            self.yVel = math.max(self.yVel - self.acceleration * dt, -self.maxY)
-        else
-            shakeDirection = -shakeDirection
-            self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxX)
-            self.yVel = math.min(self.yVel + self.acceleration * dt, self.maxY)
-        end
-        print("shook xvel:" .. self.xVel .. " yvel:" .. self.yVel .. " timer:" .. self.shakingTimer)
-        self.x = x - love.graphics.getWidth() / 2 / self.scale + self.xVel * shakeDirection
-        self.y = y - love.graphics.getHeight() / 2 / self.scale + self.yVel * -shakeDirection
-        if self.xVel == self.maxX and self.yVel == -self.maxY then
-            self.shakingTimer = self.shakingTimer - 1
-        end
-        if self.shakingTimer == 0 then
-            self.shaking = false
-        end]]
 
 -- NEED TO ADD ACCELERATION
 --@size: string == "large", "medium", "small", "extraSmall"
 -- defaults to extraSmall if unknown size
+-- shakerTimer 2 is too small
 function Camera:shake(size)
     self.shaking = true
 
-    self.xVel = 0
-    self.yVel = 0
     self.acceleration = 1
-    self.maxX = 0
-    self.maxY = 2
-    self.shakingTimer = 2
+    self.xVel = 0
+    self.yVel = 2
+    self.shakingTimer = 10
 
     if size == "large" then
-        self.maxX = 2
-        self.maxY = 3
-        self.shakingTimer = 6
+        self.xVel = 5
+        self.yVel = 10
+        self.shakingTimer = 10
     elseif size == "medium" then
-        self.maxX = 1
-        self.maxY = 2
+        self.xVel = 1
+        self.yVel = 2
         self.shakingTimer = 4
     elseif size == "small" then
-        self.maxX = 0
-        self.maxY = 2
+        self.xVel = 2
+        self.yVel = 0
+        self.shakingTimer = 10
     end
 end
 

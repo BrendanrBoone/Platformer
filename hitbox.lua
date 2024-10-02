@@ -93,7 +93,7 @@ end
 function Hitbox:hitTarget(target)
     target:takeDamage(self.damage)
     target:takeKnockback(self.xVel, self.yVel)
-    Camera:shake("large")
+    Camera:shake("")
 end
 
 -- helper function
@@ -132,13 +132,18 @@ function Hitbox:outsideRange(target)
 end
 
 function Hitbox:draw()
-    --[[if self.active then
-        love.graphics.setColor(1, 0, 0)
+    --[[if self.hit then
+        love.graphics.setColor(1, 1, 0)
+        love.graphics.circle("fill", self.x, self.y, self.height / 2)
+    end]]
+
+    if self.active then
+        love.graphics.setColor(1, 0, 0, 0.5)
         love.graphics.circle("fill", self.x, self.y, self.height / 2)
     elseif self.hit then
         love.graphics.setColor(1, 1, 0)
         love.graphics.circle("fill", self.x, self.y, self.height / 2)
-    end]]
+    end
 
     --[[if self.active then
         love.graphics.setColor(1, 0, 0)
