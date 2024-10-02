@@ -2,6 +2,8 @@
 local Hitbox = {}
 Hitbox.__index = Hitbox
 
+local Camera = require("camera")
+
 LiveHitboxes = {}
 
 TargetsInRange = {} -- ex: {{'hitbox3': target1, target2, target3}, {'hitbox4': target1, target2, target3}}
@@ -91,6 +93,7 @@ end
 function Hitbox:hitTarget(target)
     target:takeDamage(self.damage)
     target:takeKnockback(self.xVel, self.yVel)
+    Camera:shake("large")
 end
 
 -- helper function
