@@ -69,25 +69,25 @@
 </data>
  </layer>
  <objectgroup color="#f2ff00" id="2" name="hitboxes">
-  <object id="14" name="Hitbox" type="hitbox3" x="53" y="26.5" width="20" height="20">
+  <object id="14" name="Hitbox" type="forwardAir3" x="53" y="26.5" width="20" height="20">
    <ellipse/>
   </object>
-  <object id="19" name="Hitbox" type="hitbox3" x="56" y="31" width="20" height="20">
+  <object id="19" name="Hitbox" type="forwardAir3" x="56" y="31" width="20" height="20">
    <ellipse/>
   </object>
-  <object id="20" name="Hitbox" type="hitbox3" x="57.375" y="37.375" width="20" height="20">
+  <object id="20" name="Hitbox" type="forwardAir3" x="57.375" y="37.375" width="20" height="20">
    <ellipse/>
   </object>
-  <object id="21" name="Hitbox" type="hitbox3" x="56.625" y="44.625" width="20" height="20">
+  <object id="21" name="Hitbox" type="forwardAir3" x="56.625" y="44.625" width="20" height="20">
    <ellipse/>
   </object>
-  <object id="22" name="Hitbox" type="hitbox3" x="53" y="51" width="20" height="20">
+  <object id="22" name="Hitbox" type="forwardAir3" x="53" y="51" width="20" height="20">
    <ellipse/>
   </object>
-  <object id="23" name="Hitbox" type="hitbox3" x="48.25" y="56.5" width="20" height="20">
+  <object id="23" name="Hitbox" type="forwardAir3" x="48.25" y="56.5" width="20" height="20">
    <ellipse/>
   </object>
-  <object id="24" name="Hitbox" type="hitbox3" x="41.625" y="60.375" width="20" height="20">
+  <object id="24" name="Hitbox" type="forwardAir3" x="41.625" y="60.375" width="20" height="20">
    <ellipse/>
   </object>
  </objectgroup>

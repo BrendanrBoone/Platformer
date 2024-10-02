@@ -307,7 +307,7 @@ return {
         {
           id = 14,
           name = "Hitbox",
-          type = "hitbox3",
+          type = "forwardAir3",
           shape = "ellipse",
           x = 53,
           y = 26.5,
@@ -320,7 +320,7 @@ return {
         {
           id = 19,
           name = "Hitbox",
-          type = "hitbox3",
+          type = "forwardAir3",
           shape = "ellipse",
           x = 56,
           y = 31,
@@ -333,7 +333,7 @@ return {
         {
           id = 20,
           name = "Hitbox",
-          type = "hitbox3",
+          type = "forwardAir3",
           shape = "ellipse",
           x = 57.375,
           y = 37.375,
@@ -346,7 +346,7 @@ return {
         {
           id = 21,
           name = "Hitbox",
-          type = "hitbox3",
+          type = "forwardAir3",
           shape = "ellipse",
           x = 56.625,
           y = 44.625,
@@ -359,7 +359,7 @@ return {
         {
           id = 22,
           name = "Hitbox",
-          type = "hitbox3",
+          type = "forwardAir3",
           shape = "ellipse",
           x = 53,
           y = 51,
@@ -372,7 +372,7 @@ return {
         {
           id = 23,
           name = "Hitbox",
-          type = "hitbox3",
+          type = "forwardAir3",
           shape = "ellipse",
           x = 48.25,
           y = 56.5,
@@ -385,7 +385,7 @@ return {
         {
           id = 24,
           name = "Hitbox",
-          type = "hitbox3",
+          type = "forwardAir3",
           shape = "ellipse",
           x = 41.625,
           y = 60.375,

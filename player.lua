@@ -132,13 +132,13 @@ function Player:loadForwardAttackHitbox()
 
     self.hitbox.forwardAttack.type = "forwardAttack"
     local hitboxType = self.hitbox.forwardAttack.type
-    for i = 5, 9 do
+    for i = 1, self.animation.forwardAttack.total do
         for _, v in ipairs(self.hitbox.forwardAttack.hitboxesLayer.objects) do
             if v.type == hitboxType .. i then
                 -- Right Hitbox
                 Hitbox.new(
                     self.physics.fixture,
-                    hitboxType ..i.. "Right",
+                    hitboxType .. i .. "Right",
                     self.hitbox.forwardAttack.targets,
                     v.x - self.width - v.width / 2 + self.FrankyOffsetX,
                     v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
@@ -151,7 +151,7 @@ function Player:loadForwardAttackHitbox()
                 -- Left hitbox
                 Hitbox.new(
                     self.physics.fixture,
-                    hitboxType ..i.. "Left",
+                    hitboxType .. i .. "Left",
                     self.hitbox.forwardAttack.targets,
                     self.hitbox.forwardAir.mapWidth / 2 - v.x - v.width / 2,
                     v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
@@ -178,80 +178,59 @@ function Player:loadForwardAirHitbox()
 
     self.hitbox.forwardAir.targets = ActiveEnemys
 
-    self.hitbox.forwardAir.type = "hitbox3"
-    local hitboxType = self.hitbox.forwardAir.type
-    for _, v in ipairs(self.hitbox.forwardAir.hitboxesLayer.objects) do
-        if v.type == hitboxType then
-            -- Right Hitbox
-            Hitbox.new(
-                self.physics.fixture,
-                hitboxType .. "Right",
-                self.hitbox.forwardAir.targets,
-                v.x - self.width - v.width / 2 + self.FrankyOffsetX,
-                v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
-                v.width,
-                v.height,
-                self.hitbox.forwardAir.damage,
-                self.hitbox.forwardAir.xVel,
-                self.hitbox.forwardAir.yVel)
+    self.hitbox.forwardAir.type = "forwardAir"
+    local args = {
+        animTotal = self.animation.forwardAir.total,
+        hitboxType = self.hitbox.forwardAir.type,
+        layerObjects = self.hitbox.forwardAir.hitboxesLayer.objects,
+        hitboxMapWidth = self.hitbox.forwardAir.mapWidth,
 
-            -- Left hitbox
-            Hitbox.new(
-                self.physics.fixture,
-                hitboxType .. "Left",
-                self.hitbox.forwardAir.targets,
-                self.hitbox.forwardAir.mapWidth / 2 - v.x - v.width / 2,
-                v.y - self.height + v.height / 2 + self.FrankyOffsetY / 2,
-                v.width,
-                v.height,
-                self.hitbox.forwardAir.damage,
-                -self.hitbox.forwardAir.xVel,
-                self.hitbox.forwardAir.yVel)
-        end
-    end
+        srcFixture = self.physics.fixture,
+        targets = self.hitbox.forwardAir.targets,
+        width = self.width,
+        xOff = self.FrankyOffsetX,
+        height = self.height,
+        yOff = self.FrankyOffsetY,
+
+        damage = self.hitbox.forwardAir.damage,
+        xVel = self.hitbox.forwardAir.xVel,
+        yVel = self.hitbox.forwardAir.yVel
+    }
+    self:generateHitboxes(args)
 end
 
-function Player.generateHitboxes(
-    hitboxLayer,
-    mapWidth,
-    hitboxType,
-    srcFixture,
-    targets,
-    xOffRight,
-    xOffLeft,
-    yOff,
-    width,
-    height,
-    damage,
-    xVel,
-    yVel)
-    for _, v in ipairs(hitboxLayer) do
-        if v.type == hitboxType then
-            -- Right Hitbox
-            Hitbox.new(
-                srcFixture,
-                hitboxType .. "Right",
-                targets,
-                xOffRight,
-                yOff,
-                v.width,
-                v.height,
-                damage,
-                xVel,
-                yVel)
+function Player:generateHitboxes(args)
+    for i = 1, args.animTotal do
+        for _, v in ipairs(args.layerObjects) do
+            if v.type == args.hitboxType .. i then
+                -- Right Hitbox
+                Hitbox.new(
+                    args.srcFixture,
+                    args.hitboxType .. i .. "Right",
+                    args.targets,
+                    v.x - args.width - v.width / 2 + args.xOff,
+                    v.y - args.height + v.height / 2 + args.yOff / 2,
+                    v.width,
+                    v.height,
+                    args.damage,
+                    args.xVel,
+                    args.yVel
+                )
 
-            -- Left hitbox
-            Hitbox.new(
-                srcFixture,
-                hitboxType .. "Left",
-                targets,
-                xOffLeft,
-                yOff,
-                v.width,
-                v.height,
-                damage,
-                -xVel,
-                yVel)
+                -- Left Hitbox
+                Hitbox.new(
+                    args.srcFixture,
+                    args.hitboxType .. i .. "Left",
+                    args.targets,
+                    args.hitboxMapWidth / 2 - v.x - v.width / 2,
+                    v.y - args.height + v.height / 2 + args.yOff / 2,
+                    v.width,
+                    v.height,
+                    args.damage,
+                    -args.xVel,
+                    args.yVel
+                )
+            end
         end
     end
 end
@@ -399,7 +378,7 @@ end
 
 function Player:doingAction()
     if self.emoting
-    or self.attacking then
+        or self.attacking then
         return true
     end
     return false
@@ -511,7 +490,6 @@ function Player:resetHitboxes()
                 hitbox.active = false
             end
         end
-        
     end
 end
 
@@ -527,9 +505,9 @@ function Player:forwardAttackEffects(anim)
     if self.activeForwardAttack then
         for _, hitbox in ipairs(LiveHitboxes) do
             if hitbox.type:find(self.hitbox.forwardAttack.type) then
-                if self.direction == "right" and hitbox.type == self.hitbox.forwardAttack.type..anim.current.."Right" then
+                if self.direction == "right" and hitbox.type == self.hitbox.forwardAttack.type .. anim.current .. "Right" then
                     hitbox.active = true
-                elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAttack.type..anim.current.."Left" then
+                elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAttack.type .. anim.current .. "Left" then
                     hitbox.active = true
                 else
                     hitbox.active = false
@@ -551,15 +529,11 @@ end
 
 function Player:forwardAirEffects(anim)
     if self.activeForwardAir then
-        for i, hitbox in ipairs(LiveHitboxes) do
-            if self.direction == "right" and hitbox.type == self.hitbox.forwardAir.type .. "Right" then
-                if anim.current == 3 then
+        for _, hitbox in ipairs(LiveHitboxes) do
+            if hitbox.type:find(self.hitbox.forwardAir.type) then
+                if self.direction == "right" and hitbox.type == self.hitbox.forwardAir.type .. anim.current .. "Right" then
                     hitbox.active = true
-                else
-                    hitbox.active = false
-                end
-            elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAir.type .. "Left" then
-                if anim.current == 3 then
+                elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAir.type .. anim.current .. "Left" then
                     hitbox.active = true
                 else
                     hitbox.active = false
