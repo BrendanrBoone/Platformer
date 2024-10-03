@@ -254,7 +254,6 @@ function Enemy:land(collision)
     self.currentGroundCollision = collision
     self.yVel = 0
     self.grounded = true
-    print("landed")
 end
 
 function Enemy.beginContact(a, b, collision)

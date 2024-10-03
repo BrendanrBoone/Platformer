@@ -124,6 +124,7 @@ function Player:loadForwardAttackHitbox()
     self.hitbox.forwardAttack.mapWidth = self.hitbox.forwardAttack.map.layers.ground.width * 16
 
     self.hitbox.forwardAttack.damage = 10
+    self.hitbox.forwardAttack.shakeSize = "large"
 
     self.hitbox.forwardAttack.xVel = 500
     self.hitbox.forwardAttack.yVel = -100
@@ -146,7 +147,8 @@ function Player:loadForwardAttackHitbox()
 
         damage = self.hitbox.forwardAttack.damage,
         xVel = self.hitbox.forwardAttack.xVel,
-        yVel = self.hitbox.forwardAttack.yVel
+        yVel = self.hitbox.forwardAttack.yVel,
+        shakeSize = self.hitbox.forwardAttack.shakeSize
     }
     Hitbox.generateHitboxes(args)
 end
@@ -158,6 +160,7 @@ function Player:loadForwardAirHitbox()
     self.hitbox.forwardAir.mapWidth = self.hitbox.forwardAir.map.layers.ground.width * 16
 
     self.hitbox.forwardAir.damage = 5
+    self.hitbox.forwardAir.shakeSize = "small"
 
     self.hitbox.forwardAir.xVel = 500
     self.hitbox.forwardAir.yVel = -100
@@ -180,7 +183,8 @@ function Player:loadForwardAirHitbox()
 
         damage = self.hitbox.forwardAir.damage,
         xVel = self.hitbox.forwardAir.xVel,
-        yVel = self.hitbox.forwardAir.yVel
+        yVel = self.hitbox.forwardAir.yVel,
+        shakeSize = self.hitbox.forwardAir.shakeSize
     }
     Hitbox.generateHitboxes(args)
 end

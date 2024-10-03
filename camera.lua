@@ -48,15 +48,12 @@ function Camera:setPosition(x, y)
         if self.shakingTimer <= 0 then
             self.shaking = false
         end
-        print("shook xvel:" .. self.xVel .. " yvel:" .. self.yVel .. " timer:" .. self.shakingTimer)
         
     end
 end
 
--- NEED TO ADD ACCELERATION
 --@size: string == "large", "medium", "small", "extraSmall"
 -- defaults to extraSmall if unknown size
--- shakerTimer 2 is too small
 function Camera:shake(size)
     self.shaking = true
 
@@ -68,7 +65,7 @@ function Camera:shake(size)
     if size == "large" then
         self.xVel = 5
         self.yVel = 10
-        self.shakingTimer = 10
+        self.shakingTimer = 20
     elseif size == "medium" then
         self.xVel = 1
         self.yVel = 2

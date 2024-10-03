@@ -9,7 +9,7 @@ LiveHitboxes = {}
 TargetsInRange = {} -- ex: {{'hitbox3': target1, target2, target3}, {'hitbox4': target1, target2, target3}}
 HitboxTypeHit = {}
 
-function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage, xVel, yVel)
+function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage, xVel, yVel, shakeSize)
     local instance = setmetatable({}, Hitbox)
 
     instance.src = {}
@@ -31,6 +31,7 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
     instance.xVel = xVel
     instance.yVel = yVel
     instance.damage = damage
+    instance.shakeSize = shakeSize
     instance.active = false
     instance.hit = false
 
@@ -61,7 +62,8 @@ function Hitbox.generateHitboxes(args)
                     v.height,
                     args.damage,
                     args.xVel,
-                    args.yVel
+                    args.yVel,
+                    args.shakeSize
                 )
 
                 -- Left Hitbox
@@ -75,7 +77,8 @@ function Hitbox.generateHitboxes(args)
                     v.height,
                     args.damage,
                     -args.xVel,
-                    args.yVel
+                    args.yVel,
+                    args.shakeSize
                 )
             end
         end
@@ -129,7 +132,7 @@ end
 function Hitbox:hitTarget(target)
     target:takeDamage(self.damage)
     target:takeKnockback(self.xVel, self.yVel)
-    Camera:shake("")
+    Camera:shake(self.shakeSize)
 end
 
 -- helper function
@@ -143,7 +146,6 @@ end
 function Hitbox:withinRange(target)
     if not self.isInTable(TargetsInRange[self.type], target) then
         table.insert(TargetsInRange[self.type], target)
-        print("target in range")
     end
 end
 
@@ -161,7 +163,6 @@ function Hitbox:outsideRange(target)
         for i, t in ipairs(TargetsInRange[self.type]) do
             if t == target then
                 table.remove(TargetsInRange[self.type], i)
-                print("target out of range")
             end
         end
     end
