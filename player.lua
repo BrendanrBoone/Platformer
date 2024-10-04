@@ -44,6 +44,7 @@ function Player:load()
     self.emoting = false
     self.attacking = false
     self.alive = true
+    self.invincibility = false
     self.grounded = false
     self.direction = "right"
     self.state = "idle"
@@ -190,15 +191,17 @@ function Player:loadForwardAirHitbox()
 end
 
 function Player:takeDamage(amount)
-    self:tintRed()
-    Sounds.playSound(Sounds.sfx.playerHit)
-    if self.health.current - amount > 0 then
-        self.health.current = self.health.current - amount
-    else
-        self.health.current = 0
-        self:die()
+    if not self.invincibility then
+        self:tintRed()
+        Sounds.playSound(Sounds.sfx.playerHit)
+        if self.health.current - amount > 0 then
+            self.health.current = self.health.current - amount
+        else
+            self.health.current = 0
+            self:die()
+        end
+        print("Player health: " .. self.health.current)
     end
-    print("Player health: " .. self.health.current)
 end
 
 function Player:respawn()
@@ -359,10 +362,18 @@ function Player:move(dt)
 end
 
 function Player:applyFriction(dt)
-    if self.xVel > 0 then
-        self.xVel = math.max(self.xVel - self.friction * dt, 0)
-    elseif self.xVel < 0 then
-        self.xVel = math.min(self.xVel + self.friction * dt, 0)
+    if self.grounded then
+        if self.xVel > 0 then
+            self.xVel = math.max(self.xVel - self.friction * dt, 0)
+        elseif self.xVel < 0 then
+            self.xVel = math.min(self.xVel + self.friction * dt, 0)
+        end
+    else -- MAYBE CHANGE THIS LATER
+        if self.xVel > 0 then
+            self.xVel = math.max(self.xVel - self.friction / 5 * dt, 0)
+        elseif self.xVel < 0 then
+            self.xVel = math.min(self.xVel + self.friction / 5 * dt, 0)
+        end
     end
 end
 
@@ -483,6 +494,7 @@ end
 
 function Player:forwardAirEffects(anim)
     if self.activeForwardAir then
+        self.invincibility = true
         for _, hitbox in ipairs(LiveHitboxes) do
             if hitbox.type:find(self.hitbox.forwardAir.type) then
                 if self.direction == "right" and hitbox.type == self.hitbox.forwardAir.type .. anim.current .. "Right" then
@@ -505,6 +517,7 @@ function Player:cancelActiveActions()
     self.activeForwardAir = false
     self.activeForwardAttack = false
     self.emoting = false
+    self.invincibility = false
 end
 
 function Player:emote(key)
