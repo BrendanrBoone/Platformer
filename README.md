@@ -18,6 +18,5 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * LightHouse level
 * Nico Robin tutorial npc
 * Jiraiya Naruto World npc
-* Define camera shake level when loading hitboxes
 * Add invulnerability frames to franky during forward air or making forward air bigger
 * make attack effects of franky more modular

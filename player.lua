@@ -382,41 +382,6 @@ function Player:syncPhysics()
     self.physics.body:setLinearVelocity(self.xVel, self.yVel)
 end
 
-function Player:beginContact(a, b, collision)
-    if self.grounded == true then return end
-    if (a:getUserData() and a:getUserData().__index == Hitbox)
-        or (b:getUserData() and b:getUserData().__index == Hitbox) then
-        return
-    end
-    local __, ny = collision:getNormal()
-    if a == self.physics.fixture then
-        if ny > 0 then
-            self:land(collision)
-        elseif ny < 0 then
-            self.yVel = 0
-        end
-    elseif b == self.physics.fixture then
-        if ny < 0 then
-            self:land(collision)
-        elseif ny > 0 then
-            self.yVel = 0
-        end
-    end
-end
-
-function Player:land(collision)
-    self.currentGroundCollision = collision
-    self.yVel = 0
-    self.grounded = true
-    self.airJumpsUsed = 0
-    self.graceTime = self.graceDuration
-
-    self:cancelActiveActions()
-
-    self:resetAnimations()
-    self:resetHitboxes()
-end
-
 function Player:jump(key)
     if not self:doingAction() then
         if (key == "w" or key == "up" or key == "space") then
@@ -540,6 +505,65 @@ end
 function Player:superJump()
     self.yVel = self.superJumpAmount
     Sounds.playSound(Sounds.sfx.playerJump)
+end
+
+function Player:checkIfTargets(fixture1, fixture2)
+    for _, v in ipairs(self.hitbox.forwardAttack.targets) do
+        if v.physics.fixture == fixture1 or v.physics.fixture == fixture2 then
+            return true
+        end
+    end
+    return false
+end
+
+function Player:beginContact(a, b, collision)
+    if self.grounded == true then return end
+    if (a:getUserData() and a:getUserData().__index == Hitbox)
+        or (b:getUserData() and b:getUserData().__index == Hitbox) then
+        return
+    end
+
+    local __, ny = collision:getNormal()
+    if a == self.physics.fixture then
+        if ny > 0 then
+            if self:checkIfTargets(a, b) then
+                -- Ignore collision with enemy if walking or jumping on top
+                if self.yVel < 0 then
+                    collision:setEnabled(false)
+                    return
+                end
+            end
+            self:land(collision)
+        elseif ny < 0 then
+            self.yVel = 0
+        end
+    elseif b == self.physics.fixture then
+        if ny < 0 then
+            if self:checkIfTargets(a, b) then
+                -- Ignore collision with enemy if walking or jumping on top
+                if self.yVel < 0 then
+                    collision:setEnabled(false)
+                    return
+                end
+            end
+            self:land(collision)
+        elseif ny > 0 then
+            self.yVel = 0
+        end
+    end
+end
+
+function Player:land(collision)
+    self.currentGroundCollision = collision
+    self.yVel = 0
+    self.grounded = true
+    self.airJumpsUsed = 0
+    self.graceTime = self.graceDuration
+
+    self:cancelActiveActions()
+
+    self:resetAnimations()
+    self:resetHitboxes()
 end
 
 function Player:endContact(a, b, collision)
