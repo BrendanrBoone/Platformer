@@ -451,7 +451,8 @@ function Player:forwardAttackEffects(anim)
 end
 
 function Player:forwardAir(key)
-    if not self.grounded and not self.attacking and key == "p" then
+    if not self.grounded and not self.attacking and key == "p"
+    and love.keyboard.isDown("a", "d", "left", "right") then
         self.attacking = true
         self.activeForwardAir = true
     end
@@ -522,30 +523,15 @@ function Player:beginContact(a, b, collision)
         or (b:getUserData() and b:getUserData().__index == Hitbox) then
         return
     end
-
     local __, ny = collision:getNormal()
     if a == self.physics.fixture then
         if ny > 0 then
-            if self:checkIfTargets(a, b) then
-                -- Ignore collision with enemy if walking or jumping on top
-                if self.yVel < 0 then
-                    collision:setEnabled(false)
-                    return
-                end
-            end
             self:land(collision)
         elseif ny < 0 then
             self.yVel = 0
         end
     elseif b == self.physics.fixture then
         if ny < 0 then
-            if self:checkIfTargets(a, b) then
-                -- Ignore collision with enemy if walking or jumping on top
-                if self.yVel < 0 then
-                    collision:setEnabled(false)
-                    return
-                end
-            end
             self:land(collision)
         elseif ny > 0 then
             self.yVel = 0
