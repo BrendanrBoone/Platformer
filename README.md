@@ -22,3 +22,4 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * Franky learn rasengan
 * secret level at top of lighthouse
 * slowly moving second Layer background
+* define walls and allow Franky to cling, slide down, and jump from walls
