@@ -370,9 +370,9 @@ function Player:applyFriction(dt)
         end
     else -- MAYBE CHANGE THIS LATER
         if self.xVel > 0 then
-            self.xVel = math.max(self.xVel - self.friction / 5 * dt, 0)
+            self.xVel = math.max(self.xVel - self.friction / 6 * dt, 0)
         elseif self.xVel < 0 then
-            self.xVel = math.min(self.xVel + self.friction / 5 * dt, 0)
+            self.xVel = math.min(self.xVel + self.friction / 6 * dt, 0)
         end
     end
 end
