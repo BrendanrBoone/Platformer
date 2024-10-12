@@ -71,6 +71,7 @@ function love.keypressed(key)
         Player:emote(key)
         Player:forwardAir(key)
         Player:forwardAttack(key)
+        Player:rushAttack(key)
     end
 
     Menu:Escape(key)

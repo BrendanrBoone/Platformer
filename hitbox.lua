@@ -6,7 +6,7 @@ local Camera = require("camera")
 LiveHitboxes = {}
 
 TargetsInRange = {} -- ex: {{'hitbox3': target1, target2, target3}, {'hitbox4': target1, target2, target3}}
-HitboxTypeHit = {}
+HitboxTypeHit = {} -- ex: {'hitbox3', 'hitbox4'}
 
 function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage, xVel, yVel, shakeSize)
     local instance = setmetatable({}, Hitbox)
@@ -46,7 +46,32 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
     table.insert(LiveHitboxes, instance)
 end
 
+--[[
+@params args = {
+    srcFixture: love.physics.fixture
+    hitboxType: string
+    targets: table
+
+    width: number
+    height: number
+    xOff: number
+    yOff: number
+
+    damage: number
+    xVel: number
+    yVel: number
+    knockbackAtFrame: table -- {{300, -200}, {500, -400}}
+
+    shakeSize: string -- 'large'
+}
+]]
 function Hitbox.generateHitboxes(args)
+    if args.knockbackAtFrame then
+        print(args.hitboxType.." found")
+        Hitbox.generateHitboxesAtFrame(args)
+        return
+    end
+
     for i = 1, args.animTotal do
         for _, v in ipairs(args.layerObjects) do
             if v.type == args.hitboxType .. i then
@@ -77,6 +102,44 @@ function Hitbox.generateHitboxes(args)
                     args.damage,
                     -args.xVel,
                     args.yVel,
+                    args.shakeSize
+                )
+            end
+        end
+    end
+end
+
+function Hitbox.generateHitboxesAtFrame(args)
+    for i = 1, args.animTotal do
+        for _, v in ipairs(args.layerObjects) do
+            if v.type == args.hitboxType .. i then
+                -- Right Hitbox
+                Hitbox.new(
+                    args.srcFixture,
+                    args.hitboxType .. i .. "Right",
+                    args.targets,
+                    v.x - args.width - v.width / 2 + args.xOff,
+                    v.y - args.height + v.height / 2 + args.yOff / 2,
+                    v.width,
+                    v.height,
+                    args.damage,
+                    args.knockbackAtFrame[i][1],
+                    args.knockbackAtFrame[i][2],
+                    args.shakeSize
+                )
+
+                -- Left Hitbox
+                Hitbox.new(
+                    args.srcFixture,
+                    args.hitboxType .. i .. "Left",
+                    args.targets,
+                    args.hitboxMapWidth / 2 - v.x - v.width / 2,
+                    v.y - args.height + v.height / 2 + args.yOff / 2,
+                    v.width,
+                    v.height,
+                    args.damage,
+                    -args.knockbackAtFrame[i][1],
+                    args.knockbackAtFrame[i][2],
                     args.shakeSize
                 )
             end

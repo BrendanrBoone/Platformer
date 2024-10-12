@@ -40,6 +40,7 @@ function Player:load()
     -- boolean check if action are active
     self.activeForwardAir = false
     self.activeForwardAttack = false
+    self.activeRushAttack = false
 
     self.emoting = false
     self.attacking = false
@@ -107,6 +108,11 @@ function Player:loadAssets()
         self.animation.forwardAttack.img[i] = love.graphics.newImage("assets/Franky/forwardAttack/" .. i .. ".png")
     end
 
+    self.animation.rushAttack = { total = 4, current = 1, img = {} }
+    for i = 1, self.animation.rushAttack.total do
+        self.animation.rushAttack.img[i] = love.graphics.newImage("assets/Franky/rushAttack/" .. i .. ".png")
+    end
+
     self.animation.draw = self.animation.idle.img[1]
     self.animation.width = self.animation.draw:getWidth()
     self.animation.height = self.animation.draw:getHeight()
@@ -116,6 +122,46 @@ function Player:loadHitboxes()
     self.hitbox = {}
     self:loadForwardAirHitbox()
     self:loadForwardAttackHitbox()
+    self:loadRushAttackHitbox()
+end
+
+function Player:loadRushAttackHitbox()
+    self.hitbox.rushAttack = {}
+    self.hitbox.rushAttack.map = STI("hitboxMap/rushAttack.lua", { "box2d" })
+    self.hitbox.rushAttack.hitboxesLayer = self.hitbox.rushAttack.map.layers.hitboxes
+    self.hitbox.rushAttack.mapWidth = self.hitbox.rushAttack.map.layers.ground.width * 16
+
+    self.hitbox.rushAttack.damage = 10
+    self.hitbox.rushAttack.shakeSize = "large"
+
+    self.hitbox.rushAttack.knockbackAtFrame = {
+        { 100,  0 },
+        { 100,  0 },
+        { 100,  0 },
+        { 500, -100 }
+    }
+
+    self.hitbox.rushAttack.targets = ActiveEnemys
+
+    self.hitbox.rushAttack.type = "rushAttack"
+    local args = {
+        animTotal = self.animation.rushAttack.total,
+        hitboxType = self.hitbox.rushAttack.type,
+        layerObjects = self.hitbox.rushAttack.hitboxesLayer.objects,
+        hitboxMapWidth = self.hitbox.forwardAir.mapWidth, -- little weird
+
+        srcFixture = self.physics.fixture,
+        targets = self.hitbox.rushAttack.targets,
+        width = self.width,
+        xOff = self.FrankyOffsetX,
+        height = self.height,
+        yOff = self.FrankyOffsetY,
+
+        damage = self.hitbox.rushAttack.damage,
+        knockbackAtFrame = self.hitbox.rushAttack.knockbackAtFrame,
+        shakeSize = self.hitbox.rushAttack.shakeSize
+    }
+    Hitbox.generateHitboxes(args)
 end
 
 function Player:loadForwardAttackHitbox()
@@ -192,6 +238,10 @@ end
 
 function Player:takeDamage(amount)
     if not self.invincibility then
+        self:cancelActiveActions()
+        self:resetAnimations()
+        self:resetHitboxes()
+
         self:tintRed()
         Sounds.playSound(Sounds.sfx.playerHit)
         if self.health.current - amount > 0 then
@@ -236,6 +286,7 @@ function Player:incrementCoins()
 end
 
 function Player:update(dt)
+    print(self.invincibility)
     self:unTint(dt)
     self:respawn()
     self:setState()
@@ -270,6 +321,8 @@ function Player:setState()
         if self.attacking then
             if self.activeForwardAttack then
                 self.state = "forwardAttack"
+            elseif self.activeRushAttack then
+                self.state = "rushAttack"
             end
         else
             if self.xVel == 0 then
@@ -319,6 +372,7 @@ function Player:animEffects(animation)
     self:emoteOwEffects(animation)
     self:forwardAirEffects(animation)
     self:forwardAttackEffects(animation)
+    self:rushAttackEffects(animation)
 end
 
 function Player:decreaseGraceTime(dt)
@@ -410,6 +464,7 @@ end
 function Player:resetAnimations()
     self.animation.forwardAir.current = 1
     self.animation.forwardAttack.current = 1
+    self.animation.rushAttack.current = 1
     self.animation.emote.current = 1
 end
 
@@ -419,6 +474,33 @@ function Player:resetHitboxes()
             if hitbox.type:find(v.type) then
                 hitbox.active = false
             end
+        end
+    end
+end
+
+function Player:rushAttack(key)
+    if not self.attacking and self.grounded and self.xVel ~= 0 and key == "p" then
+        self.attacking = true
+        self.activeRushAttack = true
+    end
+end
+
+function Player:rushAttackEffects(anim)
+    if self.activeRushAttack then
+        self.invincibility = true
+        for _, hitbox in ipairs(LiveHitboxes) do
+            if hitbox.type:find(self.hitbox.rushAttack.type) then
+                if self.direction == "right" and hitbox.type == self.hitbox.rushAttack.type .. anim.current .. "Right" then
+                    hitbox.active = true
+                elseif self.direction == "left" and hitbox.type == self.hitbox.rushAttack.type .. anim.current .. "Left" then
+                    hitbox.active = true
+                else
+                    hitbox.active = false
+                end
+            end
+        end
+        if anim.current == anim.total then
+            self:cancelActiveActions()
         end
     end
 end
@@ -452,7 +534,7 @@ end
 
 function Player:forwardAir(key)
     if not self.grounded and not self.attacking and key == "p"
-    and love.keyboard.isDown("a", "d", "left", "right") then
+        and love.keyboard.isDown("a", "d", "left", "right") then
         self.attacking = true
         self.activeForwardAir = true
     end
@@ -482,6 +564,7 @@ function Player:cancelActiveActions()
     self.attacking = false
     self.activeForwardAir = false
     self.activeForwardAttack = false
+    self.activeRushAttack = false
     self.emoting = false
     self.invincibility = false
 end

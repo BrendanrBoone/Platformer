@@ -23,3 +23,4 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * secret level at top of lighthouse
 * slowly moving second Layer background
 * define walls and allow Franky to cling, slide down, and jump from walls
+* Franky takes damage when a damage dealing object is in his hurtbox *tracked with a list*
