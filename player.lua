@@ -102,7 +102,7 @@ function Player:loadAssets()
         self.animation.forwardAir.img[i] = love.graphics.newImage("assets/Franky/forwardAir/" .. i .. ".png")
     end
 
-    self.animation.forwardAttack = { total = 13, current = 1, img = {} }
+    self.animation.forwardAttack = { total = 9, current = 1, img = {} }
     for i = 1, self.animation.forwardAttack.total do
         self.animation.forwardAttack.img[i] = love.graphics.newImage("assets/Franky/forwardAttack/" .. i .. ".png")
     end

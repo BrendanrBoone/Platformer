@@ -302,122 +302,6 @@ return {
       wangsets = {},
       tilecount = 72,
       tiles = {}
-    },
-    {
-      name = "10",
-      firstgid = 705,
-      class = "",
-      tilewidth = 16,
-      tileheight = 16,
-      spacing = 0,
-      margin = 0,
-      columns = 12,
-      image = "../assets/Franky/forwardAttack/10.png",
-      imagewidth = 192,
-      imageheight = 96,
-      objectalignment = "unspecified",
-      tilerendersize = "tile",
-      fillmode = "stretch",
-      tileoffset = {
-        x = 0,
-        y = 0
-      },
-      grid = {
-        orientation = "orthogonal",
-        width = 16,
-        height = 16
-      },
-      properties = {},
-      wangsets = {},
-      tilecount = 72,
-      tiles = {}
-    },
-    {
-      name = "11",
-      firstgid = 777,
-      class = "",
-      tilewidth = 16,
-      tileheight = 16,
-      spacing = 0,
-      margin = 0,
-      columns = 12,
-      image = "../assets/Franky/forwardAttack/11.png",
-      imagewidth = 192,
-      imageheight = 96,
-      objectalignment = "unspecified",
-      tilerendersize = "tile",
-      fillmode = "stretch",
-      tileoffset = {
-        x = 0,
-        y = 0
-      },
-      grid = {
-        orientation = "orthogonal",
-        width = 16,
-        height = 16
-      },
-      properties = {},
-      wangsets = {},
-      tilecount = 72,
-      tiles = {}
-    },
-    {
-      name = "12",
-      firstgid = 849,
-      class = "",
-      tilewidth = 16,
-      tileheight = 16,
-      spacing = 0,
-      margin = 0,
-      columns = 12,
-      image = "../assets/Franky/forwardAttack/12.png",
-      imagewidth = 192,
-      imageheight = 96,
-      objectalignment = "unspecified",
-      tilerendersize = "tile",
-      fillmode = "stretch",
-      tileoffset = {
-        x = 0,
-        y = 0
-      },
-      grid = {
-        orientation = "orthogonal",
-        width = 16,
-        height = 16
-      },
-      properties = {},
-      wangsets = {},
-      tilecount = 72,
-      tiles = {}
-    },
-    {
-      name = "13",
-      firstgid = 921,
-      class = "",
-      tilewidth = 16,
-      tileheight = 16,
-      spacing = 0,
-      margin = 0,
-      columns = 12,
-      image = "../assets/Franky/forwardAttack/13.png",
-      imagewidth = 192,
-      imageheight = 96,
-      objectalignment = "unspecified",
-      tilerendersize = "tile",
-      fillmode = "stretch",
-      tileoffset = {
-        x = 0,
-        y = 0
-      },
-      grid = {
-        orientation = "orthogonal",
-        width = 16,
-        height = 16
-      },
-      properties = {},
-      wangsets = {},
-      tilecount = 72,
-      tiles = {}
     }
   },
   layers = {
@@ -612,7 +496,7 @@ return {
       id = 8,
       name = "frame7",
       class = "",
-      visible = false,
+      visible = true,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -664,7 +548,7 @@ return {
       id = 10,
       name = "frame9",
       class = "",
-      visible = true,
+      visible = false,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -699,12 +583,12 @@ return {
       properties = {},
       encoding = "lua",
       data = {
-        705, 706, 707, 708, 709, 710, 711, 712, 713, 714, 715, 716,
-        717, 718, 719, 720, 721, 722, 723, 724, 725, 726, 727, 728,
-        729, 730, 731, 732, 733, 734, 735, 736, 737, 738, 739, 740,
-        741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752,
-        753, 754, 755, 756, 757, 758, 759, 760, 761, 762, 763, 764,
-        765, 766, 767, 768, 769, 770, 771, 772, 773, 774, 775, 776
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
       }
     },
     {
@@ -725,12 +609,12 @@ return {
       properties = {},
       encoding = "lua",
       data = {
-        777, 778, 779, 780, 781, 782, 783, 784, 785, 786, 787, 788,
-        789, 790, 791, 792, 793, 794, 795, 796, 797, 798, 799, 800,
-        801, 802, 803, 804, 805, 806, 807, 808, 809, 810, 811, 812,
-        813, 814, 815, 816, 817, 818, 819, 820, 821, 822, 823, 824,
-        825, 826, 827, 828, 829, 830, 831, 832, 833, 834, 835, 836,
-        837, 838, 839, 840, 841, 842, 843, 844, 845, 846, 847, 848
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
       }
     },
     {
@@ -751,12 +635,12 @@ return {
       properties = {},
       encoding = "lua",
       data = {
-        849, 850, 851, 852, 853, 854, 855, 856, 857, 858, 859, 860,
-        861, 862, 863, 864, 865, 866, 867, 868, 869, 870, 871, 872,
-        873, 874, 875, 876, 877, 878, 879, 880, 881, 882, 883, 884,
-        885, 886, 887, 888, 889, 890, 891, 892, 893, 894, 895, 896,
-        897, 898, 899, 900, 901, 902, 903, 904, 905, 906, 907, 908,
-        909, 910, 911, 912, 913, 914, 915, 916, 917, 918, 919, 920
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
       }
     },
     {
@@ -777,12 +661,12 @@ return {
       properties = {},
       encoding = "lua",
       data = {
-        921, 922, 923, 924, 925, 926, 927, 928, 929, 930, 931, 932,
-        933, 934, 935, 936, 937, 938, 939, 940, 941, 942, 943, 944,
-        945, 946, 947, 948, 949, 950, 951, 952, 953, 954, 955, 956,
-        957, 958, 959, 960, 961, 962, 963, 964, 965, 966, 967, 968,
-        969, 970, 971, 972, 973, 974, 975, 976, 977, 978, 979, 980,
-        981, 982, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
       }
     },
     {
@@ -854,7 +738,7 @@ return {
         {
           id = 5,
           name = "Hitbox",
-          type = "forwardAttack6",
+          type = "forwardAttack7",
           shape = "ellipse",
           x = 77.625,
           y = 45.5,
@@ -893,7 +777,7 @@ return {
         {
           id = 8,
           name = "Hitbox",
-          type = "forwardAttack7",
+          type = "forwardAttack4",
           shape = "ellipse",
           x = 77.6875,
           y = 45.57,
@@ -984,7 +868,7 @@ return {
         {
           id = 15,
           name = "Hitbox",
-          type = "forwardAttack8",
+          type = "forwardAttack6",
           shape = "ellipse",
           x = 77.5625,
           y = 45.5,
@@ -997,7 +881,7 @@ return {
         {
           id = 16,
           name = "Hitbox",
-          type = "forwardAttack8",
+          type = "forwardAttack4",
           shape = "ellipse",
           x = 83.9375,
           y = 45.625,
@@ -1010,7 +894,7 @@ return {
         {
           id = 17,
           name = "Hitbox",
-          type = "forwardAttack8",
+          type = "forwardAttack5",
           shape = "ellipse",
           x = 91.375,
           y = 45.625,
@@ -1023,7 +907,7 @@ return {
         {
           id = 18,
           name = "Hitbox",
-          type = "forwardAttack8",
+          type = "forwardAttack4",
           shape = "ellipse",
           x = 98.25,
           y = 45.4375,
@@ -1036,7 +920,7 @@ return {
         {
           id = 19,
           name = "Hitbox",
-          type = "forwardAttack8",
+          type = "forwardAttack4",
           shape = "ellipse",
           x = 104.5,
           y = 45.5,
@@ -1049,7 +933,7 @@ return {
         {
           id = 20,
           name = "Hitbox",
-          type = "forwardAttack8",
+          type = "forwardAttack6",
           shape = "ellipse",
           x = 112.813,
           y = 45.5625,
@@ -1062,7 +946,7 @@ return {
         {
           id = 21,
           name = "Hitbox",
-          type = "forwardAttack8",
+          type = "forwardAttack6",
           shape = "ellipse",
           x = 119.875,
           y = 45.5625,
@@ -1075,7 +959,7 @@ return {
         {
           id = 22,
           name = "Hitbox",
-          type = "forwardAttack8",
+          type = "forwardAttack7",
           shape = "ellipse",
           x = 126.938,
           y = 45.6875,
@@ -1088,7 +972,7 @@ return {
         {
           id = 23,
           name = "Hitbox",
-          type = "forwardAttack8",
+          type = "forwardAttack6",
           shape = "ellipse",
           x = 134.563,
           y = 45.5,
@@ -1101,7 +985,7 @@ return {
         {
           id = 24,
           name = "Hitbox",
-          type = "forwardAttack8",
+          type = "forwardAttack7",
           shape = "ellipse",
           x = 139.75,
           y = 45.625,
@@ -1114,7 +998,7 @@ return {
         {
           id = 25,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack3",
           shape = "ellipse",
           x = 77.5625,
           y = 45.625,
@@ -1127,7 +1011,7 @@ return {
         {
           id = 27,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack3",
           shape = "ellipse",
           x = 84,
           y = 45.625,
@@ -1140,7 +1024,7 @@ return {
         {
           id = 28,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack4",
           shape = "ellipse",
           x = 91.25,
           y = 45.625,
@@ -1153,7 +1037,7 @@ return {
         {
           id = 30,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack5",
           shape = "ellipse",
           x = 98.25,
           y = 45.375,
@@ -1166,7 +1050,7 @@ return {
         {
           id = 31,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack5",
           shape = "ellipse",
           x = 104.438,
           y = 45.5625,
@@ -1179,7 +1063,7 @@ return {
         {
           id = 33,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack5",
           shape = "ellipse",
           x = 112.938,
           y = 45.5625,
@@ -1192,7 +1076,7 @@ return {
         {
           id = 35,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack5",
           shape = "ellipse",
           x = 119.688,
           y = 45.5,
@@ -1205,7 +1089,7 @@ return {
         {
           id = 36,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack6",
           shape = "ellipse",
           x = 126.875,
           y = 45.6875,
@@ -1218,7 +1102,7 @@ return {
         {
           id = 37,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack7",
           shape = "ellipse",
           x = 134.563,
           y = 45.4375,
@@ -1231,7 +1115,7 @@ return {
         {
           id = 38,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack6",
           shape = "ellipse",
           x = 139.688,
           y = 45.625,
@@ -1244,7 +1128,7 @@ return {
         {
           id = 39,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack7",
           shape = "ellipse",
           x = 146.125,
           y = 45.8125,
@@ -1257,7 +1141,7 @@ return {
         {
           id = 40,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack7",
           shape = "ellipse",
           x = 153.125,
           y = 45.6875,
@@ -1270,7 +1154,7 @@ return {
         {
           id = 41,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack7",
           shape = "ellipse",
           x = 160.375,
           y = 45.5,
@@ -1283,7 +1167,7 @@ return {
         {
           id = 42,
           name = "Hitbox",
-          type = "forwardAttack9",
+          type = "forwardAttack7",
           shape = "ellipse",
           x = 165.688,
           y = 45.5625,
