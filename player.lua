@@ -110,7 +110,7 @@ function Player:loadAssets()
         self.animation.forwardAttack.img[i] = love.graphics.newImage("assets/Franky/forwardAttack/" .. i .. ".png")
     end
 
-    self.animation.rushAttack = { total = 4, current = 1, img = {} }
+    self.animation.rushAttack = { total = 5, current = 1, img = {} }
     for i = 1, self.animation.rushAttack.total do
         self.animation.rushAttack.img[i] = love.graphics.newImage("assets/Franky/rushAttack/" .. i .. ".png")
     end
@@ -134,7 +134,7 @@ function Player:loadRushAttackHitbox()
     self.hitbox.rushAttack.mapWidth = self.hitbox.rushAttack.map.layers.ground.width * 16
 
     self.hitbox.rushAttack.damage = 10
-    self.hitbox.rushAttack.shakeSize = "large"
+    self.hitbox.rushAttack.shakeSize = "medium"
 
     self.hitbox.rushAttack.knockbackAtFrame = {
         { 100,  0 },
@@ -150,7 +150,7 @@ function Player:loadRushAttackHitbox()
         animTotal = self.animation.rushAttack.total,
         hitboxType = self.hitbox.rushAttack.type,
         layerObjects = self.hitbox.rushAttack.hitboxesLayer.objects,
-        hitboxMapWidth = self.hitbox.forwardAir.mapWidth, -- little weird
+        hitboxMapWidth = self.hitbox.rushAttack.mapWidth, -- little weird
 
         srcFixture = self.physics.fixture,
         targets = self.hitbox.rushAttack.targets,
@@ -501,6 +501,7 @@ function Player:rushAttackEffects(anim)
             end
         end
         if anim.current == anim.total then
+            print("canceled")
             self:cancelActiveActions()
         end
     end
