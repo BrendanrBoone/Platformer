@@ -32,7 +32,7 @@ function Enemy.new(x, y)
     instance.rageTrigger = 3
 
     instance.damage = 1
-    instance.hitCooldown = { time = 0, duration = 0.5 }
+    instance.hitCooldown = { time = 0, duration = 1.5 }
     instance.health = { current = 20, max = 20 }
 
     instance.color = {
@@ -106,10 +106,12 @@ end
 -- fix timing of this THIS THIS THIS THIS
 function Enemy:dealDamage(dt)
     if Helper.isInTable(PlayerContacts, self.physics.fixture) then
+        if self.hitCooldown.time == 0 then
+            Player:takeDamage(self.damage)
+        end
         self.hitCooldown.time = self.hitCooldown.time + dt
         if self.hitCooldown.time >= self.hitCooldown.duration then
             self.hitCooldown.time = 0
-            Player:takeDamage(self.damage)
         end
     end
 end
