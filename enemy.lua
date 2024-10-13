@@ -32,7 +32,7 @@ function Enemy.new(x, y)
     instance.rageTrigger = 3
 
     instance.damage = 1
-    instance.hitCooldown = { time = 0, duration = 1.5 }
+    instance.hitCooldown = { time = 0, duration = 1 }
     instance.health = { current = 20, max = 20 }
 
     instance.color = {

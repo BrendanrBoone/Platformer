@@ -18,9 +18,9 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * LightHouse level
 * Nico Robin tutorial npc
 * Jiraiya Naruto World npc
-* Add invulnerability frames to franky during forward air or making forward air bigger
+* make forward air better
 * Franky learn rasengan
 * secret level at top of lighthouse
 * slowly moving second Layer background
 * define walls and allow Franky to cling, slide down, and jump from walls
-* Franky takes damage when a damage dealing object is in his hurtbox *tracked with a list*
+* Stamina bar
