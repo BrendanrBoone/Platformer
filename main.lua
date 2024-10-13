@@ -93,5 +93,6 @@ end
 
 function endContact(a, b, collision)
     if Hitbox.endContact(a, b, collision) then return end
+    Enemy.endContact(a, b, collision)
     Player:endContact(a, b, collision)
 end

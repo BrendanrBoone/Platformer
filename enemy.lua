@@ -3,6 +3,7 @@ Enemy.__index = Enemy
 local Player = require("player")
 local Hitbox = require("hitbox")
 local Explosion = require("explosion")
+local Helper = require("helper")
 
 ActiveEnemys = {}
 
@@ -19,7 +20,7 @@ function Enemy.new(x, y)
     instance.offsetY = -8 -- model is inside the ground a bit
     instance.r = 0        -- rotation
 
-    instance.speed = 0 -- NORMALLY 100
+    instance.speed = 0    -- NORMALLY 100
     instance.speedMod = 1
     instance.xVel = 0
     instance.yVel = 0
@@ -31,6 +32,7 @@ function Enemy.new(x, y)
     instance.rageTrigger = 3
 
     instance.damage = 1
+    instance.hitCooldown = { time = 0, duration = 0.5 }
     instance.health = { current = 20, max = 20 }
 
     instance.color = {
@@ -98,6 +100,18 @@ function Enemy:update(dt)
     self:applyGravity(dt)
     self:move(dt)
     self:normalStateCheck()
+    self:dealDamage(dt)
+end
+
+-- fix timing of this THIS THIS THIS THIS
+function Enemy:dealDamage(dt)
+    if Helper.isInTable(PlayerContacts, self.physics.fixture) then
+        self.hitCooldown.time = self.hitCooldown.time + dt
+        if self.hitCooldown.time >= self.hitCooldown.duration then
+            self.hitCooldown.time = 0
+            Player:takeDamage(self.damage)
+        end
+    end
 end
 
 function Enemy:unTint(dt)
@@ -221,13 +235,13 @@ function Enemy:draw()
 end
 
 function Enemy.updateAll(dt)
-    for i, instance in ipairs(ActiveEnemys) do
+    for _, instance in ipairs(ActiveEnemys) do
         instance:update(dt)
     end
 end
 
 function Enemy.drawAll()
-    for i, instance in ipairs(ActiveEnemys) do
+    for _, instance in ipairs(ActiveEnemys) do
         instance:draw()
     end
 end
@@ -264,7 +278,7 @@ function Enemy.beginContact(a, b, collision)
     for _, instance in ipairs(ActiveEnemys) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
-                Player:takeDamage(instance.damage)
+                table.insert(PlayerContacts, instance.physics.fixture)
             end
 
             instance:incrementRage()
@@ -279,6 +293,14 @@ function Enemy.endContact(a, b, collision)
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if instance.currentGroundCollision == collision then
                 instance.grounded = false
+            elseif a == Player.physics.fixture or b == Player.physics.fixture then
+                if Helper.isInTable(PlayerContacts, instance.physics.fixture) then
+                    for i, f in ipairs(PlayerContacts) do
+                        if f == instance.physics.fixture then
+                            table.remove(PlayerContacts, i)
+                        end
+                    end
+                end
             end
         end
     end

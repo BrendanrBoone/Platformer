@@ -2,6 +2,7 @@ local Hitbox = {}
 Hitbox.__index = Hitbox
 
 local Camera = require("camera")
+local Helper = require("helper")
 
 LiveHitboxes = {}
 
@@ -172,7 +173,7 @@ end
 
 function Hitbox:syncHit()
     if self.active then
-        if not self.isInTable(HitboxTypeHit, self.type) then
+        if not Helper.isInTable(HitboxTypeHit, self.type) then
             table.insert(HitboxTypeHit, self.type)
             for i, target in ipairs(TargetsInRange[self.type]) do
                 print("target was hit")
@@ -180,7 +181,7 @@ function Hitbox:syncHit()
             end
         end
     else
-        if self.isInTable(HitboxTypeHit, self.type) then
+        if Helper.isInTable(HitboxTypeHit, self.type) then
             for i, t in ipairs(HitboxTypeHit) do
                 if t == self.type then
                     table.remove(HitboxTypeHit, i)
@@ -197,16 +198,8 @@ function Hitbox:hitTarget(target)
     Camera:shake(self.shakeSize)
 end
 
--- helper function
-function Hitbox.isInTable(tbl, val)
-    for _, v in ipairs(tbl) do
-        if v == val then return true end
-    end
-    return false
-end
-
 function Hitbox:withinRange(target)
-    if not self.isInTable(TargetsInRange[self.type], target) then
+    if not Helper.isInTable(TargetsInRange[self.type], target) then
         table.insert(TargetsInRange[self.type], target)
     end
 end

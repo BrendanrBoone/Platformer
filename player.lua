@@ -4,6 +4,8 @@ local Explosion = require("explosion")
 local STI = require("sti")
 local Hitbox = require("hitbox")
 
+PlayerContacts = {} -- fixtures
+
 function Player:load()
     self.x = 100
     self.y = 0
@@ -286,7 +288,6 @@ function Player:incrementCoins()
 end
 
 function Player:update(dt)
-    print(self.invincibility)
     self:unTint(dt)
     self:respawn()
     self:setState()
