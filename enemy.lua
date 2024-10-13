@@ -103,7 +103,6 @@ function Enemy:update(dt)
     self:dealDamage(dt)
 end
 
--- fix timing of this THIS THIS THIS THIS
 function Enemy:dealDamage(dt)
     if Helper.isInTable(PlayerContacts, self.physics.fixture) then
         if self.hitCooldown.time == 0 then
@@ -113,6 +112,8 @@ function Enemy:dealDamage(dt)
         if self.hitCooldown.time >= self.hitCooldown.duration then
             self.hitCooldown.time = 0
         end
+    else
+        self.hitCooldown.time = 0
     end
 end
 
