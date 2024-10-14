@@ -33,18 +33,6 @@
  <tileset firstgid="633" name="9" tilewidth="16" tileheight="16" tilecount="72" columns="12">
   <image source="../../assets/Franky/forwardAttack/9.png" width="192" height="96"/>
  </tileset>
- <tileset firstgid="705" name="10" tilewidth="16" tileheight="16" tilecount="72" columns="12">
-  <image source="../../assets/Franky/forwardAttack/10.png" width="192" height="96"/>
- </tileset>
- <tileset firstgid="777" name="11" tilewidth="16" tileheight="16" tilecount="72" columns="12">
-  <image source="../../assets/Franky/forwardAttack/11.png" width="192" height="96"/>
- </tileset>
- <tileset firstgid="849" name="12" tilewidth="16" tileheight="16" tilecount="72" columns="12">
-  <image source="../../assets/Franky/forwardAttack/12.png" width="192" height="96"/>
- </tileset>
- <tileset firstgid="921" name="13" tilewidth="16" tileheight="16" tilecount="72" columns="12">
-  <image source="../../assets/Franky/forwardAttack/13.png" width="192" height="96"/>
- </tileset>
  <layer id="2" name="ground" width="12" height="6" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,
@@ -115,7 +103,7 @@
 477,478,479,480,481,482,483,484,485,486,487,0
 </data>
  </layer>
- <layer id="8" name="frame7" width="12" height="6" visible="0">
+ <layer id="8" name="frame7" width="12" height="6">
   <data encoding="csv">
 489,490,491,492,493,494,495,496,497,498,499,500,
 501,502,503,504,505,506,507,508,509,510,511,512,
@@ -135,7 +123,7 @@
 621,622,623,624,625,626,627,628,629,630,631,632
 </data>
  </layer>
- <layer id="10" name="frame9" width="12" height="6">
+ <layer id="10" name="frame9" width="12" height="6" visible="0">
   <data encoding="csv">
 633,634,635,636,637,638,639,640,641,642,643,644,
 645,646,647,648,649,650,651,652,653,654,655,656,
@@ -147,42 +135,42 @@
  </layer>
  <layer id="11" name="frame10" width="12" height="6" visible="0">
   <data encoding="csv">
-705,706,707,708,709,710,711,712,713,714,715,716,
-717,718,719,720,721,722,723,724,725,726,727,728,
-729,730,731,732,733,734,735,736,737,738,739,740,
-741,742,743,744,745,746,747,748,749,750,751,752,
-753,754,755,756,757,758,759,760,761,762,763,764,
-765,766,767,768,769,770,771,772,773,774,775,776
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <layer id="12" name="frame11" width="12" height="6" visible="0">
   <data encoding="csv">
-777,778,779,780,781,782,783,784,785,786,787,788,
-789,790,791,792,793,794,795,796,797,798,799,800,
-801,802,803,804,805,806,807,808,809,810,811,812,
-813,814,815,816,817,818,819,820,821,822,823,824,
-825,826,827,828,829,830,831,832,833,834,835,836,
-837,838,839,840,841,842,843,844,845,846,847,848
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <layer id="13" name="frame12" width="12" height="6" visible="0">
   <data encoding="csv">
-849,850,851,852,853,854,855,856,857,858,859,860,
-861,862,863,864,865,866,867,868,869,870,871,872,
-873,874,875,876,877,878,879,880,881,882,883,884,
-885,886,887,888,889,890,891,892,893,894,895,896,
-897,898,899,900,901,902,903,904,905,906,907,908,
-909,910,911,912,913,914,915,916,917,918,919,920
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <layer id="14" name="frame13" width="12" height="6" visible="0">
   <data encoding="csv">
-921,922,923,924,925,926,927,928,929,930,931,932,
-933,934,935,936,937,938,939,940,941,942,943,944,
-945,946,947,948,949,950,951,952,953,954,955,956,
-957,958,959,960,961,962,963,964,965,966,967,968,
-969,970,971,972,973,974,975,976,977,978,979,980,
-981,982,983,984,985,986,987,988,989,990,991,992
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup color="#f8f806" id="15" name="hitboxes">
@@ -198,7 +186,7 @@
   <object id="4" name="Hitbox" type="forwardAttack6" x="83.8125" y="45.57" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="5" name="Hitbox" type="forwardAttack6" x="77.625" y="45.5" width="16" height="16">
+  <object id="5" name="Hitbox" type="forwardAttack7" x="77.625" y="45.5" width="16" height="16">
    <ellipse/>
   </object>
   <object id="6" name="Hitbox" type="forwardAttack6" x="91.25" y="45.57" width="16" height="16">
@@ -207,7 +195,7 @@
   <object id="7" name="Hitbox" type="forwardAttack6" x="98.3125" y="45.57" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="8" name="Hitbox" type="forwardAttack7" x="77.6875" y="45.57" width="16" height="16">
+  <object id="8" name="Hitbox" type="forwardAttack4" x="77.6875" y="45.57" width="16" height="16">
    <ellipse/>
   </object>
   <object id="9" name="Hitbox" type="forwardAttack7" x="83.875" y="45.57" width="16" height="16">
@@ -228,76 +216,76 @@
   <object id="14" name="Hitbox" type="forwardAttack7" x="119.938" y="45.57" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="15" name="Hitbox" type="forwardAttack8" x="77.5625" y="45.5" width="16" height="16">
+  <object id="15" name="Hitbox" type="forwardAttack6" x="77.5625" y="45.5" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="16" name="Hitbox" type="forwardAttack8" x="83.9375" y="45.625" width="16" height="16">
+  <object id="16" name="Hitbox" type="forwardAttack4" x="83.9375" y="45.625" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="17" name="Hitbox" type="forwardAttack8" x="91.375" y="45.625" width="16" height="16">
+  <object id="17" name="Hitbox" type="forwardAttack5" x="91.375" y="45.625" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="18" name="Hitbox" type="forwardAttack8" x="98.25" y="45.4375" width="16" height="16">
+  <object id="18" name="Hitbox" type="forwardAttack4" x="98.25" y="45.4375" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="19" name="Hitbox" type="forwardAttack8" x="104.5" y="45.5" width="16" height="16">
+  <object id="19" name="Hitbox" type="forwardAttack4" x="104.5" y="45.5" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="20" name="Hitbox" type="forwardAttack8" x="112.813" y="45.5625" width="16" height="16">
+  <object id="20" name="Hitbox" type="forwardAttack6" x="112.813" y="45.5625" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="21" name="Hitbox" type="forwardAttack8" x="119.875" y="45.5625" width="16" height="16">
+  <object id="21" name="Hitbox" type="forwardAttack6" x="119.875" y="45.5625" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="22" name="Hitbox" type="forwardAttack8" x="126.938" y="45.6875" width="16" height="16">
+  <object id="22" name="Hitbox" type="forwardAttack7" x="126.938" y="45.6875" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="23" name="Hitbox" type="forwardAttack8" x="134.563" y="45.5" width="16" height="16">
+  <object id="23" name="Hitbox" type="forwardAttack6" x="134.563" y="45.5" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="24" name="Hitbox" type="forwardAttack8" x="139.75" y="45.625" width="16" height="16">
+  <object id="24" name="Hitbox" type="forwardAttack7" x="139.75" y="45.625" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="25" name="Hitbox" type="forwardAttack9" x="77.5625" y="45.625" width="16" height="16">
+  <object id="25" name="Hitbox" type="forwardAttack3" x="77.5625" y="45.625" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="27" name="Hitbox" type="forwardAttack9" x="84" y="45.625" width="16" height="16">
+  <object id="27" name="Hitbox" type="forwardAttack3" x="84" y="45.625" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="28" name="Hitbox" type="forwardAttack9" x="91.25" y="45.625" width="16" height="16">
+  <object id="28" name="Hitbox" type="forwardAttack4" x="91.25" y="45.625" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="30" name="Hitbox" type="forwardAttack9" x="98.25" y="45.375" width="16" height="16">
+  <object id="30" name="Hitbox" type="forwardAttack5" x="98.25" y="45.375" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="31" name="Hitbox" type="forwardAttack9" x="104.438" y="45.5625" width="16" height="16">
+  <object id="31" name="Hitbox" type="forwardAttack5" x="104.438" y="45.5625" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="33" name="Hitbox" type="forwardAttack9" x="112.938" y="45.5625" width="16" height="16">
+  <object id="33" name="Hitbox" type="forwardAttack5" x="112.938" y="45.5625" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="35" name="Hitbox" type="forwardAttack9" x="119.688" y="45.5" width="16" height="16">
+  <object id="35" name="Hitbox" type="forwardAttack5" x="119.688" y="45.5" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="36" name="Hitbox" type="forwardAttack9" x="126.875" y="45.6875" width="16" height="16">
+  <object id="36" name="Hitbox" type="forwardAttack6" x="126.875" y="45.6875" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="37" name="Hitbox" type="forwardAttack9" x="134.563" y="45.4375" width="16" height="16">
+  <object id="37" name="Hitbox" type="forwardAttack7" x="134.563" y="45.4375" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="38" name="Hitbox" type="forwardAttack9" x="139.688" y="45.625" width="16" height="16">
+  <object id="38" name="Hitbox" type="forwardAttack6" x="139.688" y="45.625" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="39" name="Hitbox" type="forwardAttack9" x="146.125" y="45.8125" width="16" height="16">
+  <object id="39" name="Hitbox" type="forwardAttack7" x="146.125" y="45.8125" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="40" name="Hitbox" type="forwardAttack9" x="153.125" y="45.6875" width="16" height="16">
+  <object id="40" name="Hitbox" type="forwardAttack7" x="153.125" y="45.6875" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="41" name="Hitbox" type="forwardAttack9" x="160.375" y="45.5" width="16" height="16">
+  <object id="41" name="Hitbox" type="forwardAttack7" x="160.375" y="45.5" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="42" name="Hitbox" type="forwardAttack9" x="165.688" y="45.5625" width="16" height="16">
+  <object id="42" name="Hitbox" type="forwardAttack7" x="165.688" y="45.5625" width="16" height="16">
    <ellipse/>
   </object>
  </objectgroup>

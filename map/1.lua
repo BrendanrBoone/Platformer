@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 15,
+  nextobjectid = 16,
   properties = {},
   tilesets = {
     {
@@ -186,12 +186,12 @@ return {
           properties = {}
         },
         {
-          id = 13,
-          name = "Enemy",
-          type = "enemy",
+          id = 15,
+          name = "NicoRobin",
+          type = "nicoRobin",
           shape = "point",
-          x = 343,
-          y = 219.667,
+          x = 335.273,
+          y = 258.85,
           width = 0,
           height = 0,
           rotation = 0,

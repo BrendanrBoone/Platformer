@@ -2,11 +2,12 @@ local Hitbox = {}
 Hitbox.__index = Hitbox
 
 local Camera = require("camera")
+local Helper = require("helper")
 
 LiveHitboxes = {}
 
 TargetsInRange = {} -- ex: {{'hitbox3': target1, target2, target3}, {'hitbox4': target1, target2, target3}}
-HitboxTypeHit = {}
+HitboxTypeHit = {} -- ex: {'hitbox3', 'hitbox4'}
 
 function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage, xVel, yVel, shakeSize)
     local instance = setmetatable({}, Hitbox)
@@ -46,22 +47,53 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
     table.insert(LiveHitboxes, instance)
 end
 
+--[[
+@params args = {
+    animTotal: number
+    hitboxType: string
+    layerObjects: table -- STI(*location*, {"box2d"}).layers.hitboxes
+    hitboxMapWidth: number
+    hitboxMapHeight: number
+    playerImgWidth: number
+
+    srcFixture: love.physics.fixture
+    targets: table
+    width: number
+    xOff: number
+    height: number
+    yOff: number
+
+    damage: number
+    xVel: number
+    yVel: number
+    knockbackAtFrame: table -- {{300, -200}, {500, -400}}
+    shakeSize: string -- 'large'
+}
+]]
 function Hitbox.generateHitboxes(args)
     for i = 1, args.animTotal do
         for _, v in ipairs(args.layerObjects) do
             if v.type == args.hitboxType .. i then
+
+                local knockbackX, knockbackY
+                if args.knockbackAtFrame then
+                    knockbackX, knockbackY = args.knockbackAtFrame[i][1], args.knockbackAtFrame[i][2]
+                else
+                    knockbackX, knockbackY = args.xVel, args.yVel
+                end
+
                 -- Right Hitbox
                 Hitbox.new(
                     args.srcFixture,
                     args.hitboxType .. i .. "Right",
                     args.targets,
-                    v.x - args.width - v.width / 2 + args.xOff,
-                    v.y - args.height + v.height / 2 + args.yOff / 2,
+                    -args.playerImgWidth / 2 + v.x + v.width / 2 + args.xOff,
+                    -args.hitboxMapHeight / 2 + v.y + v.height / 2 + args.yOff,
                     v.width,
                     v.height,
                     args.damage,
-                    args.xVel,
-                    args.yVel,
+                    knockbackX,
+                    knockbackY,
                     args.shakeSize
                 )
 
@@ -70,13 +102,13 @@ function Hitbox.generateHitboxes(args)
                     args.srcFixture,
                     args.hitboxType .. i .. "Left",
                     args.targets,
-                    args.hitboxMapWidth / 2 - v.x - v.width / 2,
-                    v.y - args.height + v.height / 2 + args.yOff / 2,
+                    args.playerImgWidth / 2 - v.x - v.width / 2 - args.xOff,
+                    -args.hitboxMapHeight / 2 + v.y + v.height / 2 + args.yOff,
                     v.width,
                     v.height,
                     args.damage,
-                    -args.xVel,
-                    args.yVel,
+                    -knockbackX,
+                    knockbackY,
                     args.shakeSize
                 )
             end
@@ -109,7 +141,7 @@ end
 
 function Hitbox:syncHit()
     if self.active then
-        if not self.isInTable(HitboxTypeHit, self.type) then
+        if not Helper.isInTable(HitboxTypeHit, self.type) then
             table.insert(HitboxTypeHit, self.type)
             for i, target in ipairs(TargetsInRange[self.type]) do
                 print("target was hit")
@@ -117,7 +149,7 @@ function Hitbox:syncHit()
             end
         end
     else
-        if self.isInTable(HitboxTypeHit, self.type) then
+        if Helper.isInTable(HitboxTypeHit, self.type) then
             for i, t in ipairs(HitboxTypeHit) do
                 if t == self.type then
                     table.remove(HitboxTypeHit, i)
@@ -134,16 +166,8 @@ function Hitbox:hitTarget(target)
     Camera:shake(self.shakeSize)
 end
 
--- helper function
-function Hitbox.isInTable(tbl, val)
-    for _, v in ipairs(tbl) do
-        if v == val then return true end
-    end
-    return false
-end
-
 function Hitbox:withinRange(target)
-    if not self.isInTable(TargetsInRange[self.type], target) then
+    if not Helper.isInTable(TargetsInRange[self.type], target) then
         table.insert(TargetsInRange[self.type], target)
     end
 end
@@ -173,13 +197,13 @@ function Hitbox:draw()
         love.graphics.circle("fill", self.x, self.y, self.height / 2)
     end]]
 
-    --[[if self.active then
+    if self.active then
         love.graphics.setColor(1, 0, 0, 0.5)
         love.graphics.circle("fill", self.x, self.y, self.height / 2)
     elseif self.hit then
         love.graphics.setColor(1, 1, 0)
         love.graphics.circle("fill", self.x, self.y, self.height / 2)
-    end]]
+    end
 
     --[[if self.active then
         love.graphics.setColor(1, 0, 0)

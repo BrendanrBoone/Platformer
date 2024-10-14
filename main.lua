@@ -12,12 +12,14 @@ local Sounds = require("sounds")
 local Explosion = require("explosion")
 local Menu = require("menu")
 local Hitbox = require("hitbox")
+local NicoRobin = require("nicoRobin")
 
 WorldPause = false
 
 function love.load()
     Sounds:load()
     Enemy.loadAssets()
+    NicoRobin.loadAssets()
     Map:load()
     GUI:load()
     Player:load()
@@ -37,6 +39,7 @@ function love.update(dt)
         Spike.updateAll(dt)
         Stone.updateAll(dt)
         Enemy.updateAll(dt)
+        NicoRobin.updateAll(dt)
         Trampoline.updateAll(dt)
         Explosion.updateAll(dt)
         Map:update(dt)
@@ -52,6 +55,7 @@ function love.draw()
     Camera:apply() -- between
     Explosion.drawAll()
     Trampoline.drawAll()
+    NicoRobin.drawAll()
     Player:draw()
     Coin.drawAll()
     Spike.drawAll()
@@ -71,6 +75,7 @@ function love.keypressed(key)
         Player:emote(key)
         Player:forwardAir(key)
         Player:forwardAttack(key)
+        Player:rushAttack(key)
     end
 
     Menu:Escape(key)
@@ -92,5 +97,6 @@ end
 
 function endContact(a, b, collision)
     if Hitbox.endContact(a, b, collision) then return end
+    Enemy.endContact(a, b, collision)
     Player:endContact(a, b, collision)
 end
