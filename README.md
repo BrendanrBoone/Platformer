@@ -16,7 +16,7 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * Currently only implemented neutral aerial and neutral grounded attack for attacks
 ### Next to do:
 * LightHouse level
-* Nico Robin: make interactable and have reading animation
+* Nico Robin: make interactable
 * Jiraiya Naruto World npc
 * buff forward air
 * Franky learn rasengan

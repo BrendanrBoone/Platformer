@@ -11,7 +11,7 @@ function NicoRobin.new(x, y)
     instance.y = y
 
     instance.state = "idle"
-    instance.idleTime = { current = 0, duration = 5}
+    instance.idleTime = { current = 0, duration = 3}
 
     -- Animations
     instance.animation = { timer = 0, rate = 0.2 }
