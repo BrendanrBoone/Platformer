@@ -9,6 +9,7 @@ local Trampoline = require("trampoline")
 local Sounds = require("sounds")
 local Hitbox = require("hitbox")
 local NicoRobin = require("nicoRobin")
+local Portal = require("portal")
 
 local oceanHighBackground = love.graphics.newImage("assets/oceanBackground.png")
 local skyBlueBackground = love.graphics.newImage("assets/background.png")
@@ -93,6 +94,7 @@ function Map:clean()
     Stone.removeAll()
     Enemy.removeAll()
     NicoRobin.removeAll()
+    Portal.removeAll()
     Trampoline.removeAll()
 end
 
@@ -119,6 +121,8 @@ function Map:spawnEntities()
             Trampoline.new(v.x + v.width / 2, v.y + v.height / 2)
         elseif v.type == "nicoRobin" then
             NicoRobin.new(v.x + v.width / 2, v.y + v.height / 2)
+        elseif v.type == "portal" then
+            Portal.new(v.x + v.width / 2, v.y + v.height / 2)
         end
     end
 end

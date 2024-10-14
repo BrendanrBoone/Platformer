@@ -15,7 +15,7 @@ function NicoRobin.new(x, y)
 
     -- Animations
     instance.animation = { timer = 0, rate = 0.2 }
-    instance.animation.idle = { total = 4, current = 1, img = NicoRobin.idleAnim }
+    instance.animation.idle = { total = 6, current = 1, img = NicoRobin.idleAnim }
     instance.animation.sittingDown = { total = 4, current = 1, img = NicoRobin.sittingDownAnim }
     instance.animation.reading = { total = 50, current = 1, img = NicoRobin.readingAnim }
     instance.animation.draw = instance.animation.idle.img[1]
@@ -46,7 +46,6 @@ function NicoRobin.loadAssets()
         if current > lastFrame then
             current = stillFrame
         end
-        print(current)
         NicoRobin.readingAnim[i] = love.graphics.newImage("assets/NicoRobin/reading/" .. current .. ".png")
     end
 

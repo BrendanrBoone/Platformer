@@ -24,3 +24,4 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * slowly moving second Layer background
 * define walls and allow Franky to cling, slide down, and jump from walls
 * Stamina bar
+* Portals with adjustable titles on the top of them

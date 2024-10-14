@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 8,
-  nextobjectid = 28,
+  nextobjectid = 29,
   properties = {},
   tilesets = {
     {
@@ -522,6 +522,19 @@ return {
           y = 2570,
           width = 30,
           height = 22,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          id = 28,
+          name = "Portal",
+          type = "portal",
+          shape = "point",
+          x = 1489,
+          y = 2352,
+          width = 0,
+          height = 0,
           rotation = 0,
           visible = true,
           properties = {}
