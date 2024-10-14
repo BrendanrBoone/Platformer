@@ -67,27 +67,27 @@ end
 }
 ]]
 function Hitbox.generateHitboxes(args)
-    if args.knockbackAtFrame then
-        print(args.hitboxType.." found")
-        Hitbox.generateHitboxesAtFrame(args)
-        return
-    end
-
     for i = 1, args.animTotal do
         for _, v in ipairs(args.layerObjects) do
             if v.type == args.hitboxType .. i then
+                local knockbackX, knockbackY
+                if args.knockbackAtFrame then
+                    knockbackX, knockbackY = args.knockbackAtFrame[i][1], args.knockbackAtFrame[i][2]
+                else
+                    knockbackX, knockbackY = args.xVel, args.yVel
+                end
                 -- Right Hitbox
                 Hitbox.new(
                     args.srcFixture,
                     args.hitboxType .. i .. "Right",
                     args.targets,
-                    v.x - args.width - v.width / 2 + args.xOff,
-                    v.y - args.height + v.height / 2 + args.yOff / 2,
+                    -args.playerImgWidth / 2 + v.x + v.width / 2 + args.xOff,
+                    -args.hitboxMapHeight / 2 + v.y + v.height / 2 + args.yOff,
                     v.width,
                     v.height,
                     args.damage,
-                    args.xVel,
-                    args.yVel,
+                    knockbackX,
+                    knockbackY,
                     args.shakeSize
                 )
 
@@ -96,51 +96,13 @@ function Hitbox.generateHitboxes(args)
                     args.srcFixture,
                     args.hitboxType .. i .. "Left",
                     args.targets,
-                    args.hitboxMapWidth / 2 - v.x - v.width / 2,
-                    v.y - args.height + v.height / 2 + args.yOff / 2,
+                    args.playerImgWidth / 2 - v.x - v.width / 2 - args.xOff,
+                    -args.hitboxMapHeight / 2 + v.y + v.height / 2 + args.yOff,
                     v.width,
                     v.height,
                     args.damage,
-                    -args.xVel,
-                    args.yVel,
-                    args.shakeSize
-                )
-            end
-        end
-    end
-end
-
-function Hitbox.generateHitboxesAtFrame(args)
-    for i = 1, args.animTotal do
-        for _, v in ipairs(args.layerObjects) do
-            if v.type == args.hitboxType .. i then
-                -- Right Hitbox
-                Hitbox.new(
-                    args.srcFixture,
-                    args.hitboxType .. i .. "Right",
-                    args.targets,
-                    v.x - args.width - v.width / 2 + args.xOff,
-                    v.y - args.height + v.height / 2 + args.yOff / 2,
-                    v.width,
-                    v.height,
-                    args.damage,
-                    args.knockbackAtFrame[i][1],
-                    args.knockbackAtFrame[i][2],
-                    args.shakeSize
-                )
-
-                -- Left Hitbox
-                Hitbox.new(
-                    args.srcFixture,
-                    args.hitboxType .. i .. "Left",
-                    args.targets,
-                    args.hitboxMapWidth / 2 - v.x - v.width / 2,
-                    v.y - args.height + v.height / 2 + args.yOff / 2,
-                    v.width,
-                    v.height,
-                    args.damage,
-                    -args.knockbackAtFrame[i][1],
-                    args.knockbackAtFrame[i][2],
+                    -knockbackX,
+                    knockbackY,
                     args.shakeSize
                 )
             end

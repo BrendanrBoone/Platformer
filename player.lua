@@ -132,6 +132,7 @@ function Player:loadRushAttackHitbox()
     self.hitbox.rushAttack.map = STI("hitboxMap/rushAttack.lua", { "box2d" })
     self.hitbox.rushAttack.hitboxesLayer = self.hitbox.rushAttack.map.layers.hitboxes
     self.hitbox.rushAttack.mapWidth = self.hitbox.rushAttack.map.layers.ground.width * 16
+    self.hitbox.rushAttack.mapHeight = self.hitbox.rushAttack.map.layers.ground.height * 16
 
     self.hitbox.rushAttack.damage = 10
     self.hitbox.rushAttack.shakeSize = "medium"
@@ -150,7 +151,9 @@ function Player:loadRushAttackHitbox()
         animTotal = self.animation.rushAttack.total,
         hitboxType = self.hitbox.rushAttack.type,
         layerObjects = self.hitbox.rushAttack.hitboxesLayer.objects,
-        hitboxMapWidth = self.hitbox.rushAttack.mapWidth, -- little weird
+        hitboxMapWidth = self.hitbox.forwardAir.mapWidth,
+        hitboxMapHeight = self.hitbox.rushAttack.mapHeight,
+        playerImgWidth = self.animation.width,
 
         srcFixture = self.physics.fixture,
         targets = self.hitbox.rushAttack.targets,
@@ -171,6 +174,7 @@ function Player:loadForwardAttackHitbox()
     self.hitbox.forwardAttack.map = STI("hitboxMap/forwardAttack.lua", { "box2d" })
     self.hitbox.forwardAttack.hitboxesLayer = self.hitbox.forwardAttack.map.layers.hitboxes
     self.hitbox.forwardAttack.mapWidth = self.hitbox.forwardAttack.map.layers.ground.width * 16
+    self.hitbox.forwardAttack.mapHeight = self.hitbox.forwardAttack.map.layers.ground.height * 16
 
     self.hitbox.forwardAttack.damage = 10
     self.hitbox.forwardAttack.shakeSize = "large"
@@ -186,6 +190,8 @@ function Player:loadForwardAttackHitbox()
         hitboxType = self.hitbox.forwardAttack.type,
         layerObjects = self.hitbox.forwardAttack.hitboxesLayer.objects,
         hitboxMapWidth = self.hitbox.forwardAir.mapWidth,
+        hitboxMapHeight = self.hitbox.forwardAttack.mapHeight,
+        playerImgWidth = self.animation.width,
 
         srcFixture = self.physics.fixture,
         targets = self.hitbox.forwardAttack.targets,
@@ -207,6 +213,7 @@ function Player:loadForwardAirHitbox()
     self.hitbox.forwardAir.map = STI("hitboxMap/forwardAir.lua", { "box2d" })
     self.hitbox.forwardAir.hitboxesLayer = self.hitbox.forwardAir.map.layers.hitboxes
     self.hitbox.forwardAir.mapWidth = self.hitbox.forwardAir.map.layers.ground.width * 16
+    self.hitbox.forwardAir.mapHeight = self.hitbox.forwardAir.map.layers.ground.height * 16
 
     self.hitbox.forwardAir.damage = 5
     self.hitbox.forwardAir.shakeSize = "small"
@@ -222,6 +229,8 @@ function Player:loadForwardAirHitbox()
         hitboxType = self.hitbox.forwardAir.type,
         layerObjects = self.hitbox.forwardAir.hitboxesLayer.objects,
         hitboxMapWidth = self.hitbox.forwardAir.mapWidth,
+        hitboxMapHeight = self.hitbox.forwardAir.mapHeight,
+        playerImgWidth = self.animation.width,
 
         srcFixture = self.physics.fixture,
         targets = self.hitbox.forwardAir.targets,
@@ -288,6 +297,7 @@ function Player:incrementCoins()
 end
 
 function Player:update(dt)
+    --print(self.x..", "..self.y)
     self:unTint(dt)
     self:respawn()
     self:setState()
@@ -501,7 +511,6 @@ function Player:rushAttackEffects(anim)
             end
         end
         if anim.current == anim.total then
-            print("canceled")
             self:cancelActiveActions()
         end
     end
@@ -653,6 +662,7 @@ function Player:draw()
     love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
     love.graphics.draw(self.animation.draw, self.x, self.y + self.FrankyOffsetY, 0, scaleX, 1, width, height)
     love.graphics.setColor(1, 1, 1)
+    --love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 end
 
 return Player
