@@ -55,12 +55,12 @@ function love.draw()
     Camera:apply() -- between
     Explosion.drawAll()
     Trampoline.drawAll()
+    NicoRobin.drawAll()
     Player:draw()
     Coin.drawAll()
     Spike.drawAll()
     Stone.drawAll()
     Enemy.drawAll()
-    NicoRobin.drawAll()
     Hitbox.drawAll()
     Camera:clear() -- these
 

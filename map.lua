@@ -92,6 +92,7 @@ function Map:clean()
     Spike.removeAll()
     Stone.removeAll()
     Enemy.removeAll()
+    NicoRobin.removeAll()
     Trampoline.removeAll()
 end
 

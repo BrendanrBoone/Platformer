@@ -11,10 +11,13 @@ function NicoRobin.new(x, y)
     instance.y = y
 
     instance.state = "idle"
+    instance.idleTime = { current = 0, duration = 5}
 
     -- Animations
-    instance.animation = { timer = 0, rate = 0.3 }
+    instance.animation = { timer = 0, rate = 0.2 }
     instance.animation.idle = { total = 4, current = 1, img = NicoRobin.idleAnim }
+    instance.animation.sittingDown = { total = 4, current = 1, img = NicoRobin.sittingDownAnim }
+    instance.animation.reading = { total = 50, current = 1, img = NicoRobin.readingAnim }
     instance.animation.draw = instance.animation.idle.img[1]
 
     instance.physics = {}
@@ -32,19 +35,47 @@ function NicoRobin.loadAssets()
         NicoRobin.idleAnim[i] = love.graphics.newImage("assets/NicoRobin/idle/" .. i .. ".png")
     end
 
+    NicoRobin.sittingDownAnim = {}
+    for i = 1, 4 do
+        NicoRobin.sittingDownAnim[i] = love.graphics.newImage("assets/NicoRobin/sittingDown/" .. i .. ".png")
+    end
+
+    NicoRobin.readingAnim = {}
+    for i = 1, 50 do
+        local current, stillFrame, lastFrame = i, 1, 4
+        if current > lastFrame then
+            current = stillFrame
+        end
+        print(current)
+        NicoRobin.readingAnim[i] = love.graphics.newImage("assets/NicoRobin/reading/" .. current .. ".png")
+    end
+
     NicoRobin.width = NicoRobin.idleAnim[1]:getWidth()
     NicoRobin.height = NicoRobin.idleAnim[1]:getHeight()
 end
 
 function NicoRobin.removeAll()
-    for _,v in ipairs(ActiveNicoRobins) do
+    for _, v in ipairs(ActiveNicoRobins) do
         v.physics.body:destroy()
     end
 
     ActiveNicoRobins = {}
 end
 
+function NicoRobin:setState(dt)
+    if self.state == "idle" then
+        self.idleTime.current = self.idleTime.current + dt
+        if self.idleTime.current >= self.idleTime.duration then
+            self.state = "sittingDown"
+        end
+    elseif self.state == "sittingDown"
+    and self.animation.sittingDown.current >= self.animation.sittingDown.total then
+        self.state = "reading"
+    end
+end
+
 function NicoRobin:update(dt)
+    self:setState(dt)
     self:animate(dt)
 end
 
