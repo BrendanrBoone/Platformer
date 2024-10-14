@@ -20,7 +20,7 @@ function BackgroundLayer.new(img, srcFixture, layerN, xOff, yOff, width, height)
 
     instance:syncAssociate()
 
-    table.insert(LiveBackgroundLayeres, instance)
+    table.insert(ActiveBackgroundLayers, instance)
 end
 
 function BackgroundLayer:update(dt)
@@ -40,26 +40,18 @@ function BackgroundLayer:syncCoordinate()
     self.y = body:getY() + self.yOff
 end
 
--- helper function
-function BackgroundLayer.isInTable(tbl, val)
-    for _, v in ipairs(tbl) do
-        if v == val then return true end
-    end
-    return false
-end
-
 function BackgroundLayer:draw()
     love.graphics.draw(self.img, self.x, self.y, 0, self.scaleX, self.width / 2, self.height / 2)
 end
 
 function BackgroundLayer.updateAll(dt)
-    for _, instance in ipairs(LiveBackgroundLayeres) do
+    for _, instance in ipairs(ActiveBackgroundLayers) do
         instance:update(dt)
     end
 end
 
 function BackgroundLayer.drawAll()
-    for _, instance in ipairs(LiveBackgroundLayeres) do
+    for _, instance in ipairs(ActiveBackgroundLayers) do
         instance:draw()
     end
 end
