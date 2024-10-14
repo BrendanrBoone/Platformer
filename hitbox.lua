@@ -49,20 +49,24 @@ end
 
 --[[
 @params args = {
-    srcFixture: love.physics.fixture
+    animTotal: number
     hitboxType: string
-    targets: table
+    layerObjects: table -- STI(*location*, {"box2d"}).layers.hitboxes
+    hitboxMapWidth: number
+    hitboxMapHeight: number
+    playerImgWidth: number
 
+    srcFixture: love.physics.fixture
+    targets: table
     width: number
-    height: number
     xOff: number
+    height: number
     yOff: number
 
     damage: number
     xVel: number
     yVel: number
     knockbackAtFrame: table -- {{300, -200}, {500, -400}}
-
     shakeSize: string -- 'large'
 }
 ]]
@@ -70,12 +74,14 @@ function Hitbox.generateHitboxes(args)
     for i = 1, args.animTotal do
         for _, v in ipairs(args.layerObjects) do
             if v.type == args.hitboxType .. i then
+
                 local knockbackX, knockbackY
                 if args.knockbackAtFrame then
                     knockbackX, knockbackY = args.knockbackAtFrame[i][1], args.knockbackAtFrame[i][2]
                 else
                     knockbackX, knockbackY = args.xVel, args.yVel
                 end
+
                 -- Right Hitbox
                 Hitbox.new(
                     args.srcFixture,

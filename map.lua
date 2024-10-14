@@ -8,6 +8,7 @@ local Player = require("player")
 local Trampoline = require("trampoline")
 local Sounds = require("sounds")
 local Hitbox = require("hitbox")
+local NicoRobin = require("nicoRobin")
 
 local oceanHighBackground = love.graphics.newImage("assets/oceanBackground.png")
 local skyBlueBackground = love.graphics.newImage("assets/background.png")
@@ -104,7 +105,7 @@ function Map:update(dt)
 end
 
 function Map:spawnEntities()
-    for i, v in ipairs(self.entityLayer.objects) do
+    for _, v in ipairs(self.entityLayer.objects) do
         if v.type == "spike" then
             Spike.new(v.x + v.width / 2, v.y + v.height / 2)
         elseif v.type == "coin" then
@@ -115,6 +116,8 @@ function Map:spawnEntities()
             Enemy.new(v.x, v.y)
         elseif v.type == "trampoline" then
             Trampoline.new(v.x + v.width / 2, v.y + v.height / 2)
+        elseif v.type == "nicoRobin" then
+            NicoRobin.new(v.x + v.width / 2, v.y + v.height / 2)
         end
     end
 end
