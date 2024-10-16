@@ -9,14 +9,14 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * ```a``` or ```left``` = move left
 * ```d``` or ```right``` = move right
 * ```w``` or ```up``` or ```space``` = jump
-* ```e``` = emote
+* ```e``` = interact or emote
 * ```p``` = attack
 * ```escape``` = Pause
 ### Log
-* Currently only implemented neutral aerial and neutral grounded attack for attacks
+* attacks implemented: neutral attack, forward attack, and forward aerial
 ### Next to do:
 * LightHouse level
-* Nico Robin: make interactable
+* Nico Robin: make interactable: finish text animation
 * Jiraiya Naruto World npc
 * buff forward air
 * Franky learn rasengan
@@ -24,4 +24,3 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * slowly moving second Layer background
 * define walls and allow Franky to cling, slide down, and jump from walls
 * Stamina bar
-* Portals with adjustable titles on the top of them
