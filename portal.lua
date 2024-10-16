@@ -4,18 +4,29 @@ Portal.__index = Portal
 ActivePortals = {}
 local Player = require("player")
 
-function Portal.new(x, y)
+function Portal.new(x, y, destination)
     local instance = setmetatable({}, Portal)
 
     instance.x = x
     instance.y = y
+    instance.destination = destination
 
     instance.state = "idle"
-    instance.idleTime = { current = 0, duration = 3}
+    instance.idleTime = {
+        current = 0,
+        duration = 3
+    }
 
     -- Animations
-    instance.animation = { timer = 0, rate = 0.2 }
-    instance.animation.idle = { total = 4, current = 1, img = Portal.idleAnim }
+    instance.animation = {
+        timer = 0,
+        rate = 0.2
+    }
+    instance.animation.idle = {
+        total = 4,
+        current = 1,
+        img = Portal.idleAnim
+    }
     instance.animation.draw = instance.animation.idle.img[1]
 
     instance.physics = {}
@@ -93,6 +104,18 @@ function Portal.beginContact(a, b, collision)
     for i, instance in ipairs(ActivePortals) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
+                print("sensed! destination: " .. instance.destination)
+                return true
+            end
+        end
+    end
+end
+
+function Portal.endContact(a, b, collision)
+    for i, instance in ipairs(ActivePortals) do
+        if a == instance.physics.fixture or b == instance.physics.fixture then
+            if a == Player.physics.fixture or b == Player.physics.fixture then
+                print("unsensed! destination: " .. instance.destination)
                 return true
             end
         end

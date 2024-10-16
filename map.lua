@@ -15,23 +15,47 @@ local oceanHighBackground = love.graphics.newImage("assets/oceanBackground.png")
 local skyBlueBackground = love.graphics.newImage("assets/background.png")
 
 function Map:load()
-    self.currentLevel = 1
-    self.firstLevel = 1
-    self.lastLevel = 4
-    self.backgroundLevels = { -- self.background[i] == background for that level
-        oceanHighBackground,
-        skyBlueBackground,
-        skyBlueBackground,
-        oceanHighBackground
+    self.backgroundLevels = { -- self.background["levelname"] == background for that level
+        levelTutorial = oceanHighBackground,
+        level2 = skyBlueBackground,
+        level3 = skyBlueBackground,
+        level4 = oceanHighBackground,
+        levelLighthouse = skyBlueBackground
     }
+
+    -- need to make some sort of way to make levels determinable by name
+    self.allLevels = {
+        levelTutorial = {
+            next = "level2",
+            prev = nil,
+            background = oceanHighBackground
+        },
+        level2 = {
+            next = "level3",
+            prev = "levelTutorial",
+            background = oceanHighBackground
+        },
+        level3 = {
+            next = "level4",
+            prev = "level2",
+            background = oceanHighBackground
+        },
+        level4 = {
+            next = nil,
+            prev = "level3",
+            background = oceanHighBackground
+        }
+    }
+
     World = love.physics.newWorld(0, 2000)
     World:setCallbacks(beginContact, endContact)
 
-    self:init()
+    self:init("level4")
 end
 
-function Map:init()
-    self.level = STI("map/"..self.currentLevel..".lua", { "box2d" })
+function Map:init(destination)
+    self.currentLevel = destination
+    self.level = STI("map/" .. destination .. ".lua", {"box2d"})
     self.level:box2d_init(World)
     self.solidLayer = self.level.layers.solid
     self.groundLayer = self.level.layers.ground
@@ -48,9 +72,9 @@ function Map:init()
     self:loadBgm()
 end
 
---change background according to what level
+-- change background according to what level
 function Map:drawBackground()
-    local background = self.backgroundLevels[self.currentLevel]
+    local background = self.allLevels[self.currentLevel].background
     love.graphics.draw(background)
 end
 
@@ -68,18 +92,28 @@ function Map:findSpawnPoints()
     end
 end
 
-function Map:next()
+function Map:toDestination(destination, dX, dY)
     self:clean()
-    self.currentLevel = self.currentLevel + 1
-    self:init()
-    Map.loadPlayer(self.startX, self.startY)
+    self:init(destination)
+    Map.loadPlayer(dX, dY) -- go to portal coordinates
+end
+
+function Map:next()
+    local nextLevel = self.allLevels[self.currentLevel].next
+    if nextLevel then
+        self:clean()
+        self:init(nextLevel)
+        self.loadPlayer(self.startX, self.startY)
+    end
 end
 
 function Map:prev()
-    self:clean()
-    self.currentLevel = self.currentLevel - 1
-    self:init()
-    Map.loadPlayer(self.endX, self.endY)
+    local nextLevel = self.allLevels[self.currentLevel].prev
+    if nextLevel then
+        self:clean()
+        self:init(nextLevel)
+        self.loadPlayer(self.endX, self.endY)
+    end
 end
 
 function Map.loadPlayer(x, y)
@@ -100,9 +134,9 @@ end
 
 function Map:update(dt)
     -- conditions to swap level
-    if self.currentLevel ~= self.lastLevel and Player.x > MapWidth - 16 then
+    if Player.x > MapWidth - 16 then
         self:next()
-    elseif self.currentLevel ~= self.firstLevel and Player.x < 0 + 16 then
+    elseif Player.x < 0 + 16 then
         self:prev()
     end
 end
@@ -122,7 +156,7 @@ function Map:spawnEntities()
         elseif v.type == "nicoRobin" then
             NicoRobin.new(v.x + v.width / 2, v.y + v.height / 2)
         elseif v.type == "portal" then
-            Portal.new(v.x + v.width / 2, v.y + v.height / 2)
+            Portal.new(v.x + v.width / 2, v.y + v.height / 2, v.properties.destination)
         end
     end
 end

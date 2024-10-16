@@ -18,12 +18,13 @@ function Sounds:load()
 
     -- clear profiles necessary => {name, source}
     self.bgmLevels = {
-        {name = "OathHeart", source = self.bgm.OathHeart},
-        {name = "OathHeart", source = self.bgm.OathHeart},
-        {name = "OathHeart", source = self.bgm.OathHeart},
-        {name = "NakamaNoShirushi", source = self.bgm.NakamaNoShirushi}
+        levelTutorial = {name = "OathHeart", source = self.bgm.OathHeart},
+        level2 = {name = "OathHeart", source = self.bgm.OathHeart},
+        level3 = {name = "OathHeart", source = self.bgm.OathHeart},
+        level4 = {name = "NakamaNoShirushi", source = self.bgm.NakamaNoShirushi},
+        levelLighthouse = {name = "NakamaNoShirushi", source = self.bgm.NakamaNoShirushi}
     }
-    self.currentlyPlayingBgm = self.bgmLevels[1]
+    self.currentlyPlayingBgm = self.bgmLevels["levelTutorial"]
     self.currentlyPlayingBgm.source:play()
     
     self.currentVolume = self.bgm.maxSound
@@ -50,8 +51,8 @@ function Sounds:maxSound(sound)
 end
 
 function Sounds:playMusic(level)
-    for i, bgm in ipairs(self.bgmLevels) do
-        if i == level and bgm.name ~= self.currentlyPlayingBgm.name then
+    for lvl, bgm in pairs(self.bgmLevels) do
+        if lvl == level and bgm.name ~= self.currentlyPlayingBgm.name then
             self.currentlyPlayingBgm.source:stop()
             self.playSound(self.bgmLevels[level].source)
             if self.currentVolume == 0 then

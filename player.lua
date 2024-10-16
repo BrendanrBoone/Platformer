@@ -297,7 +297,7 @@ function Player:incrementCoins()
 end
 
 function Player:update(dt)
-    print(self.x..", "..self.y)
+    --print(self.x..", "..self.y)
     self:unTint(dt)
     self:respawn()
     self:setState()
