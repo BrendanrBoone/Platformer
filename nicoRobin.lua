@@ -3,7 +3,7 @@ NicoRobin.__index = NicoRobin
 
 ActiveNicoRobins = {}
 local Player = require("player")
-local Anima = require("anima.Anima")
+local Anima = require("myTextAnima")
 
 function NicoRobin.new(x, y)
     local instance = setmetatable({}, NicoRobin)
@@ -52,7 +52,6 @@ function NicoRobin.loadAssets()
 
     NicoRobin.width = NicoRobin.idleAnim[1]:getWidth()
     NicoRobin.height = NicoRobin.idleAnim[1]:getHeight()
-    NicoRobin.loadAnimaAnim()
 end
 
 function NicoRobin.loadAnimaAnim()
@@ -92,7 +91,6 @@ function NicoRobin:animate(dt)
         self.animation.timer = 0
         self:setNewFrame()
     end
-    self.SpeechTextAnimation:update(dt)
 end
 
 -- updates the image
@@ -107,7 +105,6 @@ function NicoRobin:setNewFrame()
 end
 
 function NicoRobin:draw()
-    self.SpeechTextAnimation:draw(self.x, self.y, 1, 1, 50, 50)
     love.graphics.draw(self.animation.draw, self.x, self.y, 0, self.scaleX, 1, self.width / 2, self.height / 2)
 end
 
@@ -127,8 +124,6 @@ function NicoRobin.beginContact(a, b, collision)
     for i, instance in ipairs(ActiveNicoRobins) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
-                print("seen")   
-                instance.SpeechTextAnimation:animationStart(instance.x, instance.y, 1, 1, 50, 50)
                 return true
             end
         end
