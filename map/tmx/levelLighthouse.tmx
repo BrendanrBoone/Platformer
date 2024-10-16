@@ -40,6 +40,9 @@
  </objectgroup>
  <objectgroup color="#00ef1c" id="4" name="entity">
   <object id="5" name="Portal" type="portal" x="38.1558" y="250">
+   <properties>
+    <property name="destination" value="level4"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

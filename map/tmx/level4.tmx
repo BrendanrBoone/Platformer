@@ -355,7 +355,7 @@
   <object id="19" name="Trampoline" type="trampoline" x="992.091" y="2570" width="30" height="22"/>
   <object id="28" name="Portal" type="portal" x="1489" y="2352">
    <properties>
-    <property name="destination" value="lighthouse"/>
+    <property name="destination" value="levelLighthouse"/>
    </properties>
    <point/>
   </object>

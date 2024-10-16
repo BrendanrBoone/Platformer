@@ -538,7 +538,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["destination"] = "lighthouse"
+            ["destination"] = "levelLighthouse"
           }
         }
       }
@@ -563,7 +563,7 @@ return {
           type = "start",
           shape = "point",
           x = 38.6667,
-          y = 2554.67,
+          y = 2568,
           width = 0,
           height = 0,
           rotation = 0,

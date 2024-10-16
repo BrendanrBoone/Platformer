@@ -95,14 +95,14 @@ function beginContact(a, b, collision)
     if Spike.beginContact(a, b, collision) then return end
     if Trampoline.beginContact(a, b, collision) then return end
     if Hitbox.beginContact(a, b, collision) then return end
-    if Portal.beginContact(a, b, collision) then return end
+    if Portal:beginContact(a, b, collision) then return end
     Enemy.beginContact(a, b, collision)
     Player:beginContact(a, b, collision)
 end
 
 function endContact(a, b, collision)
     if Hitbox.endContact(a, b, collision) then return end
-    if Portal.endContact(a, b, collision) then return end
+    if Portal:endContact(a, b, collision) then return end
     Enemy.endContact(a, b, collision)
     Player:endContact(a, b, collision)
 end

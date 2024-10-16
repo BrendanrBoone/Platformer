@@ -16,6 +16,9 @@ function Portal.new(x, y, destination)
         current = 0,
         duration = 3
     }
+    instance.destinationVisual = false
+    instance.font = love.graphics.newFont("assets/bit.ttf", 15)
+    instance.displayTextLength = instance.font:getWidth(instance.destination)
 
     -- Animations
     instance.animation = {
@@ -84,7 +87,16 @@ function Portal:setNewFrame()
     self.animation.draw = anim.img[anim.current]
 end
 
+function Portal:displayDestination()
+    love.graphics.setFont(self.font)
+    love.graphics.setColor(1, 1, 1, 1)
+    love.graphics.print(self.destination, self.x - self.displayTextLength / 2, self.y - self.height / 2)
+end
+
 function Portal:draw()
+    if self.destinationVisual then
+        self:displayDestination()
+    end
     love.graphics.draw(self.animation.draw, self.x, self.y, 0, self.scaleX, 1, self.width / 2, self.height / 2)
 end
 
@@ -100,22 +112,24 @@ function Portal.drawAll()
     end
 end
 
-function Portal.beginContact(a, b, collision)
+function Portal:beginContact(a, b, collision)
     for i, instance in ipairs(ActivePortals) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
                 print("sensed! destination: " .. instance.destination)
+                instance.destinationVisual = true
                 return true
             end
         end
     end
 end
 
-function Portal.endContact(a, b, collision)
+function Portal:endContact(a, b, collision)
     for i, instance in ipairs(ActivePortals) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
                 print("unsensed! destination: " .. instance.destination)
+                instance.destinationVisual = false
                 return true
             end
         end
