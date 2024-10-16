@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="120" height="164" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="29">
  <editorsettings>
-  <export target="../4.lua" format="lua"/>
+  <export target="../level4.lua" format="lua"/>
  </editorsettings>
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="56" columns="14">
   <image source="../../assets/tiles.png" width="224" height="64"/>
@@ -355,6 +355,8 @@
   <object id="19" name="Trampoline" type="trampoline" x="992.091" y="2570" width="30" height="22"/>
   <object id="28" name="Portal" type="portal" x="1489" y="2352">
    <properties>
+    <property name="dX" type="float" value="38.16"/>
+    <property name="dY" type="float" value="250"/>
     <property name="destination" value="levelLighthouse"/>
    </properties>
    <point/>

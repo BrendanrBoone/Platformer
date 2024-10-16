@@ -80,6 +80,7 @@ function love.keypressed(key)
         Player:forwardAir(key)
         Player:forwardAttack(key)
         Player:rushAttack(key)
+        Map:moveThroughPortal(key)
     end
 
     Menu:Escape(key)
@@ -96,6 +97,7 @@ function beginContact(a, b, collision)
     if Trampoline.beginContact(a, b, collision) then return end
     if Hitbox.beginContact(a, b, collision) then return end
     if Portal:beginContact(a, b, collision) then return end
+    if NicoRobin.beginContact(a, b, collision) then return end
     Enemy.beginContact(a, b, collision)
     Player:beginContact(a, b, collision)
 end

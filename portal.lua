@@ -4,12 +4,14 @@ Portal.__index = Portal
 ActivePortals = {}
 local Player = require("player")
 
-function Portal.new(x, y, destination)
+function Portal.new(x, y, destination, dX, dY)
     local instance = setmetatable({}, Portal)
 
     instance.x = x
     instance.y = y
     instance.destination = destination
+    instance.dX = dX
+    instance.dY = dY
 
     instance.state = "idle"
     instance.idleTime = {

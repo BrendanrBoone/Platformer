@@ -538,6 +538,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
+            ["dX"] = 38.16,
+            ["dY"] = 250,
             ["destination"] = "levelLighthouse"
           }
         }

@@ -44,13 +44,18 @@ function Map:load()
             next = nil,
             prev = "level3",
             background = oceanHighBackground
+        },
+        levelLighthouse = {
+            next = nil,
+            prev = nil,
+            background = oceanHighBackground
         }
     }
 
     World = love.physics.newWorld(0, 2000)
     World:setCallbacks(beginContact, endContact)
 
-    self:init("level4")
+    self:init("levelTutorial")
 end
 
 function Map:init(destination)
@@ -95,6 +100,7 @@ end
 function Map:toDestination(destination, dX, dY)
     self:clean()
     self:init(destination)
+    print(dX .. " " .. dY)
     Map.loadPlayer(dX, dY) -- go to portal coordinates
 end
 
@@ -156,7 +162,17 @@ function Map:spawnEntities()
         elseif v.type == "nicoRobin" then
             NicoRobin.new(v.x + v.width / 2, v.y + v.height / 2)
         elseif v.type == "portal" then
-            Portal.new(v.x + v.width / 2, v.y + v.height / 2, v.properties.destination)
+            Portal.new(v.x + v.width / 2, v.y + v.height / 2, v.properties.destination, v.properties.dX, v.properties.dY)
+        end
+    end
+end
+
+function Map:moveThroughPortal(key)
+    if key == "e" then
+        for _, instance in ipairs(ActivePortals) do
+            if instance.destinationVisual then
+                Map:toDestination(instance.destination, instance.dX, instance.dY)
+            end
         end
     end
 end
