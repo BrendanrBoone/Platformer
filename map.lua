@@ -55,7 +55,7 @@ function Map:load()
     World = love.physics.newWorld(0, 2000)
     World:setCallbacks(beginContact, endContact)
 
-    self:init("levelTutorial")
+    self:init("levelLighthouse")
 end
 
 function Map:init(destination)
@@ -172,6 +172,7 @@ function Map:moveThroughPortal(key)
         for _, instance in ipairs(ActivePortals) do
             if instance.destinationVisual then
                 Map:toDestination(instance.destination, instance.dX, instance.dY)
+                return true
             end
         end
     end

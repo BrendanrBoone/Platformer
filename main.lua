@@ -74,13 +74,13 @@ end
 
 function love.keypressed(key)
     if not WorldPause then
+        if Map:moveThroughPortal(key) then return end
         Player:jump(key)
         Player:fastFall(key)
         Player:emote(key)
         Player:forwardAir(key)
         Player:forwardAttack(key)
         Player:rushAttack(key)
-        Map:moveThroughPortal(key)
     end
 
     Menu:Escape(key)
