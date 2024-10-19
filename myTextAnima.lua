@@ -92,6 +92,7 @@ end
 function Anima.animationEnd(fixture)
     for _, instance in ipairs(ActiveTextAnimas) do
         if instance.trigger == fixture then
+            instance.animating = false
             instance.currentlyAnimatedText = ""
         end
     end

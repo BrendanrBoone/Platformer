@@ -16,7 +16,6 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * attacks implemented: neutral attack, forward attack, and forward aerial
 ### Next to do:
 * LightHouse level
-* Nico Robin: make interactable: finish text animation
 * Jiraiya Naruto World npc
 * buff forward air
 * Franky learn rasengan
@@ -24,3 +23,5 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * slowly moving second Layer background
 * define walls and allow Franky to cling, slide down, and jump from walls
 * Stamina bar
+### Bugs:
+* punching to the right causes all the enemies to explode
