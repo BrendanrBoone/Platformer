@@ -8,16 +8,16 @@ function Anima.new(trigger, text)
 
     print("created: " .. text)
 
-    instance.trigger = trigger -- love.physics.body
+    instance.trigger = trigger -- love.physics.fixture
 
     instance.text = text
     instance.textLength = #text
     instance.currentlyAnimatedText = ""
     instance.animation = {
         timer = 0,
-        rate = 0.3
+        rate = 0.1
     }
-    instance.font = love.graphics.newFont("assets/bit.ttf", 20)
+    instance.font = love.graphics.newFont("assets/bit.ttf", 10)
 
     instance.animating = false
 
@@ -69,10 +69,12 @@ function Anima.removeAll()
 end
 
 function Anima:draw()
-    local x, y = self.trigger:getPosition()
+    local x, y = self.trigger:getBody():getPosition()
+    local displayTextLength = self.font:getWidth(self.text)
+    local robinHeight = 60 -- arbitrary
     love.graphics.setFont(self.font)
     love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.print(self.currentlyAnimatedText, x, y)
+    love.graphics.print(self.currentlyAnimatedText, x - displayTextLength / 2, y - robinHeight / 2)
 end
 
 function Anima.drawAll()
@@ -81,19 +83,17 @@ function Anima.drawAll()
     end
 end
 
-function Anima.animationStart(body)
+function Anima.animationStart(fixture)
     for _, instance in ipairs(ActiveTextAnimas) do
-        if instance.trigger == body then
-            print("here")
+        if instance.trigger == fixture then
             instance.animating = true
         end
     end
 end
 
-function Anima.animationEnd(body)
+function Anima.animationEnd(fixture)
     for _, instance in ipairs(ActiveTextAnimas) do
-        if instance.trigger == body then
-            print("here2")
+        if instance.trigger == fixture then
             instance.currentlyAnimatedText = ""
         end
     end

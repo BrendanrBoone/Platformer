@@ -27,7 +27,7 @@ function NicoRobin.new(x, y)
     instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
     instance.physics.fixture:setSensor(true) -- prevents collisions but can be sensed
 
-    Anima.new(instance.physics.body, "Hey Franky!")
+    Anima.new(instance.physics.fixture, "Hey Franky!")
 
     table.insert(ActiveNicoRobins, instance)
 end
@@ -120,7 +120,7 @@ function NicoRobin.beginContact(a, b, collision)
     for i, instance in ipairs(ActiveNicoRobins) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
-                Anima.animationStart(instance.physics.body)
+                Anima.animationStart(instance.physics.fixture)
                 return true
             end
         end
@@ -131,7 +131,7 @@ function NicoRobin.endContact(a, b, collision)
     for i, instance in ipairs(ActiveNicoRobins) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
-                Anima.animationEnd(instance.physics.body)
+                Anima.animationEnd(instance.physics.fixture)
                 return true
             end
         end
