@@ -6,8 +6,6 @@ ActiveTextAnimas = {}
 function Anima.new(trigger, text)
     local instance = setmetatable({}, Anima)
 
-    print("created: " .. text)
-
     instance.trigger = trigger -- love.physics.fixture
 
     instance.text = text
