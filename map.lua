@@ -10,6 +10,7 @@ local Sounds = require("sounds")
 local Hitbox = require("hitbox")
 local NicoRobin = require("nicoRobin")
 local Portal = require("portal")
+local Anima = require("myTextAnima")
 
 local oceanHighBackground = love.graphics.newImage("assets/oceanBackground.png")
 local skyBlueBackground = love.graphics.newImage("assets/background.png")
@@ -136,6 +137,7 @@ function Map:clean()
     NicoRobin.removeAll()
     Portal.removeAll()
     Trampoline.removeAll()
+    Anima.removeAll()
 end
 
 function Map:update(dt)

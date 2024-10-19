@@ -20,7 +20,7 @@ function Enemy.new(x, y)
     instance.offsetY = -8 -- model is inside the ground a bit
     instance.r = 0        -- rotation
 
-    instance.speed = 0    -- NORMALLY 100
+    instance.speed = 100    -- NORMALLY 100
     instance.speedMod = 1
     instance.xVel = 0
     instance.yVel = 0

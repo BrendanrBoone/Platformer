@@ -27,6 +27,8 @@ function NicoRobin.new(x, y)
     instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
     instance.physics.fixture:setSensor(true) -- prevents collisions but can be sensed
 
+    Anima.new(instance.physics.fixture, "Hey Franky!")
+
     table.insert(ActiveNicoRobins, instance)
 end
 
@@ -52,12 +54,6 @@ function NicoRobin.loadAssets()
 
     NicoRobin.width = NicoRobin.idleAnim[1]:getWidth()
     NicoRobin.height = NicoRobin.idleAnim[1]:getHeight()
-end
-
-function NicoRobin.loadAnimaAnim()
-    NicoRobin.speech = "Hey Franky"
-    NicoRobin.SpeechTextAnimation = Anima:init()
-    NicoRobin.SpeechTextAnimation:newTypingAnimation(NicoRobin.speech)
 end
 
 function NicoRobin.removeAll()
@@ -124,6 +120,18 @@ function NicoRobin.beginContact(a, b, collision)
     for i, instance in ipairs(ActiveNicoRobins) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
+                Anima.animationStart(instance.physics.fixture)
+                return true
+            end
+        end
+    end
+end
+
+function NicoRobin.endContact(a, b, collision)
+    for i, instance in ipairs(ActiveNicoRobins) do
+        if a == instance.physics.fixture or b == instance.physics.fixture then
+            if a == Player.physics.fixture or b == Player.physics.fixture then
+                Anima.animationEnd(instance.physics.fixture)
                 return true
             end
         end
