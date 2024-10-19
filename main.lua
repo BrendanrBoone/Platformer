@@ -14,6 +14,7 @@ local Menu = require("menu")
 local Hitbox = require("hitbox")
 local NicoRobin = require("nicoRobin")
 local Portal = require("portal")
+local Anima = require("myTextAnima")
 
 WorldPause = false
 
@@ -48,6 +49,7 @@ function love.update(dt)
         Map:update(dt)
         Menu:update(dt)
         Hitbox.updateAll(dt)
+        Anima.updateAll(dt)
     end
 end
 
@@ -66,6 +68,7 @@ function love.draw()
     Stone.drawAll()
     Enemy.drawAll()
     Hitbox.drawAll()
+    Anima.drawAll()
     Camera:clear() -- these
 
     GUI:draw()
@@ -105,6 +108,7 @@ end
 function endContact(a, b, collision)
     if Hitbox.endContact(a, b, collision) then return end
     if Portal:endContact(a, b, collision) then return end
+    if NicoRobin.endContact(a, b, collision) then return end
     Enemy.endContact(a, b, collision)
     Player:endContact(a, b, collision)
 end
