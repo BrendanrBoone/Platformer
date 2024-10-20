@@ -177,8 +177,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup color="#0606f7" id="9" name="backgroundObjects" visible="0">
-  <object id="41" name="LightHouse" type="lightHouse" x="1027" y="19" width="931" height="2605">
+ <objectgroup color="#0606f7" id="9" name="backgroundObjects">
+  <object id="41" name="LightHouse" type="lightHouse" x="997" y="19" width="931" height="2605">
    <properties>
     <property name="level" type="float" value="2"/>
    </properties>

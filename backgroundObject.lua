@@ -4,6 +4,7 @@ BackgroundObject.__index = BackgroundObject
 ActiveBackgroundObjects = {}
 
 local Player
+local Camera = require("camera")
 
 local levelScale = 100
 
@@ -50,7 +51,7 @@ function BackgroundObject:syncAssociate()
 end
 
 function BackgroundObject:syncCoordinate()
-    self.bgoX = Player.x / MapWidth * self.bgoRange
+    self.bgoX = Camera.x / MapWidth * self.bgoRange
     self.x = self.posX - self.bgoRange / 2 + self.bgoX
 end
 
@@ -77,7 +78,6 @@ function BackgroundObject.beginContact(a, b, collision)
     for i, instance in ipairs(ActiveBackgroundObjects) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
-                print("collided")
                 return true
             end
         end
