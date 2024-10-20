@@ -128,7 +128,10 @@ end
 
 --debug functions
 function Hitbox.printArrays()
-
+    print("LiveHitboxes:")
+    for _, v in ipairs(LiveHitboxes) do
+        print(" "..v.type)
+    end
 end
 
 function Hitbox:update(dt)

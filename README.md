@@ -24,3 +24,4 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * Stamina bar
 ### Bugs:
 * punching to the right causes all the enemies to explode
+* * likely target stays in range of hitbox and keeps being hit.
