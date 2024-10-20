@@ -15,6 +15,7 @@ local Hitbox = require("hitbox")
 local NicoRobin = require("nicoRobin")
 local Portal = require("portal")
 local Anima = require("myTextAnima")
+local BackgroundObject = require("backgroundObject")
 
 WorldPause = false
 
@@ -50,14 +51,16 @@ function love.update(dt)
         Menu:update(dt)
         Hitbox.updateAll(dt)
         Anima.updateAll(dt)
+        BackgroundObject.updateAll(dt)
     end
 end
 
 function love.draw()
     Map:drawBackground()
-    Map.level:draw(-Camera.x, -Camera.y, Camera.scale, Camera.scale)
 
     Camera:apply() -- between
+    BackgroundObject.drawAll()
+    Map.level:draw(-Camera.x, -Camera.y, Camera.scale, Camera.scale)
     Explosion.drawAll()
     Trampoline.drawAll()
     NicoRobin.drawAll()

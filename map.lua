@@ -11,6 +11,7 @@ local Hitbox = require("hitbox")
 local NicoRobin = require("nicoRobin")
 local Portal = require("portal")
 local Anima = require("myTextAnima")
+local BackgroundObject = require("backgroundObject")
 
 local oceanHighBackground = love.graphics.newImage("assets/oceanBackground.png")
 local skyBlueBackground = love.graphics.newImage("assets/background.png")
@@ -56,7 +57,7 @@ function Map:load()
     World = love.physics.newWorld(0, 2000)
     World:setCallbacks(beginContact, endContact)
 
-    self:init("levelTutorial")
+    self:init("level4")
 end
 
 function Map:init(destination)
@@ -67,9 +68,15 @@ function Map:init(destination)
     self.groundLayer = self.level.layers.ground
     self.entityLayer = self.level.layers.entity
     self.spawnsLayer = self.level.layers.spawns
+    if self.level.layers.backgroundObjects then
+        self.bgoLayer = self.level.layers.backgroundObjects
+        self.bgoLayer.visible = false
+        self:spawnBgo()
+    end
 
     self.solidLayer.visible = false
     self.entityLayer.visible = false
+    self.spawnsLayer.visible = false
     MapWidth = self.groundLayer.width * 16 -- 16 is the tile size
     MapHeight = self.groundLayer.height * 16
 
@@ -86,6 +93,12 @@ end
 
 function Map:loadBgm()
     Sounds:playMusic(self.currentLevel)
+end
+
+function Map:spawnBgo()
+    for _, v in ipairs(self.bgoLayer.objects) do
+        BackgroundObject.new(v.type, v.properties.level, v.x, v.y, v.width, v.height)
+    end
 end
 
 function Map:findSpawnPoints()
@@ -138,6 +151,7 @@ function Map:clean()
     Portal.removeAll()
     Trampoline.removeAll()
     Anima.removeAll()
+    BackgroundObject.removeAll()
 end
 
 function Map:update(dt)

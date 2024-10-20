@@ -3,12 +3,14 @@ local Sounds = require("sounds")
 local Explosion = require("explosion")
 local STI = require("sti")
 local Hitbox = require("hitbox")
+local Helper = require("helper")
+local BackgroundObject = require("backgroundObject")
 
 PlayerContacts = {} -- fixtures
 
 function Player:load()
     self.x = 100
-    self.y = 0
+    self.y = 100
     self.FrankyOffsetY = -5
     self.FrankyOffsetX = 3
     self.startX = self.x
@@ -613,18 +615,20 @@ end
 
 function Player:beginContact(a, b, collision)
     if self.grounded == true then return end
-    if (a:getUserData() and a:getUserData().__index == Hitbox)
-        or (b:getUserData() and b:getUserData().__index == Hitbox) then
+    if Helper.ignore(a, b, Hitbox)
+    or Helper.ignore(a, b, BackgroundObject) then
         return
     end
     local __, ny = collision:getNormal()
     if a == self.physics.fixture then
+        print("collided with ", b:getUserData())
         if ny > 0 then
             self:land(collision)
         elseif ny < 0 then
             self.yVel = 0
         end
     elseif b == self.physics.fixture then
+        print("collided with ", a:getUserData())
         if ny < 0 then
             self:land(collision)
         elseif ny > 0 then
