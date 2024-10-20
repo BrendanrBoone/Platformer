@@ -4,10 +4,14 @@ Hitbox.__index = Hitbox
 local Camera = require("camera")
 local Helper = require("helper")
 
+-- all hitboxes
 LiveHitboxes = {}
 
-TargetsInRange = {} -- ex: {{'hitbox3': target1, target2, target3}, {'hitbox4': target1, target2, target3}}
-HitboxTypeHit = {} -- ex: {'hitbox3', 'hitbox4'}
+--the targets that are able to be hit for each hitbox
+local targetsInRange = {} -- ex: {{'hitbox3': target1, target2, target3}, {'hitbox4': target1, target2, target3}}
+
+--Tracks what hitbox has hit something. so groups of hitboxes act as one.
+local hitboxTypeHit = {} -- ex: {'hitbox3', 'hitbox4'}
 
 function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage, xVel, yVel, shakeSize)
     local instance = setmetatable({}, Hitbox)
@@ -16,7 +20,7 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
     instance.src.fixture = srcFixture
 
     instance.type = type
-    TargetsInRange[instance.type] = {}
+    targetsInRange[instance.type] = {}
 
     -- table consisting of types objects that the hitbox can interact with. Needs to consist of fixtures
     instance.targets = targets
@@ -122,6 +126,11 @@ function Hitbox.loadAllTargets(targets)
     end
 end
 
+--debug functions
+function Hitbox.printArrays()
+
+end
+
 function Hitbox:update(dt)
     self:syncAssociate()
     self:syncHit()
@@ -141,18 +150,18 @@ end
 
 function Hitbox:syncHit()
     if self.active then
-        if not Helper.isInTable(HitboxTypeHit, self.type) then
-            table.insert(HitboxTypeHit, self.type)
-            for i, target in ipairs(TargetsInRange[self.type]) do
+        if not Helper.isInTable(hitboxTypeHit, self.type) then
+            table.insert(hitboxTypeHit, self.type)
+            for i, target in ipairs(targetsInRange[self.type]) do
                 print("target was hit")
                 self:hitTarget(target)
             end
         end
     else
-        if Helper.isInTable(HitboxTypeHit, self.type) then
-            for i, t in ipairs(HitboxTypeHit) do
+        if Helper.isInTable(hitboxTypeHit, self.type) then
+            for i, t in ipairs(hitboxTypeHit) do
                 if t == self.type then
-                    table.remove(HitboxTypeHit, i)
+                    table.remove(hitboxTypeHit, i)
                 end
             end
         end
@@ -167,8 +176,8 @@ function Hitbox:hitTarget(target)
 end
 
 function Hitbox:withinRange(target)
-    if not Helper.isInTable(TargetsInRange[self.type], target) then
-        table.insert(TargetsInRange[self.type], target)
+    if not Helper.isInTable(targetsInRange[self.type], target) then
+        table.insert(targetsInRange[self.type], target)
     end
 end
 
@@ -183,9 +192,9 @@ function Hitbox:outsideRange(target)
     end
 
     if allOutofRange then
-        for i, t in ipairs(TargetsInRange[self.type]) do
+        for i, t in ipairs(targetsInRange[self.type]) do
             if t == target then
-                table.remove(TargetsInRange[self.type], i)
+                table.remove(targetsInRange[self.type], i)
             end
         end
     end
