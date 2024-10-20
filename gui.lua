@@ -19,7 +19,11 @@ function GUI:load()
     self.volume = {}
     self.volume.img_soundOn = love.graphics.newImage("assets/ui/volumeIcon48x48.png")
     self.volume.img_soundOff = love.graphics.newImage("assets/ui/volumeIconMute48x48.png")
-    self.volume.img = self.volume.img_soundOn
+    if Sounds.soundToggle then
+        self.volume.img = self.volume.img_soundOn
+    else
+        self.volume.img = self.volume.img_soundOff
+    end
     self.volume.width = self.volume.img:getWidth()
     self.volume.height = self.volume.img:getHeight()
     self.volume.x = 30

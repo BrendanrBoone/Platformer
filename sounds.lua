@@ -2,12 +2,13 @@ local Sounds = {}
 
 function Sounds:load()
 
-    self.soundToggle = true
+    self.soundToggle = false
 
     self.bgm = {}
     self.bgm.maxSound = 0.3
     self.bgm.OathHeart = love.audio.newSource("assets/bgm/OathOfTheHeart_inazumaElevenOST.mp3", "stream")
-    self.bgm.NakamaNoShirushi = love.audio.newSource("assets/bgm/One Piece OST - Nakama no Shirushi da! Sign Of Friendship.mp3", "stream")
+    self.bgm.NakamaNoShirushi = love.audio.newSource(
+        "assets/bgm/One Piece OST - Nakama no Shirushi da! Sign Of Friendship.mp3", "stream")
 
     self.sfx = {}
     self.sfx.maxSound = 0.3
@@ -18,16 +19,36 @@ function Sounds:load()
 
     -- clear profiles necessary => {name, source}
     self.bgmLevels = {
-        levelTutorial = {name = "OathHeart", source = self.bgm.OathHeart},
-        level2 = {name = "OathHeart", source = self.bgm.OathHeart},
-        level3 = {name = "OathHeart", source = self.bgm.OathHeart},
-        level4 = {name = "NakamaNoShirushi", source = self.bgm.NakamaNoShirushi},
-        levelLighthouse = {name = "NakamaNoShirushi", source = self.bgm.NakamaNoShirushi}
+        levelTutorial = {
+            name = "OathHeart",
+            source = self.bgm.OathHeart
+        },
+        level2 = {
+            name = "OathHeart",
+            source = self.bgm.OathHeart
+        },
+        level3 = {
+            name = "OathHeart",
+            source = self.bgm.OathHeart
+        },
+        level4 = {
+            name = "NakamaNoShirushi",
+            source = self.bgm.NakamaNoShirushi
+        },
+        levelLighthouse = {
+            name = "NakamaNoShirushi",
+            source = self.bgm.NakamaNoShirushi
+        }
     }
     self.currentlyPlayingBgm = self.bgmLevels["levelTutorial"]
     self.currentlyPlayingBgm.source:play()
-    
-    self.currentVolume = self.bgm.maxSound
+
+    if self.soundToggle then
+        self.currentVolume = self.bgm.maxSound
+    else
+        self.currentVolume = 0
+    end
+
     self.currentlyPlayingBgm.source:setVolume(self.currentVolume)
 end
 
@@ -41,32 +62,38 @@ function Sounds:update(dt)
 end
 
 function Sounds:muteSound(sound)
+    self.soundToggle = false
     sound:setVolume(0)
     self.currentVolume = 0
 end
 
 function Sounds:maxSound(sound)
+    self.soundToggle = true
     sound:setVolume(self.bgm.maxSound)
     self.currentVolume = self.bgm.maxSound
 end
 
 function Sounds:playMusic(level)
-    for lvl, bgm in pairs(self.bgmLevels) do
-        if lvl == level and bgm.name ~= self.currentlyPlayingBgm.name then
-            self.currentlyPlayingBgm.source:stop()
-            self.playSound(self.bgmLevels[level].source)
-            if self.currentVolume == 0 then
-                self:muteSound(self.bgmLevels[level].source)
+    if self.soundToggle then
+        for lvl, bgm in pairs(self.bgmLevels) do
+            if lvl == level and bgm.name ~= self.currentlyPlayingBgm.name then
+                self.currentlyPlayingBgm.source:stop()
+                self.playSound(self.bgmLevels[level].source)
+                if self.currentVolume == 0 then
+                    self:muteSound(self.bgmLevels[level].source)
+                end
+                self.currentlyPlayingBgm = self.bgmLevels[level]
             end
-            self.currentlyPlayingBgm = self.bgmLevels[level]
         end
     end
 end
 
 -- helper function to make code more legible. Allows sounds to be played repeatedly
-function Sounds.playSound(sound)
-    sound:stop()
-    sound:play()
+function Sounds:playSound(sound)
+    if self.soundToggle then
+        sound:stop()
+        sound:play()
+    end
 end
 
 return Sounds
