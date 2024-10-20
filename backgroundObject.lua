@@ -25,7 +25,7 @@ function BackgroundObject.new(imgName, level, x, y, width, height)
     instance.bgoX = 0
 
     instance.physics = {}
-    instance.physics.body = love.physics.newBody(World, instance.x, instance.posY, "dynamic")
+    instance.physics.body = love.physics.newBody(World, instance.x, instance.posY, "kinematic")
     instance.physics.shape = love.physics.newRectangleShape(instance.width, instance.height)
     instance.physics.fixture = love.physics.newFixture(instance.physics.body, instance.physics.shape)
     instance.physics.fixture:setSensor(true) -- prevents collisions but can be sensed
@@ -64,12 +64,34 @@ end
 
 function BackgroundObject:draw()
     love.graphics.draw(self.img, self.x, self.posY)
-    love.graphics.rectangle("fill", self.x, self.posY, self.width, self.height)
+    --love.graphics.rectangle("fill", self.x, self.posY, self.width, self.height)
 end
 
 function BackgroundObject.drawAll()
     for _, instance in ipairs(ActiveBackgroundObjects) do
         instance:draw()
+    end
+end
+
+function BackgroundObject.beginContact(a, b, collision)
+    for i, instance in ipairs(ActiveBackgroundObjects) do
+        if a == instance.physics.fixture or b == instance.physics.fixture then
+            if a == Player.physics.fixture or b == Player.physics.fixture then
+                print("collided")
+                return true
+            end
+        end
+    end
+end
+
+function BackgroundObject.endContact(a, b, collision)
+    for i, instance in ipairs(ActiveBackgroundObjects) do
+        if a == instance.physics.fixture or b == instance.physics.fixture then
+            if a == Player.physics.fixture or b == Player.physics.fixture then
+                print("uncollided")
+                return true
+            end
+        end
     end
 end
 

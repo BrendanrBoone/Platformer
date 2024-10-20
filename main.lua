@@ -104,6 +104,7 @@ function beginContact(a, b, collision)
     if Hitbox.beginContact(a, b, collision) then return end
     if Portal:beginContact(a, b, collision) then return end
     if NicoRobin.beginContact(a, b, collision) then return end
+    if BackgroundObject.beginContact(a, b, collision) then return end
     Enemy.beginContact(a, b, collision)
     Player:beginContact(a, b, collision)
 end
@@ -112,6 +113,7 @@ function endContact(a, b, collision)
     if Hitbox.endContact(a, b, collision) then return end
     if Portal:endContact(a, b, collision) then return end
     if NicoRobin.endContact(a, b, collision) then return end
+    if BackgroundObject.endContact(a, b, collision) then return end
     Enemy.endContact(a, b, collision)
     Player:endContact(a, b, collision)
 end

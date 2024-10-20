@@ -621,14 +621,14 @@ function Player:beginContact(a, b, collision)
     end
     local __, ny = collision:getNormal()
     if a == self.physics.fixture then
-        print("collided with ", b:getUserData())
+        print("a collided with ", b:getUserData())
         if ny > 0 then
             self:land(collision)
         elseif ny < 0 then
             self.yVel = 0
         end
     elseif b == self.physics.fixture then
-        print("collided with ", a:getUserData())
+        print("b collided with ", a:getUserData())
         if ny < 0 then
             self:land(collision)
         elseif ny > 0 then
