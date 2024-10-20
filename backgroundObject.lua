@@ -3,8 +3,8 @@ BackgroundObject.__index = BackgroundObject
 
 ActiveBackgroundObjects = {}
 
-local Player
-
+local Player -- some weird shit idk why it should work. prob bc new() called after load
+             -- ONE ISSUE. the body is not near the drawing for some reason
 local levelScale = 100
 
 function BackgroundObject.new(imgName, level, x, y, width, height)
@@ -70,28 +70,6 @@ end
 function BackgroundObject.drawAll()
     for _, instance in ipairs(ActiveBackgroundObjects) do
         instance:draw()
-    end
-end
-
-function BackgroundObject.beginContact(a, b, collision)
-    for i, instance in ipairs(ActiveBackgroundObjects) do
-        if a == instance.physics.fixture or b == instance.physics.fixture then
-            if a == Player.physics.fixture or b == Player.physics.fixture then
-                print("collided")
-                return true
-            end
-        end
-    end
-end
-
-function BackgroundObject.endContact(a, b, collision)
-    for i, instance in ipairs(ActiveBackgroundObjects) do
-        if a == instance.physics.fixture or b == instance.physics.fixture then
-            if a == Player.physics.fixture or b == Player.physics.fixture then
-                print("uncollided")
-                return true
-            end
-        end
     end
 end
 
