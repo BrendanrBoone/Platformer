@@ -174,6 +174,7 @@ function Enemy:takeDamage(amount)
 end
 
 function Enemy:die()
+    Hitbox.removeTargetFromRange(self)
     self:remove()
     Explosion.new(self.x, self.y)
 end

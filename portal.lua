@@ -118,7 +118,6 @@ function Portal:beginContact(a, b, collision)
     for i, instance in ipairs(ActivePortals) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
-                print("sensed! destination: " .. instance.destination)
                 instance.destinationVisual = true
                 return true
             end
@@ -130,7 +129,6 @@ function Portal:endContact(a, b, collision)
     for i, instance in ipairs(ActivePortals) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
-                print("unsensed! destination: " .. instance.destination)
                 instance.destinationVisual = false
                 return true
             end

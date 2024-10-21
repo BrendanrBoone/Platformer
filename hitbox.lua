@@ -37,7 +37,7 @@ function Hitbox.new(srcFixture, type, targets, xOff, yOff, width, height, damage
     instance.damage = damage
     instance.shakeSize = shakeSize
     instance.active = false
-    instance.hit = false
+    instance.ableToHit = false
 
     instance.physics = {}
     instance.physics.body = love.physics.newBody(World, instance.x, instance.y, "dynamic")
@@ -126,11 +126,11 @@ function Hitbox.loadAllTargets(targets)
     end
 end
 
---debug functions
-function Hitbox.printArrays()
-    print("LiveHitboxes:")
-    for _, v in ipairs(LiveHitboxes) do
-        print(" "..v.type)
+-- debug function
+function Hitbox:printArrays()
+    print("targetsInRange " .. self.type .. ":")
+    for _, v in ipairs(targetsInRange[self.type]) do
+        print(" exist " .. tostring(v))  -- Print the target reference
     end
 end
 
@@ -173,12 +173,14 @@ end
 
 -- applies damage and knockback
 function Hitbox:hitTarget(target)
+    self:printArrays()
     target:takeDamage(self.damage)
     target:takeKnockback(self.xVel, self.yVel)
     Camera:shake(self.shakeSize)
 end
 
 function Hitbox:withinRange(target)
+    self.ableToHit = true
     if not Helper.isInTable(targetsInRange[self.type], target) then
         table.insert(targetsInRange[self.type], target)
     end
@@ -186,18 +188,42 @@ end
 
 -- check if every hitbox with same type is in range: self.hit
 function Hitbox:outsideRange(target)
+    self.ableToHit = false
     local allOutofRange = true
+
+    -- Check if any live hitbox of the same type is still able to hit
     for _, instance in ipairs(LiveHitboxes) do
-        if instance.type == self.type and instance.hit then
+        if instance.type == self.type and instance.ableToHit then
             allOutofRange = false
             break
         end
     end
 
+    -- If all hitboxes are out of range, remove the target from the list
     if allOutofRange then
-        for i, t in ipairs(targetsInRange[self.type]) do
-            if t == target then
+        print("Removing targets from targetsInRange for type: " .. self.type)
+        print("Before removal: ")
+        self:printArrays()  -- Print current targets in range
+
+        for i = #targetsInRange[self.type], 1, -1 do
+            if targetsInRange[self.type][i] == target then
+                print("Removing target: ", target)  -- Debugging statement
                 table.remove(targetsInRange[self.type], i)
+            end
+        end
+
+        print("After removal: ")
+        self:printArrays()  -- Print after removal
+    end
+end
+
+-- precautionary function. in case target still in range after destruction
+function Hitbox.removeTargetFromRange(target)
+    for k, v in pairs(targetsInRange) do
+        print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"..k)
+        for I, t in ipairs(v) do
+            if t == target then
+                table.remove(v, I)
             end
         end
     end
@@ -217,14 +243,14 @@ function Hitbox:draw()
         love.graphics.circle("fill", self.x, self.y, self.height / 2)
     end]]
 
-    --[[if self.active then
+    if self.active then
         love.graphics.setColor(1, 0, 0)
     elseif self.hit then
         love.graphics.setColor(1, 1, 0)
     else
         love.graphics.setColor(1, 1, 1)
     end
-    love.graphics.circle("fill", self.x, self.y, self.height / 2)]]
+    love.graphics.circle("fill", self.x, self.y, self.height / 2)
 end
 
 function Hitbox.updateAll(dt)
@@ -244,7 +270,6 @@ function Hitbox.beginContact(a, b, collision)
         if a == instance.physics.fixture or b == instance.physics.fixture then
             for _, target in ipairs(instance.targets) do
                 if a == target.physics.fixture or b == target.physics.fixture then
-                    instance.hit = true
                     instance:withinRange(target)
                     return true
                 end
@@ -258,7 +283,6 @@ function Hitbox.endContact(a, b, collision)
         if a == instance.physics.fixture or b == instance.physics.fixture then
             for _, target in ipairs(instance.targets) do
                 if a == target.physics.fixture or b == target.physics.fixture then
-                    instance.hit = false
                     instance:outsideRange(target)
                     return true
                 end
