@@ -299,6 +299,17 @@ function Player:incrementCoins()
     self.coins = self.coins + 1
 end
 
+function Player:pickUpItem(item)
+    if item == "staminaRefresh" then
+        self:staminaRefresh()
+    end
+end
+
+function Player:staminaRefresh()
+    -- play a noise
+    self.stamina.current = self.stamina.max
+end
+
 function Player:update(dt)
     --print(self.x..", "..self.y)
     self:unTint(dt)
@@ -412,13 +423,12 @@ end
 function Player:move(dt)
     if not self:doingAction() then
         -- sprint
-        if love.keyboard.isDown("lshift") and self.stamina.current > 0 then
+        if love.keyboard.isDown("lshift") and self.stamina.current > 0 and self.xVel ~= 0 then
             self.maxSpeed = 400
             self.stamina.current = math.max(self.stamina.current - self.stamina.rate * 2, 0)
         else
             self.maxSpeed = 200
             self.stamina.current = math.min(self.stamina.current + self.stamina.rate, self.stamina.max)
-
         end
 
         -- left and right movement

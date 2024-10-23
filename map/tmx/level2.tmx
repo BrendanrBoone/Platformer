@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="120" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="39">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="120" height="23" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="40">
  <editorsettings>
-  <export target="../2.lua" format="lua"/>
+  <export target="../level2.lua" format="lua"/>
  </editorsettings>
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16" tilecount="56" columns="14">
   <image source="../../assets/tiles.png" width="224" height="64"/>
@@ -43,6 +43,12 @@
  </objectgroup>
  <objectgroup color="#f30e25" id="4" name="entity">
   <object id="32" name="Enemy" type="enemy" x="479" y="143">
+   <point/>
+  </object>
+  <object id="39" name="Stamina Refresh Item" type="pickupItem" x="1041" y="49">
+   <properties>
+    <property name="itemType" value="staminaRefresh"/>
+   </properties>
    <point/>
   </object>
  </objectgroup>

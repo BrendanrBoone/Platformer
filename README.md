@@ -21,6 +21,6 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * Franky learn rasengan
 * secret level at top of lighthouse
 * define walls and allow Franky to cling, slide down, and jump from walls. also platforms to jump through
-* Stamina bar
 * Tutorial Level: cause for franky to adventure, and arrow png showing player go to next level
+* Item to instantly refresh stamina
 ### Bugs:
