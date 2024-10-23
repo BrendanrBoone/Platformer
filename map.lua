@@ -13,6 +13,7 @@ local Portal = require("portal")
 local Anima = require("myTextAnima")
 local BackgroundObject = require("backgroundObject")
 local PickupItem = require("pickupItem")
+local Sunny = require("sunny")
 
 local oceanHighBackground = love.graphics.newImage("assets/oceanBackground.png")
 local skyBlueBackground = love.graphics.newImage("assets/background.png")
@@ -59,7 +60,7 @@ function Map:load()
     World = love.physics.newWorld(0, 2000)
     World:setCallbacks(beginContact, endContact)
 
-    self:init("levelLighthouse")
+    self:init("levelTutorial")
 end
 
 function Map:init(destination)
@@ -183,6 +184,8 @@ function Map:spawnEntities()
             Portal.new(v.x + v.width / 2, v.y + v.height / 2, v.properties.destination, v.properties.dX, v.properties.dY)
         elseif v.type == "pickupItem" then
             PickupItem.new(v.x + v.width / 2, v.y + v.height / 2, v.properties.itemType)
+        elseif v.type == "sunny" then
+            Sunny.new(v.x + v.width / 2, v.y + v.height / 2)
         end
     end
 end

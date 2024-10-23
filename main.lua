@@ -17,6 +17,7 @@ local Portal = require("portal")
 local Anima = require("myTextAnima")
 local BackgroundObject = require("backgroundObject")
 local PickupItem = require("pickupItem")
+local Sunny = require("sunny")
 
 WorldPause = false
 
@@ -40,6 +41,7 @@ function love.update(dt)
         Camera:setPosition(Player.x, Player.y)
         Player:update(dt)
         Coin.updateAll()
+        Sunny.updateAll()
         PickupItem.updateAll()
         GUI:update(dt)
         Spike.updateAll(dt)
@@ -62,6 +64,7 @@ function love.draw()
 
     Camera:apply() -- between
     BackgroundObject.drawAll()
+    Sunny.drawAll()
     Map.level:draw(-Camera.x, -Camera.y, Camera.scale, Camera.scale)
     Explosion.drawAll()
     Trampoline.drawAll()
