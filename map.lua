@@ -30,9 +30,14 @@ function Map:load()
 
     -- need to make some sort of way to make levels determinable by name
     self.allLevels = {
+        levelPreTutorial = {
+            next = "levelTutorial",
+            prev = nil,
+            background = oceanHighBackground
+        },
         levelTutorial = {
             next = "level2",
-            prev = nil,
+            prev = "levelPreTutorial",
             background = oceanHighBackground
         },
         level2 = {
@@ -151,6 +156,7 @@ function Map:clean()
     Stone.removeAll()
     Enemy.removeAll()
     NicoRobin.removeAll()
+    Sunny.removeAll()
     Portal.removeAll()
     Trampoline.removeAll()
     Anima.removeAll()
