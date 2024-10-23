@@ -2,7 +2,7 @@ local Sounds = {}
 
 function Sounds:load()
 
-    self.soundToggle = false
+    self.soundToggle = true
 
     self.bgm = {}
     self.bgm.maxSound = 0.3
@@ -62,12 +62,18 @@ function Sounds:update(dt)
 end
 
 function Sounds:muteSound(sound)
+    print("volume muted")
+    print("sound toggle ".. tostring(self.soundToggle))
+    print("self.currentlyPlayingBgm = "..self.currentlyPlayingBgm.name)
     self.soundToggle = false
     sound:setVolume(0)
     self.currentVolume = 0
 end
 
 function Sounds:maxSound(sound)
+    print("volume maxed")
+    print("sound toggle ".. tostring(self.soundToggle))
+    print("self.currentlyPlayingBgm = "..self.currentlyPlayingBgm.name)
     self.soundToggle = true
     sound:setVolume(self.bgm.maxSound)
     self.currentVolume = self.bgm.maxSound
@@ -75,15 +81,13 @@ end
 
 function Sounds:playMusic(level)
     if self.soundToggle then
-        for lvl, bgm in pairs(self.bgmLevels) do
-            if lvl == level and bgm.name ~= self.currentlyPlayingBgm.name then
-                self.currentlyPlayingBgm.source:stop()
-                self.playSound(self.bgmLevels[level].source)
-                if self.currentVolume == 0 then
-                    self:muteSound(self.bgmLevels[level].source)
-                end
-                self.currentlyPlayingBgm = self.bgmLevels[level]
+        if self.bgmLevels[level].name ~= self.currentlyPlayingBgm.name then
+            self.currentlyPlayingBgm.source:stop()
+            self.playSound(self.bgmLevels[level].source)
+            if self.currentVolume == 0 then
+                self:muteSound(self.bgmLevels[level].source)
             end
+            self.currentlyPlayingBgm = self.bgmLevels[level]
         end
     end
 end
@@ -91,6 +95,7 @@ end
 -- helper function to make code more legible. Allows sounds to be played repeatedly
 function Sounds:playSound(sound)
     if self.soundToggle then
+        print("here")
         sound:stop()
         sound:play()
     end

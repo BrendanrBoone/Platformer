@@ -173,7 +173,6 @@ end
 
 -- applies damage and knockback
 function Hitbox:hitTarget(target)
-    self:printArrays()
     target:takeDamage(self.damage)
     target:takeKnockback(self.xVel, self.yVel)
     Camera:shake(self.shakeSize)
@@ -201,26 +200,17 @@ function Hitbox:outsideRange(target)
 
     -- If all hitboxes are out of range, remove the target from the list
     if allOutofRange then
-        print("Removing targets from targetsInRange for type: " .. self.type)
-        print("Before removal: ")
-        self:printArrays()  -- Print current targets in range
-
         for i = #targetsInRange[self.type], 1, -1 do
             if targetsInRange[self.type][i] == target then
-                print("Removing target: ", target)  -- Debugging statement
                 table.remove(targetsInRange[self.type], i)
             end
         end
-
-        print("After removal: ")
-        self:printArrays()  -- Print after removal
     end
 end
 
 -- precautionary function. in case target still in range after destruction
 function Hitbox.removeTargetFromRange(target)
     for k, v in pairs(targetsInRange) do
-        print("HEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"..k)
         for I, t in ipairs(v) do
             if t == target then
                 table.remove(v, I)

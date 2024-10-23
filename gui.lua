@@ -104,13 +104,13 @@ function GUI:mousepressed(mx, my, button)
         and mx >= self.volume.x and mx < self.volume.x + self.volume.width
         and my >= self.volume.y and my < self.volume.y + self.volume.height then
         if Sounds.soundToggle then
+            Sounds.soundToggle = false
             self.volume.img = self.volume.img_soundOff
             Sounds:muteSound(Sounds.currentlyPlayingBgm.source)
-            Sounds.soundToggle = false
         else
+            Sounds.soundToggle = true
             self.volume.img = self.volume.img_soundOn
             Sounds:maxSound(Sounds.currentlyPlayingBgm.source)
-            Sounds.soundToggle = true
         end
     end
 end

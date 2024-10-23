@@ -128,10 +128,10 @@ function Map:next()
 end
 
 function Map:prev()
-    local nextLevel = self.allLevels[self.currentLevel].prev
-    if nextLevel then
+    local prevLevel = self.allLevels[self.currentLevel].prev
+    if prevLevel then
         self:clean()
-        self:init(nextLevel)
+        self:init(prevLevel)
         self.loadPlayer(self.endX, self.endY)
     end
 end
