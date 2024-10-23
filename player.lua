@@ -30,6 +30,7 @@ function Player:load()
     self.airJumpsUsed = 0
     self.coins = 0
     self.health = { current = 15, max = 15 }
+    self.stamina = { current = 200, max = 200, rate = 0.1}
 
     self.color = {
         red = 1,
@@ -411,10 +412,13 @@ end
 function Player:move(dt)
     if not self:doingAction() then
         -- sprint
-        if love.keyboard.isDown("lshift") then
+        if love.keyboard.isDown("lshift") and self.stamina.current > 0 then
             self.maxSpeed = 400
+            self.stamina.current = math.max(self.stamina.current - self.stamina.rate * 2, 0)
         else
             self.maxSpeed = 200
+            self.stamina.current = math.min(self.stamina.current + self.stamina.rate, self.stamina.max)
+
         end
 
         -- left and right movement
