@@ -16,6 +16,7 @@ local PickupItem = require("pickupItem")
 
 local oceanHighBackground = love.graphics.newImage("assets/oceanBackground.png")
 local skyBlueBackground = love.graphics.newImage("assets/background.png")
+local redBackground = love.graphics.newImage("assets/redBackground.png")
 
 function Map:load()
     self.backgroundLevels = { -- self.background["levelname"] == background for that level
@@ -51,14 +52,14 @@ function Map:load()
         levelLighthouse = {
             next = nil,
             prev = nil,
-            background = oceanHighBackground
+            background = redBackground
         }
     }
 
     World = love.physics.newWorld(0, 2000)
     World:setCallbacks(beginContact, endContact)
 
-    self:init("level2")
+    self:init("levelLighthouse")
 end
 
 function Map:init(destination)
