@@ -173,37 +173,11 @@ return {
       properties = {},
       objects = {
         {
-          id = 8,
-          name = "Trampoline",
-          type = "trampoline",
-          shape = "rectangle",
-          x = 457.03,
-          y = 266.53,
-          width = 33,
-          height = 22,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
-          id = 15,
-          name = "NicoRobin",
-          type = "nicoRobin",
-          shape = "point",
-          x = 416.273,
-          y = 258.85,
-          width = 0,
-          height = 0,
-          rotation = 0,
-          visible = true,
-          properties = {}
-        },
-        {
           id = 16,
           name = "Sunny",
           type = "sunny",
           shape = "rectangle",
-          x = -598.135,
+          x = 41.87,
           y = -406.759,
           width = 1118,
           height = 893,

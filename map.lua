@@ -12,9 +12,12 @@ local NicoRobin = require("nicoRobin")
 local Portal = require("portal")
 local Anima = require("myTextAnima")
 local BackgroundObject = require("backgroundObject")
+local PickupItem = require("pickupItem")
+local Sunny = require("sunny")
 
 local oceanHighBackground = love.graphics.newImage("assets/oceanBackground.png")
 local skyBlueBackground = love.graphics.newImage("assets/background.png")
+local redBackground = love.graphics.newImage("assets/redBackground.png")
 
 function Map:load()
     self.backgroundLevels = { -- self.background["levelname"] == background for that level
@@ -27,9 +30,14 @@ function Map:load()
 
     -- need to make some sort of way to make levels determinable by name
     self.allLevels = {
+        levelPreTutorial = {
+            next = "levelTutorial",
+            prev = nil,
+            background = oceanHighBackground
+        },
         levelTutorial = {
             next = "level2",
-            prev = nil,
+            prev = "levelPreTutorial",
             background = oceanHighBackground
         },
         level2 = {
@@ -50,14 +58,14 @@ function Map:load()
         levelLighthouse = {
             next = nil,
             prev = nil,
-            background = oceanHighBackground
+            background = redBackground
         }
     }
 
     World = love.physics.newWorld(0, 2000)
     World:setCallbacks(beginContact, endContact)
 
-    self:init("levelLighthouse")
+    self:init("levelTutorial")
 end
 
 function Map:init(destination)
@@ -148,6 +156,7 @@ function Map:clean()
     Stone.removeAll()
     Enemy.removeAll()
     NicoRobin.removeAll()
+    Sunny.removeAll()
     Portal.removeAll()
     Trampoline.removeAll()
     Anima.removeAll()
@@ -179,6 +188,10 @@ function Map:spawnEntities()
             NicoRobin.new(v.x + v.width / 2, v.y + v.height / 2)
         elseif v.type == "portal" then
             Portal.new(v.x + v.width / 2, v.y + v.height / 2, v.properties.destination, v.properties.dX, v.properties.dY)
+        elseif v.type == "pickupItem" then
+            PickupItem.new(v.x + v.width / 2, v.y + v.height / 2, v.properties.itemType)
+        elseif v.type == "sunny" then
+            Sunny.new(v.x + v.width / 2, v.y + v.height / 2)
         end
     end
 end

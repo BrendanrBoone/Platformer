@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 6,
-  nextobjectid = 39,
+  nextobjectid = 40,
   properties = {},
   tilesets = {
     {
@@ -155,6 +155,21 @@ return {
           rotation = 0,
           visible = true,
           properties = {}
+        },
+        {
+          id = 39,
+          name = "Stamina Refresh Item",
+          type = "pickupItem",
+          shape = "point",
+          x = 1041,
+          y = 49,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["itemType"] = "staminaRefresh"
+          }
         }
       }
     },

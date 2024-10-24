@@ -45,11 +45,7 @@
   </object>
  </objectgroup>
  <objectgroup color="#ee0729" id="4" name="entity">
-  <object id="8" name="Trampoline" type="trampoline" x="457.03" y="266.53" width="33" height="22"/>
-  <object id="15" name="NicoRobin" type="nicoRobin" x="416.273" y="258.85">
-   <point/>
-  </object>
-  <object id="16" name="Sunny" type="sunny" x="-598.135" y="-406.759" width="1118" height="893"/>
+  <object id="16" name="Sunny" type="sunny" x="41.87" y="-406.759" width="1118" height="893"/>
  </objectgroup>
  <layer id="2" name="grass" width="40" height="23">
   <data encoding="csv">

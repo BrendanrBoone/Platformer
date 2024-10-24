@@ -16,6 +16,8 @@ local NicoRobin = require("nicoRobin")
 local Portal = require("portal")
 local Anima = require("myTextAnima")
 local BackgroundObject = require("backgroundObject")
+local PickupItem = require("pickupItem")
+local Sunny = require("sunny")
 
 WorldPause = false
 
@@ -39,6 +41,8 @@ function love.update(dt)
         Camera:setPosition(Player.x, Player.y)
         Player:update(dt)
         Coin.updateAll()
+        Sunny.updateAll()
+        PickupItem.updateAll()
         GUI:update(dt)
         Spike.updateAll(dt)
         Stone.updateAll(dt)
@@ -60,6 +64,7 @@ function love.draw()
 
     Camera:apply() -- between
     BackgroundObject.drawAll()
+    Sunny.drawAll()
     Map.level:draw(-Camera.x, -Camera.y, Camera.scale, Camera.scale)
     Explosion.drawAll()
     Trampoline.drawAll()
@@ -67,6 +72,7 @@ function love.draw()
     Portal.drawAll()
     Player:draw()
     Coin.drawAll()
+    PickupItem.drawAll()
     Spike.drawAll()
     Stone.drawAll()
     Enemy.drawAll()
@@ -99,6 +105,7 @@ end
 
 function beginContact(a, b, collision)
     if Coin.beginContact(a, b, collision) then return end
+    if PickupItem.beginContact(a, b, collision) then return end
     if Spike.beginContact(a, b, collision) then return end
     if Trampoline.beginContact(a, b, collision) then return end
     if Hitbox.beginContact(a, b, collision) then return end

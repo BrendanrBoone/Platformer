@@ -16,6 +16,8 @@ function GUI:load()
     self.hearts.y = 30
     self.hearts.scale = 3
 
+    self:loadAssets()
+
     self.volume = {}
     self.volume.img_soundOn = love.graphics.newImage("assets/ui/volumeIcon48x48.png")
     self.volume.img_soundOff = love.graphics.newImage("assets/ui/volumeIconMute48x48.png")
@@ -30,9 +32,10 @@ function GUI:load()
     self.volume.y = love.graphics.getHeight() - self.volume.height - 20
     self.volume.scale = 1
 
-    self.font = love.graphics.newFont("assets/bit.ttf", 36)
+    self.staminaBar = { x = self.hearts.spacing, y = self.hearts.y * 2 + self.hearts.height }
+    self.staminaBar.height = 30
 
-    self:loadAssets()
+    self.font = love.graphics.newFont("assets/bit.ttf", 36)
 end
 
 function GUI:loadAssets()
@@ -50,10 +53,16 @@ function GUI:update(dt)
 end
 
 function GUI:draw()
+    GUI:displayStaminaBar()
     GUI:displayCoins()
     GUI:displayCoinText()
     GUI:displayHearts()
     GUI:displayVolume()
+end
+
+function GUI:displayStaminaBar()
+    love.graphics.setColor(0, 1, 0)
+    love.graphics.rectangle("fill", self.staminaBar.x, self.staminaBar.y, Player.stamina.current, self.staminaBar.height)
 end
 
 function GUI:displayVolume()
