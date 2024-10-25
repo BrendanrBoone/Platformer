@@ -41,7 +41,6 @@ end
 
 function Sunny:float(dt)
     local Displacement = math.sin(love.timer.getTime() * 2) * 0.05
-    print(Displacement)
     self.y = self.y + Displacement
 end
 

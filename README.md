@@ -24,4 +24,5 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * Tutorial Level: cause for franky to adventure, and arrow png showing player go to next level
 * zoro final boss at lighthouse
 * red background for lighthouse levels
+* make dash animation longer
 ### Bugs:

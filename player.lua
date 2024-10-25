@@ -28,9 +28,10 @@ function Player:load()
     self.airJumpAmount = self.jumpAmount * 0.8
     self.totalAirJumps = 1
     self.airJumpsUsed = 0
+    self.dash = { amount = 500, cost = 50, inputPressed = 0, inputRequirment = 2 }
     self.coins = 0
     self.health = { current = 15, max = 15 }
-    self.stamina = { current = 200, max = 200, rate = 0.1}
+    self.stamina = { current = 200, max = 200, rate = 0.1 }
 
     self.color = {
         red = 1,
@@ -49,6 +50,7 @@ function Player:load()
 
     self.emoting = false
     self.attacking = false
+    self.dashing = false
     self.alive = true
     self.invincibility = false
     self.grounded = false
@@ -92,6 +94,11 @@ function Player:loadAssets()
     self.animation.jump = { total = 2, current = 1, img = {} }
     for i = 1, self.animation.jump.total do
         self.animation.jump.img[i] = love.graphics.newImage("assets/Franky/jump/" .. i .. ".png")
+    end
+
+    self.animation.dash = { total = 2, current = 1, img = {} }
+    for i = 1, self.animation.dash.total do
+        self.animation.dash.img[i] = love.graphics.newImage("assets/Franky/dash/" .. i .. ".png")
     end
 
     self.animation.emote = { total = 56, current = 1, img = {} }
@@ -330,7 +337,9 @@ function Player:unTint(dt)
 end
 
 function Player:setState()
-    if not self.grounded then
+    if self.dashing then
+        self.state = "dash"
+    elseif not self.grounded then
         if self.attacking then
             if self.activeForwardAir then
                 self.state = "forwardAir"
@@ -383,9 +392,11 @@ end
 
 -- updates the image
 function Player:setNewFrame()
+    print(self.state)
     local anim = self.animation[self.state]
     self:animEffects(anim)
     self.animation.draw = anim.img[anim.current]
+    print(anim.current)
     if anim.current < anim.total then
         anim.current = anim.current + 1
     else
@@ -398,6 +409,7 @@ function Player:animEffects(animation)
     self:forwardAirEffects(animation)
     self:forwardAttackEffects(animation)
     self:rushAttackEffects(animation)
+    self:dashEffects(animation)
 end
 
 function Player:decreaseGraceTime(dt)
@@ -461,6 +473,30 @@ end
 function Player:syncPhysics()
     self.x, self.y = self.physics.body:getPosition()
     self.physics.body:setLinearVelocity(self.xVel, self.yVel)
+end
+
+function Player:dashForward(key)
+    if key == "lshift" and self.dash.cost <= self.stamina.current then
+        self.dash.inputPressed = self.dash.inputPressed + 1
+        if self.dash.inputPressed >= self.dash.inputRequirment then
+            self.dashing = true
+            self.dash.inputPressed = 0
+            local v
+            if self.direction == "right" then
+                v = self.dash.amount
+            else
+                v = -self.dash.amount
+            end
+            self.xVel = self.xVel + v
+            self.stamina.current = self.stamina.current - self.dash.cost
+        end
+    end
+end
+
+function Player:dashEffects(anim)
+    if self.dashing and anim.current >= anim.total then
+        self:cancelActiveActions()
+    end
 end
 
 function Player:jump(key)
@@ -594,6 +630,7 @@ function Player:cancelActiveActions()
     self.activeRushAttack = false
     self.emoting = false
     self.invincibility = false
+    self.dashing = false
 end
 
 function Player:emote(key)
