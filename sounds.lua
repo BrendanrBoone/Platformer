@@ -19,6 +19,10 @@ function Sounds:load()
 
     -- clear profiles necessary => {name, source}
     self.bgmLevels = {
+        levelPreTutorial = {
+            name = "OathHeart",
+            source = self.bgm.OathHeart
+        },
         levelTutorial = {
             name = "OathHeart",
             source = self.bgm.OathHeart
@@ -95,7 +99,6 @@ end
 -- helper function to make code more legible. Allows sounds to be played repeatedly
 function Sounds:playSound(sound)
     if self.soundToggle then
-        print("here")
         sound:stop()
         sound:play()
     end
