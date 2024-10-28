@@ -28,7 +28,7 @@ function Player:load()
     self.airJumpAmount = self.jumpAmount * 0.8
     self.totalAirJumps = 1
     self.airJumpsUsed = 0
-    self.dash = { amount = 500, cost = 50, inputPressed = 0, inputRequirment = 2 }
+    self.dash = { amount = 700, cost = 50, inputPressed = 0, inputRequirment = 2 }
     self.coins = 0
     self.health = { current = 15, max = 15 }
     self.stamina = { current = 200, max = 200, rate = 0.1 }
@@ -319,6 +319,7 @@ end
 
 function Player:update(dt)
     --print(self.x..", "..self.y)
+    print(self.xVel)
     self:unTint(dt)
     self:respawn()
     self:setState()
@@ -392,11 +393,9 @@ end
 
 -- updates the image
 function Player:setNewFrame()
-    print(self.state)
     local anim = self.animation[self.state]
     self:animEffects(anim)
     self.animation.draw = anim.img[anim.current]
-    print(anim.current)
     if anim.current < anim.total then
         anim.current = anim.current + 1
     else
@@ -494,7 +493,7 @@ function Player:dashForward(key)
 end
 
 function Player:dashEffects(anim)
-    if self.dashing and anim.current >= anim.total then
+    if self.dashing and self.xVel <= self.maxSpeed then
         self:cancelActiveActions()
     end
 end
