@@ -93,6 +93,7 @@ function love.keypressed(key)
         Player:forwardAir(key)
         Player:forwardAttack(key)
         Player:rushAttack(key)
+        Player:dashForward(key)
     end
 
     Menu:Escape(key)

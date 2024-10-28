@@ -23,4 +23,6 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * define walls and allow Franky to cling, slide down, and jump from walls. also platforms to jump through
 * Tutorial Level: cause for franky to adventure, and arrow png showing player go to next level
 * zoro final boss at lighthouse
+* red background for lighthouse levels
+* make dash animation longer
 ### Bugs:
