@@ -59,13 +59,18 @@ function Map:load()
             next = nil,
             prev = nil,
             background = redBackground
+        },
+        levelLighthouse2 = {
+            next = nil,
+            prev = nil,
+            background = redBackground
         }
     }
 
     World = love.physics.newWorld(0, 2000)
     World:setCallbacks(beginContact, endContact)
 
-    self:init("levelTutorial")
+    self:init("levelLighthouse")
 end
 
 function Map:init(destination)

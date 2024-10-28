@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 8,
-  nextobjectid = 20,
+  nextobjectid = 21,
   properties = {},
   tilesets = {
     {
@@ -178,7 +178,7 @@ return {
       id = 3,
       name = "solid",
       class = "",
-      visible = false,
+      visible = true,
       opacity = 1,
       offsetx = 0,
       offsety = 0,
@@ -262,7 +262,7 @@ return {
           type = "portal",
           shape = "point",
           x = 38.1558,
-          y = 250,
+          y = 244,
           width = 0,
           height = 0,
           rotation = 0,
@@ -402,6 +402,23 @@ return {
           rotation = 0,
           visible = true,
           properties = {}
+        },
+        {
+          id = 20,
+          name = "Portal",
+          type = "portal",
+          shape = "point",
+          x = 2368.67,
+          y = 244,
+          width = 0,
+          height = 0,
+          rotation = 0,
+          visible = true,
+          properties = {
+            ["dX"] = 461.5,
+            ["dY"] = 1312,
+            ["destination"] = "levelLighthouse2"
+          }
         }
       }
     }

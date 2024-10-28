@@ -42,6 +42,10 @@ function Sounds:load()
         levelLighthouse = {
             name = "NakamaNoShirushi",
             source = self.bgm.NakamaNoShirushi
+        },
+        levelLighthouse2 = {
+            name = "NakamaNoShirushi",
+            source = self.bgm.NakamaNoShirushi
         }
     }
     self.currentlyPlayingBgm = self.bgmLevels["levelTutorial"]
