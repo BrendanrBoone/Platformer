@@ -3,6 +3,7 @@ Portal.__index = Portal
 
 ActivePortals = {}
 local Player = require("player")
+local Anima = require("myTextAnima")
 
 function Portal.new(x, y, destination, dX, dY)
     local instance = setmetatable({}, Portal)
@@ -19,7 +20,7 @@ function Portal.new(x, y, destination, dX, dY)
         duration = 3
     }
     instance.destinationVisual = false
-    instance.font = love.graphics.newFont("assets/bit.ttf", 15)
+    instance.font = love.graphics.newFont("assets/ui/bit.ttf", 15)
     instance.displayTextLength = instance.font:getWidth(instance.destination)
 
     -- Animations
@@ -119,6 +120,7 @@ function Portal:beginContact(a, b, collision)
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
                 instance.destinationVisual = true
+                Anima.animationStart(Player.physics.fixture)
                 return true
             end
         end
@@ -130,6 +132,7 @@ function Portal:endContact(a, b, collision)
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
                 instance.destinationVisual = false
+                Anima.animationEnd(Player.physics.fixture)
                 return true
             end
         end

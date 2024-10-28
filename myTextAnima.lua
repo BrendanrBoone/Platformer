@@ -3,19 +3,24 @@ Anima.__index = Anima
 
 ActiveTextAnimas = {}
 
-function Anima.new(trigger, text)
+-- @param location: string -> "above", "below"
+-- @param speed: number -> 0.1
+function Anima.new(trigger, text, location, speed)
     local instance = setmetatable({}, Anima)
 
     instance.trigger = trigger -- love.physics.fixture
+    instance.location = location
 
     instance.text = text
     instance.textLength = #text
     instance.currentlyAnimatedText = ""
+
+    local speed = speed or 0.1
     instance.animation = {
         timer = 0,
-        rate = 0.1
+        rate = speed
     }
-    instance.font = love.graphics.newFont("assets/bit.ttf", 10)
+    instance.font = love.graphics.newFont("assets/ui/bit.ttf", 10)
 
     instance.animating = false
 
@@ -66,13 +71,27 @@ function Anima.removeAll()
     ActiveTextAnimas = {}
 end
 
+function Anima.remove(trigger)
+    for i, instance in ipairs(ActiveTextAnimas) do
+        if instance.trigger == trigger then
+            table.remove(ActiveTextAnimas, i)
+        end
+    end
+end
+
 function Anima:draw()
     local x, y = self.trigger:getBody():getPosition()
+    --local triggerHeight = self.trigger:getShape():getHeight()
     local displayTextLength = self.font:getWidth(self.text)
-    local robinHeight = 60 -- arbitrary
+    local displayTextHeight = self.font:getHeight(self.text)
+    local arbitraryCharacterHeight = 60 -- arbitrary
     love.graphics.setFont(self.font)
     love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.print(self.currentlyAnimatedText, x - displayTextLength / 2, y - robinHeight / 2)
+    if self.location == "above" then
+        love.graphics.print(self.currentlyAnimatedText, x - displayTextLength / 2, y - arbitraryCharacterHeight / 2)
+    else
+        love.graphics.print(self.currentlyAnimatedText, x - displayTextLength / 2, y + arbitraryCharacterHeight / 2)
+    end
 end
 
 function Anima.drawAll()

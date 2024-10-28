@@ -35,7 +35,12 @@ function GUI:load()
     self.staminaBar = { x = self.hearts.spacing, y = self.hearts.y * 2 + self.hearts.height }
     self.staminaBar.height = 30
 
-    self.font = love.graphics.newFont("assets/bit.ttf", 36)
+    self.goNextLevelIndicator = {}
+    self.goNextLevelIndicator.y = (self.coins.y + self.coins.height) * 2
+    self.goNextLevelIndicator.x = self.coins.x
+    self.goNextLevelIndicator.img = love.graphics.newImage("assets/ui/rightArrow.png")
+
+    self.font = love.graphics.newFont("assets/ui/bit.ttf", 36)
 end
 
 function GUI:loadAssets()

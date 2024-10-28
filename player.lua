@@ -5,6 +5,7 @@ local STI = require("sti")
 local Hitbox = require("hitbox")
 local Helper = require("helper")
 local BackgroundObject = require("backgroundObject")
+local Anima = require("myTextAnima")
 
 PlayerContacts = {} -- fixtures
 
@@ -63,6 +64,8 @@ function Player:load()
     self.physics.shape = love.physics.newRectangleShape(self.width, self.height)
     self.physics.fixture = love.physics.newFixture(self.physics.body, self.physics.shape)
     self.physics.body:setGravityScale(0) -- unaffected by world gravity
+
+    Anima.new(self.physics.fixture, "interact (E)", "below", 0)
 
     self:loadAssets()
     self:loadHitboxes()
@@ -436,10 +439,10 @@ function Player:move(dt)
         -- sprint
         if love.keyboard.isDown("lshift") and self.stamina.current > 0 and self.xVel ~= 0 then
             self.maxSpeed = 400
-            self.stamina.current = math.max(self.stamina.current - self.stamina.rate * 2, 0)
+            --self.stamina.current = math.max(self.stamina.current - self.stamina.rate * 2, 0)
         else
             self.maxSpeed = 200
-            self.stamina.current = math.min(self.stamina.current + self.stamina.rate, self.stamina.max)
+            --self.stamina.current = math.min(self.stamina.current + self.stamina.rate, self.stamina.max)
         end
 
         -- left and right movement

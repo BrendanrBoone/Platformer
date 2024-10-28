@@ -14,6 +14,7 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * ```escape``` = Pause
 ### Log
 * attacks implemented: neutral attack, forward attack, and forward aerial
+* short dash implemented: double tap ```lshift```
 ### Next to do:
 * LightHouse level
 * Jiraiya Naruto World npc

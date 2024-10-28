@@ -4,7 +4,7 @@ local Menu = {}
 
 function Menu:load()
     self.paused = false
-    self.font = love.graphics.newFont("assets/bit.ttf", 40)
+    self.font = love.graphics.newFont("assets/ui/bit.ttf", 40)
 
     self.pausedTitle = {}
     self.pausedTitle.x = love.graphics.getWidth() / 2 - 50

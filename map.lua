@@ -65,7 +65,7 @@ function Map:load()
     World = love.physics.newWorld(0, 2000)
     World:setCallbacks(beginContact, endContact)
 
-    self:init("level4")
+    self:init("levelTutorial")
 end
 
 function Map:init(destination)
@@ -159,7 +159,6 @@ function Map:clean()
     Sunny.removeAll()
     Portal.removeAll()
     Trampoline.removeAll()
-    Anima.removeAll()
     BackgroundObject.removeAll()
 end
 
