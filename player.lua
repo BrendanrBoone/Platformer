@@ -30,6 +30,8 @@ function Player:load()
     self.totalAirJumps = 1
     self.airJumpsUsed = 0
     self.dash = { amount = 700, cost = 50, inputPressed = 0, inputRequirment = 2 }
+    self.dash.graceTime = 0
+    self.dash.graceDuration = 0.1
     self.coins = 0
     self.health = { current = 15, max = 15 }
     self.stamina = { current = 200, max = 200, rate = 0.1 }
@@ -418,6 +420,12 @@ function Player:decreaseGraceTime(dt)
     if not self.grounded then
         self.graceTime = self.graceTime - dt
     end
+    if self.dash.inputPressed >= self.dash.inputRequirment then
+        self.dash.graceTime = self.dash.graceTime - dt
+        if self.dash.graceTime <= 0 then
+            self.dash.inputPressed = 0
+        end
+    end
 end
 
 function Player:applyGravity(dt)
@@ -442,7 +450,7 @@ function Player:move(dt)
             --self.stamina.current = math.max(self.stamina.current - self.stamina.rate * 2, 0)
         else
             self.maxSpeed = 200
-            --self.stamina.current = math.min(self.stamina.current + self.stamina.rate, self.stamina.max)
+            self.stamina.current = math.min(self.stamina.current + self.stamina.rate, self.stamina.max)
         end
 
         -- left and right movement
@@ -482,7 +490,7 @@ function Player:dashForward(key)
         self.dash.inputPressed = self.dash.inputPressed + 1
         if self.dash.inputPressed >= self.dash.inputRequirment then
             self.dashing = true
-            self.dash.inputPressed = 0
+            self.dash.graceTime = self.dash.graceDuration
             local v
             if self.direction == "right" then
                 v = self.dash.amount
