@@ -78,7 +78,7 @@ function NicoRobin.loadAssets()
 end
 
 function NicoRobin:loadDialogue()
-    self.dialogueIndex = 1
+    self.dialogueIndex = 0
     self.dialogueGrace = {
         time = 2,
         duration = 2
@@ -151,34 +151,36 @@ end
 
 function NicoRobin:runDialogue(dt)
     if Player.talking and self.interactable then
-        if not Anima.currentlyAnimating() and self.dialogueGrace.time == self.dialogueGrace.duration then
-            local playerAnima = assert(Anima.findAnima(Player.physics.fixture))
-            local originalPlayerAnimaText = playerAnima.text
-            playerAnima:modifyAnimationRate(0.1)
-
-            local robinAnima = assert(Anima.findAnima(self.physics.fixture))
-            local originalRobinAnimaText = robinAnima.text
-
-            if self.dialogue[self.dialogueIndex][1] == "NicoRobin" then
-                robinAnima:newTypingAnimation(self.dialogue[self.dialogueIndex][2])
-            elseif self.dialogue[self.dialogueIndex][1] == "Player" then
-                playerAnima:newTypingAnimation(self.dialogue[self.dialogueIndex][2])
+        if not Anima.currentlyAnimating() then
+            if self.dialogueGrace.time == self.dialogueGrace.duration then
+                local playerAnima = assert(Anima.findAnima(Player.physics.fixture))
+                local originalPlayerAnimaText = playerAnima.text
+                playerAnima:modifyAnimationRate(0.1)
+    
+                local robinAnima = assert(Anima.findAnima(self.physics.fixture))
+                local originalRobinAnimaText = robinAnima.text
+                self.dialogueIndex = self.dialogueIndex + 1
+                if self.dialogueIndex <= #self.dialogue then
+                    if self.dialogue[self.dialogueIndex][1] == "NicoRobin" then
+                        robinAnima:newTypingAnimation(self.dialogue[self.dialogueIndex][2])
+                    elseif self.dialogue[self.dialogueIndex][1] == "Player" then
+                        playerAnima:newTypingAnimation(self.dialogue[self.dialogueIndex][2])
+                    end
+                    print(self.dialogue[self.dialogueIndex][2])
+                end
+                if self.dialogueIndex > #self.dialogue then
+                    print("finished")
+                    self.dialogueIndex = 1
+                    Player.talking = false
+                    playerAnima:modifyAnimationRate(0)
+                    playerAnima:newTypingAnimation(originalPlayerAnimaText)
+                    robinAnima:newTypingAnimation(originalRobinAnimaText)
+                end
             end
-            print(self.dialogue[self.dialogueIndex][2])
-
-            self.dialogueIndex = self.dialogueIndex + 1
-            if self.dialogueIndex >= #self.dialogue + 1 then
-                print("finished")
-                self.dialogueIndex = 1
-                Player.talking = false
-                playerAnima:modifyAnimationRate(0)
-                playerAnima:newTypingAnimation(originalPlayerAnimaText)
-                robinAnima:newTypingAnimation(originalRobinAnimaText)
+            self.dialogueGrace.time = self.dialogueGrace.time - dt
+            if self.dialogueGrace.time <= 0 then
+                self.dialogueGrace.time = self.dialogueGrace.duration
             end
-        end
-        self.dialogueGrace.time = self.dialogueGrace.time - dt
-        if self.dialogueGrace.time <= 0 then
-            self.dialogueGrace.time = self.dialogueGrace.duration
         end
     end
 end
