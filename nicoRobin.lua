@@ -187,12 +187,14 @@ function NicoRobin:runDialogue(dt)
 end
 
 function NicoRobin.interact(key)
-    if key == "e" then
+    if not Player:doingAction() and key == "e" then
         for _, instance in ipairs(ActiveNicoRobins) do
             if instance.interactable then
                 Player.talking = true
                 Anima.findAnima(Player.physics.fixture):newTypingAnimation("")
                 Player:setPosition(instance.x - instance.width / 2, instance.y)
+                Player.xVel = 0
+                Player.direction = "right"
                 return true
             end
         end

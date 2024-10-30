@@ -49,7 +49,7 @@
   <object id="15" name="NicoRobin" type="nicoRobin" x="416.273" y="258.85">
    <point/>
   </object>
-  <object id="16" name="Sunny" type="sunny" x="-598.135" y="-406.759" width="1118" height="893"/>
+  <object id="16" name="Sunny" type="sunny" x="-598.135" y="-396.759" width="1118" height="893"/>
  </objectgroup>
  <layer id="2" name="grass" width="40" height="23">
   <data encoding="csv">

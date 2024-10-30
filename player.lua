@@ -425,7 +425,8 @@ end
 function Player:doingAction()
     if self.emoting
         or self.attacking
-        or self.talking then
+        or self.talking
+        or self.dashing then
         return true
     end
     return false
@@ -509,7 +510,7 @@ function Player:dashForward(key)
 end
 
 function Player:dashEffects(anim)
-    if self.dashing and self.xVel <= self.maxSpeed then
+    if self.dashing and math.abs(self.xVel) <= self.maxSpeed then
         self:cancelActiveActions()
     end
 end

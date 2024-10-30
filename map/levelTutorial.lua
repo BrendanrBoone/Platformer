@@ -204,7 +204,7 @@ return {
           type = "sunny",
           shape = "rectangle",
           x = -598.135,
-          y = -406.759,
+          y = -396.759,
           width = 1118,
           height = 893,
           rotation = 0,
