@@ -32,13 +32,23 @@ function GUI:load()
     self.volume.y = love.graphics.getHeight() - self.volume.height - 20
     self.volume.scale = 1
 
-    self.staminaBar = { x = self.hearts.spacing, y = self.hearts.y * 2 + self.hearts.height }
+    self.staminaBar = {
+        x = self.hearts.spacing,
+        y = self.hearts.y * 2 + self.hearts.height
+    }
     self.staminaBar.height = 30
 
     self.goNextLevelIndicator = {}
     self.goNextLevelIndicator.y = (self.coins.y + self.coins.height) * 2
     self.goNextLevelIndicator.x = self.coins.x
     self.goNextLevelIndicator.img = love.graphics.newImage("assets/ui/rightArrow.png")
+    self.goNextLevelIndicator.visible = false
+    self.goNextLevelIndicator.animating = false
+    self.grace = {
+        time = 4,
+        duration = 1,
+        totalDuration = 4
+    }
 
     self.font = love.graphics.newFont("assets/ui/bit.ttf", 36)
 end
@@ -54,7 +64,7 @@ function GUI:loadAssets()
 end
 
 function GUI:update(dt)
-
+    GUI:arrowAnimation(dt)
 end
 
 function GUI:draw()
@@ -63,11 +73,34 @@ function GUI:draw()
     GUI:displayCoinText()
     GUI:displayHearts()
     GUI:displayVolume()
+    GUI:displayArrowIndicator()
+end
+
+function GUI:arrowAnimation(dt)
+    if self.goNextLevelIndicator.animating then
+        self.grace.time = self.grace.time - dt
+        if self.grace.time % self.grace.duration == 0 then
+            self.goNextLevelIndicator.visible = not self.goNextLevelIndicator.visible
+            print(tostring(self.goNextLevelIndicator.visible))
+        end
+        if self.grace.time <= 0 then
+            self.grace.time = self.grace.totalDuration
+            self.goNextLevelIndicator.animating = false
+        end
+    end
+end
+
+function GUI:displayArrowIndicator()
+    if self.goNextLevelIndicator.visible then
+        love.graphics.draw(self.goNextLevelIndicator.img, self.goNextLevelIndicator.x, self.goNextLevelIndicator.y, 0,
+            1, 1)
+    end
 end
 
 function GUI:displayStaminaBar()
     love.graphics.setColor(0, 1, 0)
-    love.graphics.rectangle("fill", self.staminaBar.x, self.staminaBar.y, Player.stamina.current, self.staminaBar.height)
+    love.graphics
+        .rectangle("fill", self.staminaBar.x, self.staminaBar.y, Player.stamina.current, self.staminaBar.height)
 end
 
 function GUI:displayVolume()
@@ -79,13 +112,16 @@ function GUI:displayHearts()
     local partialHearts = Player.health.current % 4
     for i = 1, fullHearts + 1 do
         if i == fullHearts + 1 then
-            if partialHearts == 0 then break end
+            if partialHearts == 0 then
+                break
+            end
             local x = self.hearts.x + self.hearts.spacing * i
             love.graphics.setColor(0, 0, 0, 0.5)
             love.graphics.draw(self.hearts.img[partialHearts], x + 2, self.hearts.y + 2, 0, self.hearts.scale,
                 self.hearts.scale)
             love.graphics.setColor(1, 1, 1, 1)
-            love.graphics.draw(self.hearts.img[partialHearts], x, self.hearts.y, 0, self.hearts.scale, self.hearts.scale)
+            love.graphics
+                .draw(self.hearts.img[partialHearts], x, self.hearts.y, 0, self.hearts.scale, self.hearts.scale)
         else
             local x = self.hearts.x + self.hearts.spacing * i
             love.graphics.setColor(0, 0, 0, 0.5)
@@ -114,9 +150,8 @@ function GUI:displayCoinText()
 end
 
 function GUI:mousepressed(mx, my, button)
-    if button == 1
-        and mx >= self.volume.x and mx < self.volume.x + self.volume.width
-        and my >= self.volume.y and my < self.volume.y + self.volume.height then
+    if button == 1 and mx >= self.volume.x and mx < self.volume.x + self.volume.width and my >= self.volume.y and my <
+        self.volume.y + self.volume.height then
         if Sounds.soundToggle then
             Sounds.soundToggle = false
             self.volume.img = self.volume.img_soundOff

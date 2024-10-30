@@ -4,6 +4,7 @@ NicoRobin.__index = NicoRobin
 ActiveNicoRobins = {}
 local Player = require("player")
 local Anima = require("myTextAnima")
+local GUI = require("gui")
 
 function NicoRobin.new(x, y)
     local instance = setmetatable({}, NicoRobin)
@@ -83,8 +84,8 @@ function NicoRobin:loadDialogue()
         time = 2,
         duration = 2
     }
-    self.dialogue = {{"Player", "SUUUUPPPERRRRRRR!"}, {"NicoRobin", "You seem excited. What are you doing?"},
-                     {"Player", "Sunny's in need of some repairs. I need to go collect wood for some patch work."},
+    self.dialogue = {{"Player", "sUUUpERRRRRRR!"}, {"NicoRobin", "You seem excited. What are you doing?"},
+                     {"Player", "sunny's in need of some repairs. I need to go collect wood for some patch work."},
                      {"NicoRobin", "Oh! I wish you luck"}, {"Player", "OW!"}}
 end
 
@@ -169,12 +170,12 @@ function NicoRobin:runDialogue(dt)
                     print(self.dialogue[self.dialogueIndex][2])
                 end
                 if self.dialogueIndex > #self.dialogue then
-                    print("finished")
                     self.dialogueIndex = 1
-                    Player.talking = false
                     playerAnima:modifyAnimationRate(0)
-                    playerAnima:newTypingAnimation(originalPlayerAnimaText)
-                    robinAnima:newTypingAnimation(originalRobinAnimaText)
+                    playerAnima:newTypingAnimation("interact (E)")
+                    robinAnima:newTypingAnimation("Hey Franky!")
+                    Player.talking = false
+                    GUI.goNextLevelIndicator.animating = true
                 end
             end
             self.dialogueGrace.time = self.dialogueGrace.time - dt
