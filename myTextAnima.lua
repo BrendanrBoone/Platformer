@@ -36,6 +36,7 @@ function Anima:newTypingAnimation(text)
         self.text = text
         self.textLength = #text
         self.currentlyAnimatedText = ""
+        self.animating = true
     end
 end
 
@@ -125,6 +126,14 @@ function Anima.findAnima(fixture)
     for _, instance in ipairs(ActiveTextAnimas) do
         if instance.trigger == fixture then
             return instance
+        end
+    end
+end
+
+function Anima.currentlyAnimating()
+    for _, instance in ipairs(ActiveTextAnimas) do
+        if instance.animating then
+            return true
         end
     end
 end

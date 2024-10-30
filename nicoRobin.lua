@@ -11,6 +11,7 @@ function NicoRobin.new(x, y)
     instance.x = x
     instance.y = y
 
+    instance.interactable = false
     instance.state = "idle"
     instance.idleTime = {
         current = 0,
@@ -78,7 +79,10 @@ end
 
 function NicoRobin:loadDialogue()
     self.dialogueIndex = 1
-    self.dialogueGrace = { time = 0, duration = 2 }
+    self.dialogueGrace = {
+        time = 2,
+        duration = 2
+    }
     self.dialogue = {{"Player", "SUUUUPPPERRRRRRR!"}, {"NicoRobin", "You seem excited. What are you doing?"},
                      {"Player", "Sunny's in need of some repairs. I need to go collect wood for some patch work."},
                      {"NicoRobin", "Oh! I wish you luck"}, {"Player", "OW!"}}
@@ -146,41 +150,43 @@ function NicoRobin.drawAll()
 end
 
 function NicoRobin:runDialogue(dt)
-    self.dialogueGrace.time = self.dialogueGrace.time - dt
-    print("grace time: "..self.dialogueGrace.time)
-    if Player.talking and self.dialogueGrace.time <= 0 then
-        self.dialogueGrace.time = self.dialogueGrace.duration
+    if Player.talking and self.interactable then
+        if not Anima.currentlyAnimating() and self.dialogueGrace.time == self.dialogueGrace.duration then
+            local playerAnima = assert(Anima.findAnima(Player.physics.fixture))
+            local originalPlayerAnimaText = playerAnima.text
+            playerAnima:modifyAnimationRate(0.1)
 
-        local playerAnima = assert(Anima.findAnima(Player.physics.fixture))
-        local originalPlayerAnimaText = playerAnima.text
-        playerAnima:modifyAnimationRate(0.1)
+            local robinAnima = assert(Anima.findAnima(self.physics.fixture))
+            local originalRobinAnimaText = robinAnima.text
 
-        local robinAnima = assert(Anima.findAnima(self.physics.fixture))
-        local originalRobinAnimaText = robinAnima.text
+            if self.dialogue[self.dialogueIndex][1] == "NicoRobin" then
+                robinAnima:newTypingAnimation(self.dialogue[self.dialogueIndex][2])
+            elseif self.dialogue[self.dialogueIndex][1] == "Player" then
+                playerAnima:newTypingAnimation(self.dialogue[self.dialogueIndex][2])
+            end
+            print(self.dialogue[self.dialogueIndex][2])
 
-        if self.dialogue[self.dialogueIndex][1] == "NicoRobin" then
-            robinAnima:newTypingAnimation(self.dialogue[self.dialogueIndex][2])
-        elseif self.dialogue[self.dialogueIndex][1] == "Player" then
-            playerAnima:newTypingAnimation(self.dialogue[self.dialogueIndex][2])
+            self.dialogueIndex = self.dialogueIndex + 1
+            if self.dialogueIndex >= #self.dialogue + 1 then
+                print("finished")
+                self.dialogueIndex = 1
+                Player.talking = false
+                playerAnima:modifyAnimationRate(0)
+                playerAnima:newTypingAnimation(originalPlayerAnimaText)
+                robinAnima:newTypingAnimation(originalRobinAnimaText)
+            end
         end
-
-        self.dialogueIndex = self.dialogueIndex + 1
-        if self.dialogueIndex == #self.dialogue + 1 then
-            print("finished")
-            self.dialogueIndex = 1
-            Player.talking = false
-            playerAnima:modifyAnimationRate(0)
-            playerAnima:newTypingAnimation(originalPlayerAnimaText)
-            robinAnima:newTypingAnimation(originalRobinAnimaText)
+        self.dialogueGrace.time = self.dialogueGrace.time - dt
+        if self.dialogueGrace.time <= 0 then
+            self.dialogueGrace.time = self.dialogueGrace.duration
         end
     end
 end
 
 function NicoRobin.interact(key)
     if key == "e" then
-        for _, instance in ipairs(ActiveTextAnimas) do
-            print(instance.text .. " " .. tostring(instance.animating))
-            if instance.animating then
+        for _, instance in ipairs(ActiveNicoRobins) do
+            if instance.interactable then
                 Player.talking = true
                 return true
             end
@@ -192,6 +198,7 @@ function NicoRobin.beginContact(a, b, collision)
     for i, instance in ipairs(ActiveNicoRobins) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
+                instance.interactable = true
                 Anima.animationStart(instance.physics.fixture)
                 Anima.animationStart(Player.physics.fixture)
                 return true
@@ -204,6 +211,7 @@ function NicoRobin.endContact(a, b, collision)
     for i, instance in ipairs(ActiveNicoRobins) do
         if a == instance.physics.fixture or b == instance.physics.fixture then
             if a == Player.physics.fixture or b == Player.physics.fixture then
+                instance.interactable = false
                 Anima.animationEnd(instance.physics.fixture)
                 Anima.animationEnd(Player.physics.fixture)
                 return true
