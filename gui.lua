@@ -45,9 +45,9 @@ function GUI:load()
     self.goNextLevelIndicator.visible = false
     self.goNextLevelIndicator.animating = false
     self.grace = {
-        time = 4,
+        time = 100,
         duration = 1,
-        totalDuration = 4
+        totalDuration = 100
     }
 
     self.font = love.graphics.newFont("assets/ui/bit.ttf", 36)
@@ -78,8 +78,10 @@ end
 
 function GUI:arrowAnimation(dt)
     if self.goNextLevelIndicator.animating then
-        self.grace.time = self.grace.time - dt
-        if self.grace.time % self.grace.duration == 0 then
+        self.grace.time = self.grace.time - 1
+        print("time: " .. self.grace.time)
+        print("modulus: "..self.grace.time % 2)
+        if self.grace.time % 2 == 0 then
             self.goNextLevelIndicator.visible = not self.goNextLevelIndicator.visible
             print(tostring(self.goNextLevelIndicator.visible))
         end
