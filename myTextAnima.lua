@@ -87,7 +87,7 @@ end
 function Anima:draw()
     local x, y = self.trigger:getBody():getPosition()
     --local triggerHeight = self.trigger:getShape():getHeight()
-    local displayTextLength = self.font:getWidth(self.text)
+    local displayTextLength = self.font:getWidth(self.currentlyAnimatedText)
     local displayTextHeight = self.font:getHeight(self.text)
     local arbitraryCharacterHeight = 60 -- arbitrary
     love.graphics.setFont(self.font)

@@ -39,15 +39,15 @@ function GUI:load()
     self.staminaBar.height = 30
 
     self.goNextLevelIndicator = {}
-    self.goNextLevelIndicator.y = (self.coins.y + self.coins.height) * 2
-    self.goNextLevelIndicator.x = self.coins.x
     self.goNextLevelIndicator.img = love.graphics.newImage("assets/ui/rightArrow.png")
+    self.goNextLevelIndicator.y = (self.coins.y + self.coins.height) * 2
+    self.goNextLevelIndicator.x = self.coins.x - self.goNextLevelIndicator.img:getWidth() / 2
     self.goNextLevelIndicator.visible = false
     self.goNextLevelIndicator.animating = false
     self.grace = {
         time = 100,
         duration = 1,
-        totalDuration = 100
+        totalDuration = 200
     }
 
     self.font = love.graphics.newFont("assets/ui/bit.ttf", 36)

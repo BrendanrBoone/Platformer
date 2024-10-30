@@ -191,6 +191,8 @@ function NicoRobin.interact(key)
         for _, instance in ipairs(ActiveNicoRobins) do
             if instance.interactable then
                 Player.talking = true
+                Anima.findAnima(Player.physics.fixture):newTypingAnimation("")
+                Player:setPosition(instance.x - instance.width / 2, instance.y)
                 return true
             end
         end
