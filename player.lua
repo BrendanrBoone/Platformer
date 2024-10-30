@@ -31,7 +31,7 @@ function Player:load()
     self.airJumpsUsed = 0
     self.dash = { amount = 700, cost = 50, inputPressed = 0, inputRequirment = 2 }
     self.dash.graceTime = 0
-    self.dash.graceDuration = 0.1
+    self.dash.graceDuration = 0.3
     self.coins = 0
     self.health = { current = 15, max = 15 }
     self.stamina = { current = 200, max = 200, rate = 0.1 }
@@ -416,18 +416,6 @@ function Player:animEffects(animation)
     self:dashEffects(animation)
 end
 
-function Player:decreaseGraceTime(dt)
-    if not self.grounded then
-        self.graceTime = self.graceTime - dt
-    end
-    if self.dash.inputPressed >= self.dash.inputRequirment then
-        self.dash.graceTime = self.dash.graceTime - dt
-        if self.dash.graceTime <= 0 then
-            self.dash.inputPressed = 0
-        end
-    end
-end
-
 function Player:applyGravity(dt)
     if not self.grounded then
         self.yVel = self.yVel + self.gravity * dt
@@ -486,12 +474,28 @@ function Player:syncPhysics()
     self.physics.body:setLinearVelocity(self.xVel, self.yVel)
 end
 
+--called in Player:update()
+function Player:decreaseGraceTime(dt)
+    if not self.grounded then
+        self.graceTime = self.graceTime - dt
+    end
+    if self.dash.inputPressed ~= 0 then
+        self.dash.graceTime = self.dash.graceTime - dt
+        if self.dash.graceTime <= 0 then
+            self.dash.inputPressed = 0
+            self.dash.graceTime = self.dash.graceDuration
+        end
+    end
+end
+
+--called in main.keypressed()
 function Player:dashForward(key)
     if not self:doingAction() and key == "lshift" and self.dash.cost <= self.stamina.current then
         self.dash.inputPressed = self.dash.inputPressed + 1
-        if self.dash.inputPressed >= self.dash.inputRequirment then
+        if self.dash.inputPressed == self.dash.inputRequirment then
             self.dashing = true
             self.dash.graceTime = self.dash.graceDuration
+            self.dash.inputPressed = 0
             local v
             if self.direction == "right" then
                 v = self.dash.amount
