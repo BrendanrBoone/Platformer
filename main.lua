@@ -86,7 +86,8 @@ end
 
 function love.keypressed(key)
     if not WorldPause then
-        if Map:moveThroughPortal(key) then return end
+        if Map.moveThroughPortal(key) then return end
+        if NicoRobin.interact(key) then return end
         Player:jump(key)
         Player:fastFall(key)
         Player:emote(key)
@@ -112,7 +113,6 @@ function beginContact(a, b, collision)
     if Hitbox.beginContact(a, b, collision) then return end
     if Portal:beginContact(a, b, collision) then return end
     if NicoRobin.beginContact(a, b, collision) then return end
-    if BackgroundObject.beginContact(a, b, collision) then return end -- just realized these prevent collision
     Enemy.beginContact(a, b, collision)
     Player:beginContact(a, b, collision)
 end

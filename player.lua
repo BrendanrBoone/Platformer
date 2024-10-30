@@ -54,6 +54,7 @@ function Player:load()
     self.emoting = false
     self.attacking = false
     self.dashing = false
+    self.talking = false
     self.alive = true
     self.invincibility = false
     self.grounded = false
@@ -324,7 +325,6 @@ end
 
 function Player:update(dt)
     --print(self.x..", "..self.y)
-    print(self.xVel)
     self:unTint(dt)
     self:respawn()
     self:setState()
@@ -436,7 +436,8 @@ end
 
 function Player:doingAction()
     if self.emoting
-        or self.attacking then
+        or self.attacking
+        or self.talking then
         return true
     end
     return false
@@ -486,7 +487,7 @@ function Player:syncPhysics()
 end
 
 function Player:dashForward(key)
-    if key == "lshift" and self.dash.cost <= self.stamina.current then
+    if not self:doingAction() and key == "lshift" and self.dash.cost <= self.stamina.current then
         self.dash.inputPressed = self.dash.inputPressed + 1
         if self.dash.inputPressed >= self.dash.inputRequirment then
             self.dashing = true
@@ -552,7 +553,7 @@ function Player:resetHitboxes()
 end
 
 function Player:rushAttack(key)
-    if not self.attacking and self.grounded and self.xVel ~= 0 and key == "p" then
+    if not self:doingAction() and self.grounded and self.xVel ~= 0 and key == "p" then
         self.attacking = true
         self.activeRushAttack = true
     end
@@ -579,7 +580,7 @@ function Player:rushAttackEffects(anim)
 end
 
 function Player:forwardAttack(key)
-    if not self.attacking and self.grounded and self.xVel == 0 and key == "p" then
+    if not self:doingAction() and self.grounded and self.xVel == 0 and key == "p" then
         self.attacking = true
         self.activeForwardAttack = true
     end
@@ -606,7 +607,7 @@ function Player:forwardAttackEffects(anim)
 end
 
 function Player:forwardAir(key)
-    if not self.grounded and not self.attacking and key == "p"
+    if not self.grounded and not self:doingAction() and key == "p"
         and love.keyboard.isDown("a", "d", "left", "right") then
         self.attacking = true
         self.activeForwardAir = true
@@ -644,7 +645,7 @@ function Player:cancelActiveActions()
 end
 
 function Player:emote(key)
-    if (key == "e" and self.grounded and self.xVel == 0 and not self.emoting) then
+    if false and not self:doingAction() and key == "e" and self.grounded and self.xVel == 0 then
         Sounds.sfx.frankyEyeCatchTheme:setVolume(Sounds.sfx.maxSound)
         Sounds.playSound(Sounds.sfx.frankyEyeCatchTheme)
         self.emoting = true
@@ -676,8 +677,7 @@ end
 
 function Player:beginContact(a, b, collision)
     if self.grounded == true then return end
-    if Helper.ignore(a, b, Hitbox)
-    or Helper.ignore(a, b, BackgroundObject) then
+    if Helper.ignore(a, b, Hitbox) then
         return
     end
     local __, ny = collision:getNormal()

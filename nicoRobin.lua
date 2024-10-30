@@ -12,13 +12,31 @@ function NicoRobin.new(x, y)
     instance.y = y
 
     instance.state = "idle"
-    instance.idleTime = { current = 0, duration = 3}
+    instance.idleTime = {
+        current = 0,
+        duration = 3
+    }
 
     -- Animations
-    instance.animation = { timer = 0, rate = 0.2 }
-    instance.animation.idle = { total = 6, current = 1, img = NicoRobin.idleAnim }
-    instance.animation.sittingDown = { total = 4, current = 1, img = NicoRobin.sittingDownAnim }
-    instance.animation.reading = { total = 50, current = 1, img = NicoRobin.readingAnim }
+    instance.animation = {
+        timer = 0,
+        rate = 0.2
+    }
+    instance.animation.idle = {
+        total = 6,
+        current = 1,
+        img = NicoRobin.idleAnim
+    }
+    instance.animation.sittingDown = {
+        total = 4,
+        current = 1,
+        img = NicoRobin.sittingDownAnim
+    }
+    instance.animation.reading = {
+        total = 50,
+        current = 1,
+        img = NicoRobin.readingAnim
+    }
     instance.animation.draw = instance.animation.idle.img[1]
 
     instance.physics = {}
@@ -28,6 +46,8 @@ function NicoRobin.new(x, y)
     instance.physics.fixture:setSensor(true) -- prevents collisions but can be sensed
 
     Anima.new(instance.physics.fixture, "Hey Franky!", "above")
+
+    instance:loadDialogue()
 
     table.insert(ActiveNicoRobins, instance)
 end
@@ -56,6 +76,14 @@ function NicoRobin.loadAssets()
     NicoRobin.height = NicoRobin.idleAnim[1]:getHeight()
 end
 
+function NicoRobin:loadDialogue()
+    self.dialogueIndex = 1
+    self.dialogueGrace = { time = 0, duration = 2 }
+    self.dialogue = {{"Player", "SUUUUPPPERRRRRRR!"}, {"NicoRobin", "You seem excited. What are you doing?"},
+                     {"Player", "Sunny's in need of some repairs. I need to go collect wood for some patch work."},
+                     {"NicoRobin", "Oh! I wish you luck"}, {"Player", "OW!"}}
+end
+
 function NicoRobin.removeAll()
     for _, v in ipairs(ActiveNicoRobins) do
         v.physics.body:destroy()
@@ -71,8 +99,7 @@ function NicoRobin:setState(dt)
         if self.idleTime.current >= self.idleTime.duration then
             self.state = "sittingDown"
         end
-    elseif self.state == "sittingDown"
-    and self.animation.sittingDown.current >= self.animation.sittingDown.total then
+    elseif self.state == "sittingDown" and self.animation.sittingDown.current >= self.animation.sittingDown.total then
         self.state = "reading"
     end
 end
@@ -80,6 +107,7 @@ end
 function NicoRobin:update(dt)
     self:setState(dt)
     self:animate(dt)
+    self:runDialogue(dt)
 end
 
 function NicoRobin:animate(dt)
@@ -114,6 +142,49 @@ end
 function NicoRobin.drawAll()
     for i, instance in ipairs(ActiveNicoRobins) do
         instance:draw()
+    end
+end
+
+function NicoRobin:runDialogue(dt)
+    self.dialogueGrace.time = self.dialogueGrace.time - dt
+    print("grace time: "..self.dialogueGrace.time)
+    if Player.talking and self.dialogueGrace.time <= 0 then
+        self.dialogueGrace.time = self.dialogueGrace.duration
+
+        local playerAnima = assert(Anima.findAnima(Player.physics.fixture))
+        local originalPlayerAnimaText = playerAnima.text
+        playerAnima:modifyAnimationRate(0.1)
+
+        local robinAnima = assert(Anima.findAnima(self.physics.fixture))
+        local originalRobinAnimaText = robinAnima.text
+
+        if self.dialogue[self.dialogueIndex][1] == "NicoRobin" then
+            robinAnima:newTypingAnimation(self.dialogue[self.dialogueIndex][2])
+        elseif self.dialogue[self.dialogueIndex][1] == "Player" then
+            playerAnima:newTypingAnimation(self.dialogue[self.dialogueIndex][2])
+        end
+
+        self.dialogueIndex = self.dialogueIndex + 1
+        if self.dialogueIndex == #self.dialogue + 1 then
+            print("finished")
+            self.dialogueIndex = 1
+            Player.talking = false
+            playerAnima:modifyAnimationRate(0)
+            playerAnima:newTypingAnimation(originalPlayerAnimaText)
+            robinAnima:newTypingAnimation(originalRobinAnimaText)
+        end
+    end
+end
+
+function NicoRobin.interact(key)
+    if key == "e" then
+        for _, instance in ipairs(ActiveTextAnimas) do
+            print(instance.text .. " " .. tostring(instance.animating))
+            if instance.animating then
+                Player.talking = true
+                return true
+            end
+        end
     end
 end
 

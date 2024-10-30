@@ -7,7 +7,6 @@ local Player = require("player")
 -- note: "." vs ":" -> ":" implies "self" like a referenced table, "." does not
 function PickupItem.new(x, y, type)
     local instance = setmetatable({}, PickupItem)
-    print("item")
 
     instance.x = x
     instance.y = y

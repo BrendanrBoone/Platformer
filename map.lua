@@ -200,7 +200,7 @@ function Map:spawnEntities()
     end
 end
 
-function Map:moveThroughPortal(key)
+function Map.moveThroughPortal(key)
     if key == "e" then
         for _, instance in ipairs(ActivePortals) do
             if instance.destinationVisual then
