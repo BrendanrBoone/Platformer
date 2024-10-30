@@ -23,6 +23,6 @@ Change the Path in *run.bat* to your *lovec.exe* then run in the command line\
 * secret level at top of lighthouse
 * define walls and allow Franky to cling, slide down, and jump from walls
 * platforms to jump through
-* fix dash when moving
+* fix dash: doesn't stop under certain conditions
 * zoro final boss at lighthouse
 ### Bugs:

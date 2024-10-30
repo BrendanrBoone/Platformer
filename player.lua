@@ -18,23 +18,35 @@ function Player:load()
     self.startY = self.y
     self.width = 30
     self.height = 50
-    self.xVel = 0            -- + goes right
-    self.yVel = 0            -- + goes down
+    self.xVel = 0 -- + goes right
+    self.yVel = 0 -- + goes down
     self.maxSpeed = 200
     self.acceleration = 4000 -- 200 / 4000 = 0.05 seconds to reach maxSpeed
-    self.friction = 3500     -- 200 / 3500 = 0.0571 seconds to stop from maxSpeed
+    self.friction = 3500 -- 200 / 3500 = 0.0571 seconds to stop from maxSpeed
     self.gravity = 1500
     self.jumpAmount = -500
     self.superJumpAmount = -2500
     self.airJumpAmount = self.jumpAmount * 0.8
     self.totalAirJumps = 1
     self.airJumpsUsed = 0
-    self.dash = { amount = 700, cost = 50, inputPressed = 0, inputRequirment = 2 }
+    self.dash = {
+        amount = 700,
+        cost = 50,
+        inputPressed = 0,
+        inputRequirment = 2
+    }
     self.dash.graceTime = 0
     self.dash.graceDuration = 0.3
     self.coins = 0
-    self.health = { current = 15, max = 15 }
-    self.stamina = { current = 200, max = 200, rate = 0.1 }
+    self.health = {
+        current = 15,
+        max = 15
+    }
+    self.stamina = {
+        current = 200,
+        max = 200,
+        rate = 0.1
+    }
 
     self.color = {
         red = 1,
@@ -75,39 +87,70 @@ function Player:load()
 end
 
 function Player:loadAssets()
-    self.animation = { timer = 0, rate = 0.1 }
+    self.animation = {
+        timer = 0,
+        rate = 0.1
+    }
 
-    self.animation.run = { total = 8, current = 1, img = {} }
+    self.animation.run = {
+        total = 8,
+        current = 1,
+        img = {}
+    }
     for i = 1, self.animation.run.total do
         self.animation.run.img[i] = love.graphics.newImage("assets/Franky/run/" .. i .. ".png")
     end
 
-    self.animation.idle = { total = 4, current = 1, img = {} }
+    self.animation.idle = {
+        total = 4,
+        current = 1,
+        img = {}
+    }
     for i = 1, self.animation.idle.total do
         self.animation.idle.img[i] = love.graphics.newImage("assets/Franky/idle/" .. i .. ".png")
     end
 
-    self.animation.airRising = { total = 2, current = 1, img = {} }
+    self.animation.airRising = {
+        total = 2,
+        current = 1,
+        img = {}
+    }
     for i = 1, self.animation.airRising.total do
         self.animation.airRising.img[i] = love.graphics.newImage("assets/Franky/airRising/" .. i .. ".png")
     end
 
-    self.animation.airFalling = { total = 2, current = 1, img = {} }
+    self.animation.airFalling = {
+        total = 2,
+        current = 1,
+        img = {}
+    }
     for i = 1, self.animation.airFalling.total do
         self.animation.airFalling.img[i] = love.graphics.newImage("assets/Franky/airFalling/" .. i .. ".png")
     end
 
-    self.animation.jump = { total = 2, current = 1, img = {} }
+    self.animation.jump = {
+        total = 2,
+        current = 1,
+        img = {}
+    }
     for i = 1, self.animation.jump.total do
         self.animation.jump.img[i] = love.graphics.newImage("assets/Franky/jump/" .. i .. ".png")
     end
 
-    self.animation.dash = { total = 2, current = 1, img = {} }
+    self.animation.dash = {
+        total = 2,
+        current = 1,
+        img = {}
+    }
     for i = 1, self.animation.dash.total do
         self.animation.dash.img[i] = love.graphics.newImage("assets/Franky/dash/" .. i .. ".png")
     end
 
-    self.animation.emote = { total = 56, current = 1, img = {} }
+    self.animation.emote = {
+        total = 56,
+        current = 1,
+        img = {}
+    }
     for i = 1, self.animation.emote.total do
         local current, stillFrame = i, 9 -- loop emote from 9
         if current > stillFrame then
@@ -116,17 +159,29 @@ function Player:loadAssets()
         self.animation.emote.img[i] = love.graphics.newImage("assets/Franky/emote/" .. current .. ".png")
     end
 
-    self.animation.forwardAir = { total = 4, current = 1, img = {} }
+    self.animation.forwardAir = {
+        total = 4,
+        current = 1,
+        img = {}
+    }
     for i = 1, self.animation.forwardAir.total do
         self.animation.forwardAir.img[i] = love.graphics.newImage("assets/Franky/forwardAir/" .. i .. ".png")
     end
 
-    self.animation.forwardAttack = { total = 9, current = 1, img = {} }
+    self.animation.forwardAttack = {
+        total = 9,
+        current = 1,
+        img = {}
+    }
     for i = 1, self.animation.forwardAttack.total do
         self.animation.forwardAttack.img[i] = love.graphics.newImage("assets/Franky/forwardAttack/" .. i .. ".png")
     end
 
-    self.animation.rushAttack = { total = 5, current = 1, img = {} }
+    self.animation.rushAttack = {
+        total = 5,
+        current = 1,
+        img = {}
+    }
     for i = 1, self.animation.rushAttack.total do
         self.animation.rushAttack.img[i] = love.graphics.newImage("assets/Franky/rushAttack/" .. i .. ".png")
     end
@@ -145,7 +200,7 @@ end
 
 function Player:loadRushAttackHitbox()
     self.hitbox.rushAttack = {}
-    self.hitbox.rushAttack.map = STI("hitboxMap/rushAttack.lua", { "box2d" })
+    self.hitbox.rushAttack.map = STI("hitboxMap/rushAttack.lua", {"box2d"})
     self.hitbox.rushAttack.hitboxesLayer = self.hitbox.rushAttack.map.layers.hitboxes
     self.hitbox.rushAttack.mapWidth = self.hitbox.rushAttack.map.layers.ground.width * 16
     self.hitbox.rushAttack.mapHeight = self.hitbox.rushAttack.map.layers.ground.height * 16
@@ -153,12 +208,7 @@ function Player:loadRushAttackHitbox()
     self.hitbox.rushAttack.damage = 10
     self.hitbox.rushAttack.shakeSize = "medium"
 
-    self.hitbox.rushAttack.knockbackAtFrame = {
-        { 100,  0 },
-        { 100,  0 },
-        { 100,  0 },
-        { 500, -100 }
-    }
+    self.hitbox.rushAttack.knockbackAtFrame = {{100, 0}, {100, 0}, {100, 0}, {500, -100}}
 
     self.hitbox.rushAttack.targets = ActiveEnemys
 
@@ -187,7 +237,7 @@ end
 
 function Player:loadForwardAttackHitbox()
     self.hitbox.forwardAttack = {}
-    self.hitbox.forwardAttack.map = STI("hitboxMap/forwardAttack.lua", { "box2d" })
+    self.hitbox.forwardAttack.map = STI("hitboxMap/forwardAttack.lua", {"box2d"})
     self.hitbox.forwardAttack.hitboxesLayer = self.hitbox.forwardAttack.map.layers.hitboxes
     self.hitbox.forwardAttack.mapWidth = self.hitbox.forwardAttack.map.layers.ground.width * 16
     self.hitbox.forwardAttack.mapHeight = self.hitbox.forwardAttack.map.layers.ground.height * 16
@@ -226,7 +276,7 @@ end
 
 function Player:loadForwardAirHitbox()
     self.hitbox.forwardAir = {}
-    self.hitbox.forwardAir.map = STI("hitboxMap/forwardAir.lua", { "box2d" })
+    self.hitbox.forwardAir.map = STI("hitboxMap/forwardAir.lua", {"box2d"})
     self.hitbox.forwardAir.hitboxesLayer = self.hitbox.forwardAir.map.layers.hitboxes
     self.hitbox.forwardAir.mapWidth = self.hitbox.forwardAir.map.layers.ground.width * 16
     self.hitbox.forwardAir.mapHeight = self.hitbox.forwardAir.map.layers.ground.height * 16
@@ -295,6 +345,7 @@ end
 
 function Player:setPosition(x, y)
     self.physics.body:setPosition(x, y)
+    self:cancelActiveActions()
 end
 
 function Player:tintRed()
@@ -324,7 +375,7 @@ function Player:staminaRefresh()
 end
 
 function Player:update(dt)
-    --print(self.x..", "..self.y)
+    -- print(self.x..", "..self.y)
     self:unTint(dt)
     self:respawn()
     self:setState()
@@ -423,34 +474,29 @@ function Player:applyGravity(dt)
 end
 
 function Player:doingAction()
-    if self.emoting
-        or self.attacking
-        or self.talking
-        or self.dashing then
+    if self.emoting or self.attacking or self.talking or self.dashing then
         return true
     end
     return false
 end
 
 function Player:move(dt)
-    if not self:doingAction() then
-        -- sprint
-        if love.keyboard.isDown("lshift") and self.stamina.current > 0 and self.xVel ~= 0 then
-            self.maxSpeed = 400
-            --self.stamina.current = math.max(self.stamina.current - self.stamina.rate * 2, 0)
-        else
-            self.maxSpeed = 200
-            self.stamina.current = math.min(self.stamina.current + self.stamina.rate, self.stamina.max)
-        end
+    -- sprint
+    if love.keyboard.isDown("lshift") and self.stamina.current > 0 and self.xVel ~= 0 then
+        self.maxSpeed = 400
+        -- self.stamina.current = math.max(self.stamina.current - self.stamina.rate * 2, 0)
+    else
+        self.maxSpeed = 200
+        self.stamina.current = math.min(self.stamina.current + self.stamina.rate, self.stamina.max)
+    end
 
-        -- left and right movement
-        if love.keyboard.isDown("d", "right") then
-            self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxSpeed)
-        elseif love.keyboard.isDown("a", "left") then
-            self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
-        else
-            self:applyFriction(dt)
-        end
+    -- left and right movement
+    if love.keyboard.isDown("d", "right") and not self:doingAction() then
+        self.xVel = math.min(self.xVel + self.acceleration * dt, self.maxSpeed)
+    elseif love.keyboard.isDown("a", "left") and not self:doingAction() then
+        self.xVel = math.max(self.xVel - self.acceleration * dt, -self.maxSpeed)
+    else
+        self:applyFriction(dt)
     end
 end
 
@@ -475,7 +521,7 @@ function Player:syncPhysics()
     self.physics.body:setLinearVelocity(self.xVel, self.yVel)
 end
 
---called in Player:update()
+-- called in Player:update()
 function Player:decreaseGraceTime(dt)
     if not self.grounded then
         self.graceTime = self.graceTime - dt
@@ -489,7 +535,7 @@ function Player:decreaseGraceTime(dt)
     end
 end
 
---called in main.keypressed()
+-- called in main.keypressed()
 function Player:dashForward(key)
     if not self:doingAction() and key == "lshift" and self.dash.cost <= self.stamina.current then
         self.dash.inputPressed = self.dash.inputPressed + 1
@@ -596,9 +642,11 @@ function Player:forwardAttackEffects(anim)
     if self.activeForwardAttack then
         for _, hitbox in ipairs(LiveHitboxes) do
             if hitbox.type:find(self.hitbox.forwardAttack.type) then
-                if self.direction == "right" and hitbox.type == self.hitbox.forwardAttack.type .. anim.current .. "Right" then
+                if self.direction == "right" and hitbox.type == self.hitbox.forwardAttack.type .. anim.current ..
+                    "Right" then
                     hitbox.active = true
-                elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAttack.type .. anim.current .. "Left" then
+                elseif self.direction == "left" and hitbox.type == self.hitbox.forwardAttack.type .. anim.current ..
+                    "Left" then
                     hitbox.active = true
                 else
                     hitbox.active = false
@@ -612,8 +660,7 @@ function Player:forwardAttackEffects(anim)
 end
 
 function Player:forwardAir(key)
-    if not self.grounded and not self:doingAction() and key == "p"
-        and love.keyboard.isDown("a", "d", "left", "right") then
+    if not self.grounded and not self:doingAction() and key == "p" and love.keyboard.isDown("a", "d", "left", "right") then
         self.attacking = true
         self.activeForwardAir = true
     end
@@ -681,7 +728,9 @@ function Player:checkIfTargets(fixture1, fixture2)
 end
 
 function Player:beginContact(a, b, collision)
-    if self.grounded == true then return end
+    if self.grounded == true then
+        return
+    end
     if Helper.ignore(a, b, Hitbox) then
         return
     end
@@ -724,13 +773,15 @@ end
 
 function Player:draw()
     local scaleX = 1
-    if self.direction == "left" then scaleX = -1 end
+    if self.direction == "left" then
+        scaleX = -1
+    end
     local width = self.animation.width / 2
     local height = self.animation.height / 2
     love.graphics.setColor(self.color.red, self.color.green, self.color.blue)
     love.graphics.draw(self.animation.draw, self.x, self.y + self.FrankyOffsetY, 0, scaleX, 1, width, height)
     love.graphics.setColor(1, 1, 1)
-    --love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+    -- love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 end
 
 return Player

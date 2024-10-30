@@ -160,6 +160,7 @@ function NicoRobin:runDialogue(dt)
     
                 local robinAnima = assert(Anima.findAnima(self.physics.fixture))
                 local originalRobinAnimaText = robinAnima.text
+
                 self.dialogueIndex = self.dialogueIndex + 1
                 if self.dialogueIndex <= #self.dialogue then
                     if self.dialogue[self.dialogueIndex][1] == "NicoRobin" then
@@ -169,6 +170,7 @@ function NicoRobin:runDialogue(dt)
                     end
                     print(self.dialogue[self.dialogueIndex][2])
                 end
+
                 if self.dialogueIndex > #self.dialogue then
                     self.dialogueIndex = 1
                     playerAnima:modifyAnimationRate(0)
@@ -195,6 +197,7 @@ function NicoRobin.interact(key)
                 Player:setPosition(instance.x - instance.width / 2, instance.y)
                 Player.xVel = 0
                 Player.direction = "right"
+                Player:cancelActiveActions()
                 return true
             end
         end
