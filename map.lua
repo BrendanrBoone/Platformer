@@ -14,6 +14,7 @@ local Anima = require("myTextAnima")
 local BackgroundObject = require("backgroundObject")
 local PickupItem = require("pickupItem")
 local Sunny = require("sunny")
+local Platform = require("platform")
 
 local oceanHighBackground = love.graphics.newImage("assets/oceanBackground.png")
 local skyBlueBackground = love.graphics.newImage("assets/background.png")
@@ -70,7 +71,7 @@ function Map:load()
     World = love.physics.newWorld(0, 2000)
     World:setCallbacks(beginContact, endContact)
 
-    self:init("levelTutorial")
+    self:init("levelLighthouse2")
 end
 
 function Map:init(destination)
@@ -196,6 +197,8 @@ function Map:spawnEntities()
             PickupItem.new(v.x + v.width / 2, v.y + v.height / 2, v.properties.itemType)
         elseif v.type == "sunny" then
             Sunny.new(v.x + v.width / 2, v.y + v.height / 2)
+        elseif v.type == "platform" then
+            Platform.new(v.x + v.width / 2, v.y + v.height / 2, v.width, v.height)
         end
     end
 end

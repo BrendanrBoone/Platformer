@@ -10,7 +10,7 @@ return {
   tilewidth = 16,
   tileheight = 16,
   nextlayerid = 5,
-  nextobjectid = 6,
+  nextobjectid = 7,
   properties = {},
   tilesets = {
     {
@@ -196,6 +196,19 @@ return {
             ["dY"] = 250,
             ["destination"] = "levelLighthouse"
           }
+        },
+        {
+          id = 6,
+          name = "Platform",
+          type = "platform",
+          shape = "rectangle",
+          x = 265.487,
+          y = 1280.48,
+          width = 150.804,
+          height = 21.6724,
+          rotation = 0,
+          visible = true,
+          properties = {}
         }
       }
     },

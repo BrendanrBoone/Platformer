@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="57" height="87" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="6">
+<map version="1.10" tiledversion="1.11.0" orientation="orthogonal" renderorder="right-down" width="57" height="87" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="7">
  <editorsettings>
   <export target="../levelLighthouse2.lua" format="lua"/>
  </editorsettings>
@@ -107,6 +107,7 @@
    </properties>
    <point/>
   </object>
+  <object id="6" name="Platform" type="platform" x="265.487" y="1280.48" width="150.804" height="21.6724"/>
  </objectgroup>
  <objectgroup color="#fa02ee" id="2" name="solid">
   <properties>

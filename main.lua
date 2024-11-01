@@ -18,6 +18,7 @@ local Anima = require("myTextAnima")
 local BackgroundObject = require("backgroundObject")
 local PickupItem = require("pickupItem")
 local Sunny = require("sunny")
+local Platform = require("platform")
 
 WorldPause = false
 
@@ -49,6 +50,7 @@ function love.update(dt)
         Enemy.updateAll(dt)
         NicoRobin.updateAll(dt)
         Portal.updateAll(dt)
+        Platform.updateAll(dt)
         Trampoline.updateAll(dt)
         Explosion.updateAll(dt)
         Map:update(dt)
@@ -70,6 +72,7 @@ function love.draw()
     Trampoline.drawAll()
     NicoRobin.drawAll()
     Portal.drawAll()
+    Platform.drawAll()
     Player:draw()
     Coin.drawAll()
     PickupItem.drawAll()
@@ -113,6 +116,7 @@ function beginContact(a, b, collision)
     if Hitbox.beginContact(a, b, collision) then return end
     if Portal:beginContact(a, b, collision) then return end
     if NicoRobin.beginContact(a, b, collision) then return end
+    Platform.beginContact(a, b, collision)
     Enemy.beginContact(a, b, collision)
     Player:beginContact(a, b, collision)
 end
