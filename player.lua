@@ -382,7 +382,7 @@ function Player:update(dt)
     self:setDirection()
     self:animate(dt)
     self:decreaseGraceTime(dt)
-    self:syncPhysics()
+    self:syncPhysics() -- sets character position
     self:move(dt)
     self:applyGravity(dt)
 end
